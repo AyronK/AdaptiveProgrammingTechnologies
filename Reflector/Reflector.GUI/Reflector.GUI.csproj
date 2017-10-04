@@ -105,6 +105,10 @@
       <Project>{9389587D-64A9-433C-BE7F-FA16AB979F25}</Project>
       <Name>Reflector.DataAccess.File</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Reflector.DataAccess\Reflector.DataAccess.csproj">
+      <Project>{052A21BC-7661-476A-8DBE-40D0AC818E30}</Project>
+      <Name>Reflector.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Reflector.Models\Reflector.Models.csproj">
       <Project>{0D849E20-0862-45DD-B4C3-207319951646}</Project>
       <Name>Reflector.Models</Name>

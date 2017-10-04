@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Reflector.DataAccess;
 using Reflector.DataAccess.File;
 using Reflector.GUI.Model;
 using Reflector.Models;
@@ -15,7 +16,7 @@ namespace Reflector.GUI.ViewModel
     {
         public AssemblyInfo AssemblyInfoData { get; private set; }
         OpenFileDialog fileDialog;
-        
+              
         public FileDialogData()
         {
             fileDialog = new OpenFileDialog();

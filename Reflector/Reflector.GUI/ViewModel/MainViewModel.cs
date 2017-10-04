@@ -1,4 +1,5 @@
-﻿using Reflector.GUI.Model;
+﻿using Reflector.DataAccess;
+using Reflector.GUI.Model;
 using Reflector.GUI.MVVMLight;
 using System;
 using System.Collections.ObjectModel;
@@ -16,16 +17,18 @@ namespace Reflector.GUI.ViewModel
             FetchDataCommand = new RelayCommand(FetchData);
             SaveToXMLCommand = new RelayCommand(SaveToXml);
             _libraryPath = "\\";
-        }        
+        }
         #endregion
 
         #region Privates
+        private IAssemblyReader assemblyReader;
+        private IAssemblyWriter assemblyWriter;
         private string _libraryPath;
         private DataContext _dataContext;
         private ObservableCollection<TreeViewNode> _treeview;
 
         private void FetchData()
-        {            
+        {           
             try
             {
                 DataContext = FetchDataDelegate();
