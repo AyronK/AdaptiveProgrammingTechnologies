@@ -38,7 +38,7 @@
         <Button Content="Save" Grid.Column="1" Command="{Binding SaveToXMLCommand}" Margin="10,414,351,10" RenderTransformOrigin="0.494,1.839"/>
         <RadioButton x:Name="radioButton" Grid.ColumnSpan="2" Content="File:" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top" Width="92" Height="24" VerticalContentAlignment="Center" FontSize="16" IsChecked="True"/>
         <RadioButton x:Name="radioButton_Copy" Grid.ColumnSpan="2" Content="Database" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top" Width="92" Height="24" VerticalContentAlignment="Center" FontSize="16" IsEnabled="False"/>
-        <RadioButton x:Name="radioButton1" Grid.ColumnSpan="2" Content="Database" HorizontalAlignment="Left" Margin="300,427,0,0" VerticalAlignment="Top" FontSize="14" VerticalContentAlignment="Center"/>
+        <RadioButton x:Name="radioButton1" Grid.ColumnSpan="2" Content="Database" HorizontalAlignment="Left" Margin="300,427,0,0" VerticalAlignment="Top" FontSize="14" VerticalContentAlignment="Center" IsEnabled="False"/>
         <RadioButton x:Name="radioButton1_Copy" Grid.ColumnSpan="2" Content="XML File" HorizontalAlignment="Left" Margin="197,427,0,0" VerticalAlignment="Top" FontSize="14" VerticalContentAlignment="Center" IsChecked="True"/>
         <TextBox x:Name="textBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="24" Margin="107,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" ToolTip="" Text="Type assembly name..." IsEnabled="False"/>
     </Grid>
