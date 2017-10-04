@@ -13,7 +13,7 @@ namespace Reflector.GUI.ViewModel
     {
         public AssemblyViewModel(AssemblyInfo assemblyInfo)
         {
-            foreach (NamespaceModel namespaces in assemblyInfo.Namespaces)
+            foreach (NamespaceInfo namespaces in assemblyInfo.Namespaces)
             {
                 TreeViewNode n = new TreeViewNode(namespaces);
                 Add(n);

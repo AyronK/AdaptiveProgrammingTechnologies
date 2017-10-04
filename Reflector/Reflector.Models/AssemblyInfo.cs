@@ -1,59 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace Reflector.Models
 {
-    [Serializable]
+    [DataContract(IsReference = true)]
     public class AssemblyInfo : IExpandable
     {
         #region Constructors       
-        private AssemblyInfo() { }  // Only for serialization purpose
-
         public AssemblyInfo(System.Reflection.Assembly assembly)
         {
-            _assembly = assembly;
-            Name = _assembly.GetName().Name;
-            LoadNamespaces();
-        }        
+            Name = assembly.ManifestModule.Name;
+            Namespaces = from Type _type in assembly.GetTypes()
+                         where _type.IsPublic || _type.IsNestedPublic || _type.IsNestedFamily || _type.IsNestedFamANDAssem
+                         group _type by _type.Namespace != null ? _type.Namespace : string.Empty into _group
+                         orderby _group.Key
+                         select new NamespaceInfo(_group.Key, _group, this);
+        }
         #endregion
+        [DataMember]
         public string Name { get; set; }
 
-        public List<NamespaceModel> Namespaces { get { return _namespaces; } }        
-
-        private void LoadNamespaces()
-        {
-            List<string> namespacesNames = GetNamespacesNames();
-
-            foreach (string namespaceName in namespacesNames)
-            {
-                AddNamespace(namespaceName);
-            }
-        }
-
-        private void AddNamespace(string namespaceName)
-        {
-            NamespaceModel namespaceModel = new NamespaceModel(namespaceName);
-            namespaceModel.LoadClasses(_assembly, this);
-            Namespaces.Add(namespaceModel);
-        }
-
-        private List<string> GetNamespacesNames()
-        {
-            List<string> names = new List<string>();
-            foreach (Type type in _assembly.GetTypes())
-                if (!names.Contains(type.Namespace))
-                    names.Add(type.Namespace);
-            return names;
-        }
+        [DataMember]
+        public IEnumerable<NamespaceInfo> Namespaces { get; private set; }
 
         #region Internal
-        internal Dictionary<string, TypeModel> Classes = new Dictionary<string, TypeModel>();
+        [DataMember]
+        internal Dictionary<string, TypeInfo> Classes = new Dictionary<string, TypeInfo>();
         internal void TryDefineTypeModel(Type type)
         {
             if (!Classes.ContainsKey(type.Name))
             {
-                TypeModel classModel = new TypeModel() { TypeName = type.Name };
+                TypeInfo classModel = new TypeInfo() { TypeName = type.Name };
                 Classes.Add(type.Name, classModel);
                 classModel.LoadItself(type, this);
             }
@@ -64,21 +44,18 @@ namespace Reflector.Models
         public IEnumerable<IExpandable> Expand()
         {
             return Namespaces;
-        }
+        }        
         #endregion
 
         #region Privates
-        private List<NamespaceModel> _namespaces = new List<NamespaceModel>();
-        private Dictionary<string, TypeModel> _classes = new Dictionary<string, TypeModel>();
-        [XmlIgnore]
-        private System.Reflection.Assembly _assembly;
+        private Dictionary<string, TypeInfo> _classes = new Dictionary<string, TypeInfo>();
         #endregion
 
         #region Object override
         public override string ToString()
         {
             return Name;
-        } 
+        }
         #endregion
 
     }

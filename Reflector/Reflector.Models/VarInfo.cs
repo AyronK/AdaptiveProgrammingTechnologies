@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace Reflector.Models
 {
-    [Serializable]
+    [DataContract(IsReference = true)]
     public class VarModel : IExpandable
     {
+        [DataMember]
         public string Name { get; set; }
 
-        // Nie działa serializacja ale działa rekurencyjne drzewo
-        [XmlIgnore]
-        public TypeModel BaseType { get; set; }     
+        [DataMember]
+        public TypeInfo BaseType { get; set; }     
 
         #region Object override
         public override string ToString()

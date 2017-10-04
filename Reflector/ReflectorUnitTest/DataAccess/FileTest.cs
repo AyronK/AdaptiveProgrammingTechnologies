@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Reflector.DataAccess;
-using Reflector.DataAccess.File;
+using Reflector.DataAccess.Dll;
 using Reflector.Models;
 
 namespace ReflectorUnitTest.DataAccess

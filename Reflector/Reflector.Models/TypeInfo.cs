@@ -2,17 +2,31 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace Reflector.Models
 {
-    [Serializable]
-    public class TypeModel : IExpandable
+    [DataContract(IsReference = true)]
+    public class TypeInfo : IExpandable
     {
+        [DataMember]
         public string TypeName { get; set; }
-        public List<MethodModel> Methods { get { return _methods; } }
-        public List<VarModel> Fields { get { return _fields; } }
-        public List<VarModel> Properties { get { return _properties; } }        
-        
+        [DataMember]
+        public List<MethodModel> Methods { get { return _methods; } private set { _methods = value; } }
+        [DataMember]
+        public List<VarModel> Fields { get { return _fields; } private set { _fields = value; } }
+        [DataMember]
+        public List<VarModel> Properties { get { return _properties; } private set { _properties = value; } }
+
+        public TypeInfo()
+        {
+        }
+        public TypeInfo(Type type, AssemblyInfo assembly)
+        {
+            TypeName = type.Name;
+            LoadItself(type, assembly);
+        }
+
         internal void LoadItself(Type type, AssemblyInfo assembly)
         {
             LoadFields(type, assembly);
@@ -26,7 +40,6 @@ namespace Reflector.Models
             {
                 assembly.TryDefineTypeModel(field.FieldType);
                 VarModel t = new VarModel() { Name = field.Name, BaseType = assembly.Classes[field.FieldType.Name] };
-                //VarModel t = new VarModel() { Name = field.Name, BaseType = new TypeModel() { TypeName = field.FieldType.Name } };
                 Fields.Add(t);
             }
         }

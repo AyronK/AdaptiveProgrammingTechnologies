@@ -2,21 +2,23 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Xml.Serialization;
 
 namespace Reflector.Models
 {
-    [Serializable]
+    [DataContract(IsReference = true)]
     public class MethodModel : IExpandable
     {
+        [DataMember]
         public string Name { get; set; }
-        public List<string> Modifiers { get { return _modifiers; } }
-        public List<VarModel> Parameters { get { return _parameters; } }
-
-        // Nie działa serializacja ale działa rekurencyjne drzewo   
-        [XmlIgnore]
-        public TypeModel ReturnType { get { return _returnType; } set { _returnType = value; } }
+        [DataMember]
+        public List<string> Modifiers { get { return _modifiers; } private set { _modifiers = value; } }
+        [DataMember]
+        public List<VarModel> Parameters { get { return _parameters; } private set { _parameters = value; } }
+        [DataMember]
+        public TypeInfo ReturnType { get { return _returnType; } set { _returnType = value; } }
 
         internal void LoadItself(MethodInfo method, AssemblyInfo assembly)
         {
@@ -75,7 +77,7 @@ namespace Reflector.Models
         #region Privates
         private List<VarModel> _parameters = new List<VarModel>();
         private List<string> _modifiers = new List<string>();
-        private TypeModel _returnType;
+        private TypeInfo _returnType;
         private void LoadModifiers(MethodInfo method)
         {
             if (method.IsAbstract) Modifiers.Add("abstract");

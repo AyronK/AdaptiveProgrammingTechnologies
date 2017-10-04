@@ -8,6 +8,6 @@ namespace Reflector.Models
 {
     public interface IExpandable
     {
-        IEnumerable<IExpandable> Expand();
+        IEnumerable<IExpandable> Expand();        
     }
 }

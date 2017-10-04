@@ -1,25 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Reflector.Models
 {
-    [Serializable]
-    public class NamespaceModel : IExpandable
+    [DataContract(IsReference = true)]
+    public class NamespaceInfo : IExpandable
     {
         #region Constructors
-        public NamespaceModel(string name)
+        public NamespaceInfo(string name, IEnumerable<Type> types, AssemblyInfo assembly)
         {
             Name = name;
+            Classes = from type in types orderby type.Name select new TypeInfo(type, assembly);
         }
-                
-        private NamespaceModel() : this("") { } // Only for serialization purpose
         #endregion
 
+        [DataMember]
         public string Name { get; set; }
 
-        public List<TypeModel> Classes
+        [DataMember]
+        public IEnumerable<TypeInfo> Classes
         {
-            get { return _classes; }
+            get; private set;
         }
 
         internal void LoadClasses(System.Reflection.Assembly assembly, AssemblyInfo assemblyModel)
@@ -35,7 +38,7 @@ namespace Reflector.Models
             if (type.Namespace == Name)
             {
                 assemblyModel.TryDefineTypeModel(type);
-                Classes.Add(assemblyModel.Classes[type.Name]);
+                //Classes.Add(assemblyModel.Classes[type.Name]);
             }
         }
 
@@ -54,7 +57,7 @@ namespace Reflector.Models
         #endregion
 
         #region Privates
-        private List<TypeModel> _classes = new List<TypeModel>(); 
+        private List<TypeInfo> _classes = new List<TypeInfo>(); 
         #endregion
     }
 }

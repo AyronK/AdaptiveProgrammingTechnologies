@@ -1,8 +1,10 @@
 ﻿using Microsoft.Win32;
+using Reflactor.DataAccess.Xml;
 using Reflector.DataAccess;
-using Reflector.DataAccess.File;
+using Reflector.DataAccess.Dll;
 using Reflector.GUI.Model;
 using Reflector.GUI.MVVMLight;
+using Reflector.Models;
 using System;
 using System.Collections.ObjectModel;
 
@@ -27,21 +29,30 @@ namespace Reflector.GUI.ViewModel
         private IAssemblyWriter assemblyWriter;
         private string _libraryPath;
         private AssemblyViewModel _treeview;
+        private AssemblyInfo assemblyInfo;
 
         private void FetchData()
-        {           
+        {
             try
             {
                 OpenFileDialog fileDialog = new OpenFileDialog();
                 fileDialog.FileName = ""; // Default file name
-                fileDialog.Filter = "All files (*.*)|*.*|DLL files (.dll)|*.dll|XML files (.xml)|*.xml"; // Filter files by extension
+                //fileDialog.Filter = "All files (*.*)|*.*|DLL files (.dll)|*.dll|XML files (.xml)|*.xml"; // Filter files by extension
+                fileDialog.Filter = "All files (*.*)|*.*|DLL files (.dll)|*.dll"; // Filter files by extension
                 fileDialog.InitialDirectory = @System.IO.Directory.GetCurrentDirectory();
                 // Show open file dialog box
                 Nullable<bool> result = fileDialog.ShowDialog();
-
-
-                assemblyReader = new AssemblyDllReader(fileDialog.FileName);
-                TreeView = new AssemblyViewModel(assemblyReader.Read());
+                string path = fileDialog.FileName;
+                if (path.Contains(".dll"))
+                {
+                    assemblyReader = new AssemblyDllReader(fileDialog.FileName);
+                }
+                else if (path.Contains(".xml"))
+                {
+                    assemblyReader = new AssemblyXmlDeserializer(fileDialog.FileName);
+                }
+                assemblyInfo = assemblyReader.Read();
+                TreeView = new AssemblyViewModel(assemblyInfo);
             }
             catch (Exception exception)
             {
@@ -51,8 +62,8 @@ namespace Reflector.GUI.ViewModel
 
         private void SaveToXml()
         {
-            //if(DataContext != null)
-            //    DataContext.SerializeToXML("DataContext.xml");
+            assemblyWriter = new AssemblyXmlSerializer();
+            assemblyWriter.Write(assemblyInfo);
         }
         #endregion
 
@@ -75,7 +86,7 @@ namespace Reflector.GUI.ViewModel
                 _libraryPath = value;
                 RaisePropertyChanged();
             }
-        }        
+        }
 
         public RelayCommand FetchDataCommand
         {

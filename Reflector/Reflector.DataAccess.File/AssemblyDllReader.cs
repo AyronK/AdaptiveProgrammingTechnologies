@@ -2,7 +2,7 @@
 using Reflector.Models;
 using System.Xml.Serialization;
 
-namespace Reflector.DataAccess.File
+namespace Reflector.DataAccess.Dll
 {
     public class AssemblyDllReader : IAssemblyReader
     {
