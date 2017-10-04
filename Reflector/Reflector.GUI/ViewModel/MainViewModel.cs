@@ -43,8 +43,8 @@ namespace Reflector.GUI.ViewModel
 
         private void SaveToXml()
         {
-            if(DataContext != null)
-                DataContext.SerializeToXML("DataContext.xml");
+            //if(DataContext != null)
+            //    DataContext.SerializeToXML("DataContext.xml");
         }
         #endregion
 

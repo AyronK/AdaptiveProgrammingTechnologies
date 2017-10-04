@@ -9,6 +9,6 @@ namespace Reflector.DataAccess
 {
     public interface IAssemblyWriter
     {
-        AssemblyInfo Write();
+        void Write(AssemblyInfo assemblyInfo);
     }
 }

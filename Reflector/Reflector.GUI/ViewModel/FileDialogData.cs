@@ -46,13 +46,13 @@ namespace Reflector.GUI.ViewModel
                
         }
 
-        public override void SerializeToXML(String path)
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(AssemblyInfo));
-            XmlWriter writer = new XmlTextWriter(path, Encoding.Unicode);
-            serializer.Serialize(writer, AssemblyInfoData);
-            writer.Close();
-        }
+        //public override void SerializeToXML(String path)
+        //{
+        //    XmlSerializer serializer = new XmlSerializer(typeof(AssemblyInfo));
+        //    XmlWriter writer = new XmlTextWriter(path, Encoding.Unicode);
+        //    serializer.Serialize(writer, AssemblyInfoData);
+        //    writer.Close();
+        //}
 
         public override ObservableCollection<TreeViewNode> ToTree()
         {

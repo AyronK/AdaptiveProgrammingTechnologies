@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Reflector.DataAccess;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,6 +14,10 @@ namespace Reflector.GUI.Model
 
         public abstract ObservableCollection<TreeViewNode> ToTree();
 
-        public abstract void SerializeToXML(String path);
+        //public abstract void SerializeToXML(String path);
+
+        public IAssemblyReader Reader { get; set; }
+
+        public IAssemblyWriter Writer { get; set; }
     }
 }
