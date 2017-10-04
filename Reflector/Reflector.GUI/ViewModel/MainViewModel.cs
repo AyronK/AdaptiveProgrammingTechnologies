@@ -1,4 +1,6 @@
-﻿using Reflector.DataAccess;
+﻿using Microsoft.Win32;
+using Reflector.DataAccess;
+using Reflector.DataAccess.File;
 using Reflector.GUI.Model;
 using Reflector.GUI.MVVMLight;
 using System;
@@ -24,16 +26,22 @@ namespace Reflector.GUI.ViewModel
         private IAssemblyReader assemblyReader;
         private IAssemblyWriter assemblyWriter;
         private string _libraryPath;
-        private DataContext _dataContext;
-        private ObservableCollection<TreeViewNode> _treeview;
+        private AssemblyViewModel _treeview;
 
         private void FetchData()
         {           
             try
             {
-                DataContext = FetchDataDelegate();
-                LibraryPathText = DataContext.LibraryPath;
-                TreeView = DataContext.ToTree();
+                OpenFileDialog fileDialog = new OpenFileDialog();
+                fileDialog.FileName = ""; // Default file name
+                fileDialog.Filter = "All files (*.*)|*.*|DLL files (.dll)|*.dll|XML files (.xml)|*.xml"; // Filter files by extension
+                fileDialog.InitialDirectory = @System.IO.Directory.GetCurrentDirectory();
+                // Show open file dialog box
+                Nullable<bool> result = fileDialog.ShowDialog();
+
+
+                assemblyReader = new AssemblyDllReader(fileDialog.FileName);
+                TreeView = new AssemblyViewModel(assemblyReader.Read());
             }
             catch (Exception exception)
             {
@@ -49,20 +57,7 @@ namespace Reflector.GUI.ViewModel
         #endregion
 
         #region API
-        public DataContext DataContext
-        {
-            get
-            {
-                return _dataContext;
-            }
-
-            private set
-            {
-                _dataContext = value;
-            }
-        }
-
-        public ObservableCollection<TreeViewNode> TreeView
+        public AssemblyViewModel TreeView
         {
             get { return _treeview; }
             private set
@@ -95,15 +90,15 @@ namespace Reflector.GUI.ViewModel
         }
         #endregion
 
-        #region Unit test tools
-        /// <summary>
-        /// Gets or sets the data fetching delegate.
-        /// </summary>
-        /// <remarks>
-        /// Its purpose is allowing unit tests to override default File Dialog. Unit tests have internal access written to AssemblyInfo to allow them using this solution.
-        /// using <see cref="System.Runtime.CompilerServices.InternalsVisibleToAttribute"/>.
-        /// </remarks>
-        internal Func<DataContext> FetchDataDelegate { get; set; } = (() => new FileDialogData());
-        #endregion
+        //#region Unit test tools
+        ///// <summary>
+        ///// Gets or sets the data fetching delegate.
+        ///// </summary>
+        ///// <remarks>
+        ///// Its purpose is allowing unit tests to override default File Dialog. Unit tests have internal access written to AssemblyInfo to allow them using this solution.
+        ///// using <see cref="System.Runtime.CompilerServices.InternalsVisibleToAttribute"/>.
+        ///// </remarks>
+        //internal Func<DataContext> FetchDataDelegate { get; set; } = (() => new FileDialogData());
+        //#endregion
     }
 }
