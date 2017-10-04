@@ -1,0 +1,85 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
+
+namespace Reflector.Models
+{
+    [Serializable]
+    public class AssemblyInfo : IExpandable
+    {
+        #region Constructors       
+        private AssemblyInfo() { }  // Only for serialization purpose
+
+        public AssemblyInfo(System.Reflection.Assembly assembly)
+        {
+            _assembly = assembly;
+            Name = _assembly.GetName().Name;
+            LoadNamespaces();
+        }        
+        #endregion
+        public string Name { get; set; }
+
+        public List<NamespaceModel> Namespaces { get { return _namespaces; } }        
+
+        private void LoadNamespaces()
+        {
+            List<string> namespacesNames = GetNamespacesNames();
+
+            foreach (string namespaceName in namespacesNames)
+            {
+                AddNamespace(namespaceName);
+            }
+        }
+
+        private void AddNamespace(string namespaceName)
+        {
+            NamespaceModel namespaceModel = new NamespaceModel(namespaceName);
+            namespaceModel.LoadClasses(_assembly, this);
+            Namespaces.Add(namespaceModel);
+        }
+
+        private List<string> GetNamespacesNames()
+        {
+            List<string> names = new List<string>();
+            foreach (Type type in _assembly.GetTypes())
+                if (!names.Contains(type.Namespace))
+                    names.Add(type.Namespace);
+            return names;
+        }
+
+        #region Internal
+        internal Dictionary<string, TypeModel> Classes = new Dictionary<string, TypeModel>();
+        internal void TryDefineTypeModel(Type type)
+        {
+            if (!Classes.ContainsKey(type.Name))
+            {
+                TypeModel classModel = new TypeModel() { TypeName = type.Name };
+                Classes.Add(type.Name, classModel);
+                classModel.LoadItself(type, this);
+            }
+        }
+        #endregion
+
+        #region IExpandable implementation
+        public IEnumerable<IExpandable> Expand()
+        {
+            return Namespaces;
+        }
+        #endregion
+
+        #region Privates
+        private List<NamespaceModel> _namespaces = new List<NamespaceModel>();
+        private Dictionary<string, TypeModel> _classes = new Dictionary<string, TypeModel>();
+        [XmlIgnore]
+        private System.Reflection.Assembly _assembly;
+        #endregion
+
+        #region Object override
+        public override string ToString()
+        {
+            return Name;
+        } 
+        #endregion
+
+    }
+}
