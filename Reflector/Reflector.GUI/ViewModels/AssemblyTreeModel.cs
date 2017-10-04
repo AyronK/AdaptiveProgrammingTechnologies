@@ -1,4 +1,4 @@
-﻿using Reflector.GUI.Model;
+﻿using Reflector.GUI.Models;
 using Reflector.Models;
 using System;
 using System.Collections.Generic;
@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reflector.GUI.ViewModel
+namespace Reflector.GUI.ViewModels
 {
-    class AssemblyViewModel : ObservableCollection<TreeViewNode>
+    class AssemblyTreeModel : ObservableCollection<TreeViewNode>
     {
-        public AssemblyViewModel(AssemblyInfo assemblyInfo)
+        public AssemblyTreeModel(AssemblyInfo assemblyInfo)
         {
             foreach (NamespaceInfo namespaces in assemblyInfo.Namespaces)
             {

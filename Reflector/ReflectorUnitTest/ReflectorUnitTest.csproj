@@ -56,9 +56,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Reflector.DataAccess.File\Reflector.DataAccess.File.csproj">
+    <ProjectReference Include="..\Reflector.DataAccess.File\Reflector.DataAccess.Dll.csproj">
       <Project>{9389587D-64A9-433C-BE7F-FA16AB979F25}</Project>
-      <Name>Reflector.DataAccess.File</Name>
+      <Name>Reflector.DataAccess.Dll</Name>
     </ProjectReference>
     <ProjectReference Include="..\Reflector.DataAccess\Reflector.DataAccess.csproj">
       <Project>{052A21BC-7661-476A-8DBE-40D0AC818E30}</Project>

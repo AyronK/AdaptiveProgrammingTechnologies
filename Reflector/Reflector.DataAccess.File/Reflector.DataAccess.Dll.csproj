@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reflector.DataAccess.File</RootNamespace>
-    <AssemblyName>Reflector.DataAccess.File</AssemblyName>
+    <AssemblyName>Reflector.DataAccess.Dll</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

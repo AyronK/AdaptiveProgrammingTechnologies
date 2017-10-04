@@ -1,7 +1,7 @@
 ﻿using Reflector.Models;
 using System.Collections.ObjectModel;
 
-namespace Reflector.GUI.Model
+namespace Reflector.GUI.Models
 {
     class TreeViewNode
     {

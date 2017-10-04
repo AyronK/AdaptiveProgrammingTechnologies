@@ -2,13 +2,11 @@
 using Reflactor.DataAccess.Xml;
 using Reflector.DataAccess;
 using Reflector.DataAccess.Dll;
-using Reflector.GUI.Model;
 using Reflector.GUI.MVVMLight;
 using Reflector.Models;
 using System;
-using System.Collections.ObjectModel;
 
-namespace Reflector.GUI.ViewModel
+namespace Reflector.GUI.ViewModels
 {
     internal class MainViewModel : ViewModelBase
     {
@@ -18,9 +16,9 @@ namespace Reflector.GUI.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            FetchDataCommand = new RelayCommand(FetchData);
+            ReadFileCommand = new RelayCommand(ReadFile);
             SaveToXMLCommand = new RelayCommand(SaveToXml);
-            _libraryPath = "\\";
+            _libraryPath = String.Empty;
         }
         #endregion
 
@@ -28,10 +26,10 @@ namespace Reflector.GUI.ViewModel
         private IAssemblyReader assemblyReader;
         private IAssemblyWriter assemblyWriter;
         private string _libraryPath;
-        private AssemblyViewModel _treeview;
+        private AssemblyTreeModel _treeview;
         private AssemblyInfo assemblyInfo;
 
-        private void FetchData()
+        private void ReadFile()
         {
             try
             {
@@ -42,17 +40,17 @@ namespace Reflector.GUI.ViewModel
                 fileDialog.InitialDirectory = @System.IO.Directory.GetCurrentDirectory();
                 // Show open file dialog box
                 Nullable<bool> result = fileDialog.ShowDialog();
-                string path = fileDialog.FileName;
-                if (path.Contains(".dll"))
+                LibraryPathText = fileDialog.FileName;
+                if (LibraryPathText.Contains(".dll"))
                 {
-                    assemblyReader = new AssemblyDllReader(fileDialog.FileName);
+                    assemblyReader = new AssemblyDllReader(LibraryPathText);
                 }
-                else if (path.Contains(".xml"))
+                else if (LibraryPathText.Contains(".xml"))
                 {
-                    assemblyReader = new AssemblyXmlDeserializer(fileDialog.FileName);
+                    assemblyReader = new AssemblyXmlDeserializer(LibraryPathText);
                 }
                 assemblyInfo = assemblyReader.Read();
-                TreeView = new AssemblyViewModel(assemblyInfo);
+                TreeView = new AssemblyTreeModel(assemblyInfo);
             }
             catch (Exception exception)
             {
@@ -68,7 +66,7 @@ namespace Reflector.GUI.ViewModel
         #endregion
 
         #region API
-        public AssemblyViewModel TreeView
+        public AssemblyTreeModel TreeView
         {
             get { return _treeview; }
             private set
@@ -88,7 +86,7 @@ namespace Reflector.GUI.ViewModel
             }
         }
 
-        public RelayCommand FetchDataCommand
+        public RelayCommand ReadFileCommand
         {
             get;
             private set;
@@ -100,16 +98,5 @@ namespace Reflector.GUI.ViewModel
             private set;
         }
         #endregion
-
-        //#region Unit test tools
-        ///// <summary>
-        ///// Gets or sets the data fetching delegate.
-        ///// </summary>
-        ///// <remarks>
-        ///// Its purpose is allowing unit tests to override default File Dialog. Unit tests have internal access written to AssemblyInfo to allow them using this solution.
-        ///// using <see cref="System.Runtime.CompilerServices.InternalsVisibleToAttribute"/>.
-        ///// </remarks>
-        //internal Func<DataContext> FetchDataDelegate { get; set; } = (() => new FileDialogData());
-        //#endregion
     }
 }

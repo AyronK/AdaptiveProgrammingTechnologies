@@ -23,6 +23,7 @@ namespace Reflector
         public MainWindow()
         {
             InitializeComponent();
-        }        
+        }
+        
     }
 }
