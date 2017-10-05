@@ -5,6 +5,7 @@ using Reflector.DataAccess.Dll;
 using Reflector.GUI.MVVMLight;
 using Reflector.Models;
 using System;
+using System.IO;
 using System.Windows;
 
 namespace Reflector.GUI.ViewModels
@@ -71,8 +72,12 @@ namespace Reflector.GUI.ViewModels
 
         private void SaveToXml()
         {
-            assemblyWriter = new AssemblyXmlSerializer();
-            assemblyWriter.Write(assemblyInfo);
+            if (assemblyInfo != null)
+            {
+                string savePath = $"{Path.GetFileNameWithoutExtension(assemblyInfo.Name)}_serialized.xml";
+                assemblyWriter = new AssemblyXmlSerializer(savePath);
+                assemblyWriter.Write(assemblyInfo);
+            }
         }
         #endregion
 
