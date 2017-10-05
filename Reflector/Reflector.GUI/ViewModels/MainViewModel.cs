@@ -19,11 +19,11 @@ namespace Reflector.GUI.ViewModels
         public MainViewModel()
         {
             ReadFileCommand = new RelayCommand(ReadFile);
-            SaveToXMLCommand = new RelayCommand(SaveToXml);
+            SaveCommand = new RelayCommand(SaveToXml);
             _libraryPath = string.Empty;
             InitFileDialog();
         }
-
+        
         private void InitFileDialog()
         {
             fileDialog = new OpenFileDialog();
@@ -108,7 +108,7 @@ namespace Reflector.GUI.ViewModels
             private set;
         }
 
-        public RelayCommand SaveToXMLCommand
+        public RelayCommand SaveCommand
         {
             get;
             private set;
