@@ -5,6 +5,7 @@ using Reflector.DataAccess.Dll;
 using Reflector.GUI.MVVMLight;
 using Reflector.Models;
 using System;
+using System.Windows;
 
 namespace Reflector.GUI.ViewModels
 {
@@ -18,7 +19,16 @@ namespace Reflector.GUI.ViewModels
         {
             ReadFileCommand = new RelayCommand(ReadFile);
             SaveToXMLCommand = new RelayCommand(SaveToXml);
-            _libraryPath = String.Empty;
+            _libraryPath = string.Empty;
+            InitFileDialog();
+        }
+
+        private void InitFileDialog()
+        {
+            fileDialog = new OpenFileDialog();
+            fileDialog.FileName = "";
+            fileDialog.Filter = "All files (*.*)|*.*|DLL files (.dll)|*.dll|XML files (.xml)|*.xml"; // Filter files by extension
+            fileDialog.InitialDirectory = @System.IO.Directory.GetCurrentDirectory();
         }
         #endregion
 
@@ -28,19 +38,15 @@ namespace Reflector.GUI.ViewModels
         private string _libraryPath;
         private AssemblyTreeModel _treeview;
         private AssemblyInfo assemblyInfo;
+        private OpenFileDialog fileDialog;
 
         private void ReadFile()
         {
             try
             {
-                OpenFileDialog fileDialog = new OpenFileDialog();
-                fileDialog.FileName = ""; // Default file name
-                //fileDialog.Filter = "All files (*.*)|*.*|DLL files (.dll)|*.dll|XML files (.xml)|*.xml"; // Filter files by extension
-                fileDialog.Filter = "All files (*.*)|*.*|DLL files (.dll)|*.dll"; // Filter files by extension
-                fileDialog.InitialDirectory = @System.IO.Directory.GetCurrentDirectory();
-                // Show open file dialog box
-                Nullable<bool> result = fileDialog.ShowDialog();
+                fileDialog.ShowDialog();
                 LibraryPathText = fileDialog.FileName;
+
                 if (LibraryPathText.Contains(".dll"))
                 {
                     assemblyReader = new AssemblyDllReader(LibraryPathText);
@@ -49,11 +55,16 @@ namespace Reflector.GUI.ViewModels
                 {
                     assemblyReader = new AssemblyXmlDeserializer(LibraryPathText);
                 }
+                else
+                {
+                    throw new Exception("Incorrect file extension");
+                }
                 assemblyInfo = assemblyReader.Read();
                 TreeView = new AssemblyTreeModel(assemblyInfo);
             }
             catch (Exception exception)
             {
+                MessageBox.Show(exception.Message, "File read error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Console.WriteLine(exception.Message);
             }
         }
