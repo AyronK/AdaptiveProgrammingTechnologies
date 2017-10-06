@@ -8,13 +8,19 @@ namespace Reflector.DataAccess.Dll
     {
         private string path;
 
-        public AssemblyDllReader(string path)
+        public AssemblyDllReader()
         {
-            this.path = path;
+
         }
 
-        public AssemblyInfo Read()
+        //public AssemblyDllReader(string path)
+        //{
+        //    this.path = path;
+        //}
+
+        public AssemblyInfo Read(string name)
         {
+            path = name;
             if (!DllExists())
             {
                 throw new DllNotFoundException("Indicated DLL does not exist");

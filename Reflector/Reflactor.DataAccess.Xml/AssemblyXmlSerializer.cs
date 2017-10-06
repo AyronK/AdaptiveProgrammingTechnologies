@@ -4,7 +4,7 @@ using Reflector.Models;
 using System.Runtime.Serialization;
 using System.IO;
 
-namespace Reflactor.DataAccess.Xml
+namespace Reflector.DataAccess.Xml
 {
     public class AssemblyXmlSerializer : IAssemblyWriter
     {
@@ -14,10 +14,10 @@ namespace Reflactor.DataAccess.Xml
             path = "serializedAssembly.xml";
         }
 
-        public AssemblyXmlSerializer(string path)
-        {
-            this.path = path;
-        }
+        //public AssemblyXmlSerializer(string path)
+        //{
+        //    this.path = path;
+        //}
 
         public void Write(AssemblyInfo assemblyInfo)
         {
