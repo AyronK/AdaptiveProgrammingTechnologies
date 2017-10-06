@@ -8,7 +8,7 @@ using Reflector.Models;
 using System.IO;
 using System.Runtime.Serialization;
 
-namespace Reflector.DataAccess.Xml
+namespace Reflactor.DataAccess.Xml
 {
     public class AssemblyXmlDeserializer : IAssemblyReader
     {
@@ -19,9 +19,8 @@ namespace Reflector.DataAccess.Xml
             this.path = path;
         }
 
-        public AssemblyInfo Read(string name)
+        public AssemblyInfo Read()
         {
-            path = name;
             if (!XmlFileExists())
             {
                 throw new DllNotFoundException("Indicated XML file does not exist");

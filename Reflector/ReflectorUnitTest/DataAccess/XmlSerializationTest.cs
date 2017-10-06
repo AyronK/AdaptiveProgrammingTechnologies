@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Reflector.DataAccess;
 using Reflector.Models;
-using Reflector.DataAccess.Xml;
+using Reflactor.DataAccess.Xml;
 using System.Linq;
 using System.IO;
 
@@ -18,7 +18,7 @@ namespace ReflectorUnitTest.DataAccess
         public XmlSerializationTest()
         {
             assembly = new AssemblyInfo(typeof(XmlSerializationTest).Assembly);
-            writer = new AssemblyXmlSerializer();
+            writer = new AssemblyXmlSerializer(xmlPath);
             reader = new AssemblyXmlDeserializer(xmlPath);
         }
 
@@ -35,7 +35,7 @@ namespace ReflectorUnitTest.DataAccess
         public void SerializeAndDeserializeTest()
         {
             writer.Write(assembly);
-            AssemblyInfo processedAssembly = reader.Read(xmlPath);
+            AssemblyInfo processedAssembly = reader.Read();
 
             Assert.AreEqual(assembly.Name, processedAssembly.Name);
             foreach(var ns in processedAssembly.Namespaces)

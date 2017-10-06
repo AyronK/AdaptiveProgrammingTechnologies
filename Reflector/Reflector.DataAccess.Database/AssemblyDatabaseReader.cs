@@ -5,7 +5,7 @@ namespace Reflector.DataAccess.Database
 {
     public class AssemblyDatabaseReader : IAssemblyReader
     {
-        public AssemblyInfo Read(string name)
+        public AssemblyInfo Read()
         {
             throw new NotImplementedException();
         }

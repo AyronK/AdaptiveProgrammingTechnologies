@@ -17,8 +17,8 @@ namespace ReflectorUnitTest.DataAccess
         public void ReadDllFile()
         {
             string path = "";
-            fileReader = new AssemblyDllReader();
-            AssemblyInfo assembly = fileReader.Read(path);            
+            fileReader = new AssemblyDllReader(path);
+            AssemblyInfo assembly = fileReader.Read();            
         }
     }
 }

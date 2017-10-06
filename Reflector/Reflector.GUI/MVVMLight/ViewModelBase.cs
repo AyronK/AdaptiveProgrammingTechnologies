@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Reflector.GUI.MVVMLight
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    internal class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

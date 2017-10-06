@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Reflector.GUI.MVVMLight
 {
-    public class RelayCommand : ICommand
+    class RelayCommand : ICommand
     {
         #region Fields 
         private readonly Action _execute;
