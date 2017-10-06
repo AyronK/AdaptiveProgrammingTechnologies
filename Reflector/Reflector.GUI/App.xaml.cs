@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Microsoft.Practices.Unity;
+using Reflector.DataAccess;
+using Reflector.DataAccess.Dll;
+using Reflector.DataAccess.Xml;
+using Reflector.Logic;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +18,14 @@ namespace Reflector.GUI
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            IUnityContainer container = new UnityContainer();
+            container.RegisterType<IAssemblyReader, AssemblyDllReader>();
+            container.RegisterType<IAssemblyWriter, AssemblyXmlSerializer>();
+            container.RegisterType<IDataAccessor, DataAccessor>();
+
+            MainWindow mainWindow = container.Resolve<MainWindow>();
+        }
     }
 }
