@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Reflector.GUI.ViewModels
 {
-    class AssemblyTreeModel : ObservableCollection<TreeViewNode>
+    public class AssemblyTreeModel : ObservableCollection<TreeViewNode>
     {
         public AssemblyTreeModel(AssemblyInfo assemblyInfo)
         {

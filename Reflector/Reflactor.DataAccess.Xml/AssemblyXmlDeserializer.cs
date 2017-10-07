@@ -1,42 +1,30 @@
-﻿using Reflector.DataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Reflector.Models;
 using System.IO;
 using System.Runtime.Serialization;
 
-namespace Reflactor.DataAccess.Xml
+namespace Reflector.DataAccess.Xml
 {
     public class AssemblyXmlDeserializer : IAssemblyReader
     {
-        private string path;
-
-        public AssemblyXmlDeserializer(string path)
+        public AssemblyInfo Read(string name)
         {
-            this.path = path;
-        }
-
-        public AssemblyInfo Read()
-        {
-            if (!XmlFileExists())
+            if (!XmlFileExists(name))
             {
                 throw new DllNotFoundException("Indicated XML file does not exist");
             }
             var serializer = new DataContractSerializer(typeof(AssemblyInfo));
             AssemblyInfo assemblyInfo = null;
-            using (FileStream stream = File.OpenRead(path))
+            using (FileStream stream = File.OpenRead(name))
             {
                 assemblyInfo = (AssemblyInfo)serializer.ReadObject(stream);
             }
             return assemblyInfo;
         }
 
-        private bool XmlFileExists()
+        private bool XmlFileExists(string name)
         {
-            return System.IO.File.Exists(path) && path.Contains(".xml");
+            return File.Exists(name) && name.Contains(".xml");
         }
     }
 }

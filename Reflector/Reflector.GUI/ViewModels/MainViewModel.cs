@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using Reflactor.DataAccess.Xml;
+using Reflector.DataAccess.Xml;
 using Reflector.DataAccess;
 using Reflector.DataAccess.Dll;
 using Reflector.GUI.MVVMLight;
@@ -7,23 +7,36 @@ using Reflector.Models;
 using System;
 using System.IO;
 using System.Windows;
+using Reflector.Logic;
 
 namespace Reflector.GUI.ViewModels
 {
-    internal class MainViewModel : ViewModelBase
+    public interface IMainViewModel
+    {
+        AssemblyTreeModel TreeView { get; }
+
+        string LibraryPathText { get; set; }
+
+        RelayCommand ReadFileCommand { get; }
+
+        RelayCommand SaveCommand { get; }
+    }
+
+    public class MainViewModel : ViewModelBase, IMainViewModel
     {
         #region Constructors
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel()
+        public MainViewModel(IDataAccessor dataAccessor)
         {
+            this.dataAccessor = dataAccessor;
             ReadFileCommand = new RelayCommand(ReadFile);
             SaveCommand = new RelayCommand(SaveToXml);
             _libraryPath = string.Empty;
             InitFileDialog();
         }
-        
+
         private void InitFileDialog()
         {
             fileDialog = new OpenFileDialog();
@@ -34,8 +47,7 @@ namespace Reflector.GUI.ViewModels
         #endregion
 
         #region Privates
-        private IAssemblyReader assemblyReader;
-        private IAssemblyWriter assemblyWriter;
+        private IDataAccessor dataAccessor;
         private string _libraryPath;
         private AssemblyTreeModel _treeview;
         private AssemblyInfo assemblyInfo;
@@ -48,19 +60,19 @@ namespace Reflector.GUI.ViewModels
                 fileDialog.ShowDialog();
                 LibraryPathText = fileDialog.FileName;
 
-                if (LibraryPathText.Contains(".dll"))
-                {
-                    assemblyReader = new AssemblyDllReader(LibraryPathText);
-                }
-                else if (LibraryPathText.Contains(".xml"))
-                {
-                    assemblyReader = new AssemblyXmlDeserializer(LibraryPathText);
-                }
-                else
-                {
-                    throw new Exception("Incorrect file extension");
-                }
-                assemblyInfo = assemblyReader.Read();
+                //if (LibraryPathText.Contains(".dll"))
+                //{
+                //    assemblyReader = new AssemblyDllReader(LibraryPathText);
+                //}
+                //else if (LibraryPathText.Contains(".xml"))
+                //{
+                //    assemblyReader = new AssemblyXmlDeserializer(LibraryPathText);
+                //}
+                //else
+                //{
+                //    throw new Exception("Incorrect file extension");
+                //}
+                assemblyInfo = dataAccessor.LoadAssembly(LibraryPathText);
                 TreeView = new AssemblyTreeModel(assemblyInfo);
             }
             catch (Exception exception)
@@ -74,9 +86,7 @@ namespace Reflector.GUI.ViewModels
         {
             if (assemblyInfo != null)
             {
-                string savePath = $"{Path.GetFileNameWithoutExtension(assemblyInfo.Name)}_serialized.xml";
-                assemblyWriter = new AssemblyXmlSerializer(savePath);
-                assemblyWriter.Write(assemblyInfo);
+                dataAccessor.SaveAssembly(assemblyInfo);
             }
         }
         #endregion

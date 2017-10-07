@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace Reflector.GUI.Models
 {
-    class TreeViewNode
+    public class TreeViewNode
     {
         public string Name {get; private set;}
         private IExpandable Expandable { get; set; }

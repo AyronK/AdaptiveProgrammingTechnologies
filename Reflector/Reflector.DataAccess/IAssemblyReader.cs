@@ -9,6 +9,6 @@ namespace Reflector.DataAccess
 {
     public interface IAssemblyReader
     {
-        AssemblyInfo Read();
+        AssemblyInfo Read(string name);
     }
 }
