@@ -11,7 +11,18 @@ using Reflector.Logic;
 
 namespace Reflector.GUI.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public interface IMainViewModel
+    {
+        AssemblyTreeModel TreeView { get; }
+
+        string LibraryPathText { get; set; }
+
+        RelayCommand ReadFileCommand { get; }
+
+        RelayCommand SaveCommand { get; }
+    }
+
+    public class MainViewModel : ViewModelBase, IMainViewModel
     {
         #region Constructors
         /// <summary>
@@ -25,7 +36,7 @@ namespace Reflector.GUI.ViewModels
             _libraryPath = string.Empty;
             InitFileDialog();
         }
-        
+
         private void InitFileDialog()
         {
             fileDialog = new OpenFileDialog();

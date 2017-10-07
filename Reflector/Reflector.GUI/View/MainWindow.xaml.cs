@@ -1,5 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
 using Reflector.GUI.ViewModels;
+using Reflector.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,9 @@ namespace Reflector
     public partial class MainWindow : Window
     {
         [Dependency]
-        public MainViewModel ViewModel
+        public IDataAccessor DataAccessor
         {
-            set { DataContext = value; }
+            set { DataContext = new MainViewModel(value); }
         }
 
         public MainWindow()
