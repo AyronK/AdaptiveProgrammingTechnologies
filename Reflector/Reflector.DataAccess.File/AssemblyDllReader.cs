@@ -6,32 +6,19 @@ namespace Reflector.DataAccess.Dll
 {
     public class AssemblyDllReader : IAssemblyReader
     {
-        private string path;
-
-        public AssemblyDllReader()
-        {
-
-        }
-
-        //public AssemblyDllReader(string path)
-        //{
-        //    this.path = path;
-        //}
-
         public AssemblyInfo Read(string name)
         {
-            path = name;
-            if (!DllExists())
+            if (!DllExists(name))
             {
                 throw new DllNotFoundException("Indicated DLL does not exist");
             }
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.LoadFile(path);
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.LoadFile(name);
             return new AssemblyInfo(assembly);
         }
 
-        private bool DllExists()
+        private bool DllExists(string name)
         {
-            return System.IO.File.Exists(path) && path.Contains(".dll");
+            return System.IO.File.Exists(name) && name.Contains(".dll");
         }
     }
 }

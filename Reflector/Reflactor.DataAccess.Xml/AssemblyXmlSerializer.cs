@@ -1,6 +1,4 @@
-﻿using System;
-using Reflector.DataAccess;
-using Reflector.Models;
+﻿using Reflector.Models;
 using System.Runtime.Serialization;
 using System.IO;
 
@@ -8,21 +6,10 @@ namespace Reflector.DataAccess.Xml
 {
     public class AssemblyXmlSerializer : IAssemblyWriter
     {
-        private string path;
-        public AssemblyXmlSerializer()
-        {
-            path = "serializedAssembly.xml";
-        }
-
-        //public AssemblyXmlSerializer(string path)
-        //{
-        //    this.path = path;
-        //}
-
         public void Write(AssemblyInfo assemblyInfo)
         {
             var serializer = new DataContractSerializer(assemblyInfo.GetType());
-            using (FileStream stream = File.Create(path))
+            using (FileStream stream = File.Create($"{assemblyInfo.Name}_Model.xml"))
             {
                 serializer.WriteObject(stream, assemblyInfo);
             }
