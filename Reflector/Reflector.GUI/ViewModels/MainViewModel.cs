@@ -15,7 +15,7 @@ namespace Reflector.GUI.ViewModels
     {
         AssemblyTreeModel TreeView { get; }
 
-        string LibraryPathText { get; set; }
+        string NameText { get; set; }
 
         RelayCommand ReadFileCommand { get; }
 
@@ -33,7 +33,7 @@ namespace Reflector.GUI.ViewModels
             this.dataAccessor = dataAccessor;
             ReadFileCommand = new RelayCommand(ReadFile);
             SaveCommand = new RelayCommand(SaveToXml);
-            _libraryPath = string.Empty;
+            _name = string.Empty;
             InitFileDialog();
         }
 
@@ -48,7 +48,7 @@ namespace Reflector.GUI.ViewModels
 
         #region Privates
         private IDataAccessor dataAccessor;
-        private string _libraryPath;
+        private string _name;
         private AssemblyTreeModel _treeview;
         private AssemblyInfo assemblyInfo;
         private OpenFileDialog fileDialog;
@@ -57,22 +57,9 @@ namespace Reflector.GUI.ViewModels
         {
             try
             {
-                fileDialog.ShowDialog();
-                LibraryPathText = fileDialog.FileName;
-
-                //if (LibraryPathText.Contains(".dll"))
-                //{
-                //    assemblyReader = new AssemblyDllReader(LibraryPathText);
-                //}
-                //else if (LibraryPathText.Contains(".xml"))
-                //{
-                //    assemblyReader = new AssemblyXmlDeserializer(LibraryPathText);
-                //}
-                //else
-                //{
-                //    throw new Exception("Incorrect file extension");
-                //}
-                assemblyInfo = dataAccessor.LoadAssembly(LibraryPathText);
+                fileDialog.ShowDialog();                                
+                assemblyInfo = dataAccessor.LoadAssembly(fileDialog.FileName);
+                NameText = assemblyInfo.Name;
                 TreeView = new AssemblyTreeModel(assemblyInfo);
             }
             catch (Exception exception)
@@ -102,12 +89,12 @@ namespace Reflector.GUI.ViewModels
             }
         }
 
-        public string LibraryPathText
+        public string NameText
         {
-            get { return _libraryPath; }
+            get { return _name; }
             set
             {
-                _libraryPath = value;
+                _name = value;
                 RaisePropertyChanged();
             }
         }
