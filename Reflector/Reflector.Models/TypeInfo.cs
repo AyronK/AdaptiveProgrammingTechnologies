@@ -21,8 +21,7 @@ namespace Reflector.Models
         public List<VarModel> NestedTypes { get { return _nestedTypes; } private set { _nestedTypes = value; } }
         [DataMember]
         public List<VarModel> ImplementedInterfaces { get { return _implementedInterfaces; } private set { _implementedInterfaces = value; } }
-        [DataMember]
-        public List<Attribute> Attributes { get { return _attributes; } private set { _attributes = value; } }
+        public List<VarModel> Attributes { get { return _attributes; } private set { _attributes = value; } }
 
         public TypeInfo()
         {
@@ -38,6 +37,8 @@ namespace Reflector.Models
             LoadFields(type, assembly);
             LoadMethods(type, assembly);
             LoadProperties(type, assembly);
+            LoadAttributes(type, assembly);
+            LoadNestedTypes(type, assembly);
         }
 
         private void LoadFields(Type type, AssemblyInfo assembly)
@@ -98,7 +99,8 @@ namespace Reflector.Models
             foreach (Attribute attribute in type.GetCustomAttributes())
             {
                 assembly.TryDefineTypeModel(attribute.GetType());
-                Attributes.Add(attribute);
+                VarModel n = new VarModel() { Name = attribute.GetType().Name, BaseType = assembly.Classes[attribute.GetType().Name] };
+                Attributes.Add(n);
             }
         }
 
@@ -126,7 +128,7 @@ namespace Reflector.Models
         private List<VarModel> _properties = new List<VarModel>();
         private List<VarModel> _nestedTypes = new List<VarModel>();
         private List<VarModel> _implementedInterfaces = new List<VarModel>();
-        private List<Attribute> _attributes = new List<Attribute>();
+        private List<VarModel> _attributes = new List<VarModel>();
         #endregion
 
     }
