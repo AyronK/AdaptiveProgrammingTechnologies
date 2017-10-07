@@ -3,16 +3,11 @@ using Reflector.DataAccess;
 using Reflector.DataAccess.Dll;
 using Reflector.DataAccess.Xml;
 using Reflector.Logic;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reflector.CLI
 {
-    class Program
+    class MainConsole
     {
         static void Main(string[] args)
         {
