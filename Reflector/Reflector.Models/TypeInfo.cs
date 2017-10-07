@@ -17,6 +17,12 @@ namespace Reflector.Models
         public List<VarModel> Fields { get { return _fields; } private set { _fields = value; } }
         [DataMember]
         public List<VarModel> Properties { get { return _properties; } private set { _properties = value; } }
+        [DataMember]
+        public List<VarModel> NestedTypes { get { return _nestedTypes; } private set { _nestedTypes = value; } }
+        [DataMember]
+        public List<VarModel> ImplementedInterfaces { get { return _implementedInterfaces; } private set { _implementedInterfaces = value; } }
+        [DataMember]
+        public List<Attribute> Attributes { get { return _attributes; } private set { _attributes = value; } }
 
         public TypeInfo()
         {
@@ -65,6 +71,37 @@ namespace Reflector.Models
             }
         }
 
+        private void LoadNestedTypes(Type type, AssemblyInfo assembly)
+        {
+            foreach (System.Reflection.TypeInfo nestedType in type.GetNestedTypes())
+            {
+                assembly.TryDefineTypeModel(nestedType.GetType());
+                VarModel n = new VarModel() { Name = nestedType.Name, BaseType = assembly.Classes[nestedType.Name] };
+                NestedTypes.Add(n);
+            }
+        }
+
+       /* private void LoadImplementedInterfaces(Type type, AssemblyInfo assembly)
+        {
+            foreach (var implementedInterface in type.i
+                property in type.GetProperties())
+            {
+                assembly.TryDefineTypeModel(property.PropertyType);
+                VarModel p = new VarModel() { Name = property.Name, BaseType = assembly.Classes[property.PropertyType.Name] };
+                // VarModel p = new VarModel() { Name = property.Name, BaseType = new TypeModel() { TypeName = property.PropertyType.Name } };
+                Properties.Add(p);
+            }
+        } */
+
+        private void LoadAttributes(Type type, AssemblyInfo assembly)
+        {
+            foreach (Attribute attribute in type.GetCustomAttributes())
+            {
+                assembly.TryDefineTypeModel(attribute.GetType());
+                Attributes.Add(attribute);
+            }
+        }
+
         #region Object override
         public override string ToString()
         {
@@ -87,6 +124,9 @@ namespace Reflector.Models
         private List<MethodModel> _methods = new List<MethodModel>();
         private List<VarModel> _fields = new List<VarModel>();       
         private List<VarModel> _properties = new List<VarModel>();
+        private List<VarModel> _nestedTypes = new List<VarModel>();
+        private List<VarModel> _implementedInterfaces = new List<VarModel>();
+        private List<Attribute> _attributes = new List<Attribute>();
         #endregion
 
     }
