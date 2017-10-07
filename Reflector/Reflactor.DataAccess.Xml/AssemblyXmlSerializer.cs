@@ -8,8 +8,13 @@ namespace Reflector.DataAccess.Xml
     {
         public void Write(AssemblyInfo assemblyInfo)
         {
+            Write(assemblyInfo, $"{assemblyInfo.Name}_Model.xml");
+        }
+
+        public void Write(AssemblyInfo assemblyInfo, string path)
+        {
             var serializer = new DataContractSerializer(assemblyInfo.GetType());
-            using (FileStream stream = File.Create($"{assemblyInfo.Name}_Model.xml"))
+            using (FileStream stream = File.Create(path))
             {
                 serializer.WriteObject(stream, assemblyInfo);
             }

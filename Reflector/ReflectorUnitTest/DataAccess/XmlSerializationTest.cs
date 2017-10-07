@@ -10,16 +10,16 @@ namespace ReflectorUnitTest.DataAccess
     [TestClass]
     public class XmlSerializationTest
     {
-        IAssemblyWriter writer;
-        IAssemblyReader reader;
-        readonly string xmlPath = "test.xml";
+        string xmlPath = "test.xml";
+        AssemblyXmlSerializer writer;
+        AssemblyXmlDeserializer reader;
         AssemblyInfo assembly;
 
         public XmlSerializationTest()
         {
             assembly = new AssemblyInfo(typeof(XmlSerializationTest).Assembly);
             writer = new AssemblyXmlSerializer();
-            reader = new AssemblyXmlDeserializer(xmlPath);
+            reader = new AssemblyXmlDeserializer();
         }
 
         [TestCleanup()]
@@ -34,7 +34,7 @@ namespace ReflectorUnitTest.DataAccess
         [TestMethod]
         public void SerializeAndDeserializeTest()
         {
-            writer.Write(assembly);
+            writer.Write(assembly, xmlPath);
             AssemblyInfo processedAssembly = reader.Read(xmlPath);
 
             Assert.AreEqual(assembly.Name, processedAssembly.Name);
