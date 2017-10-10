@@ -11,7 +11,7 @@ namespace Reflector.DataAccess.Xml
         {
             if (!XmlFileExists(name))
             {
-                throw new DllNotFoundException("Indicated XML file does not exist");
+                throw new FileNotFoundException("Indicated XML file does not exist");
             }
             var serializer = new DataContractSerializer(typeof(AssemblyInfo));
             AssemblyInfo assemblyInfo = null;

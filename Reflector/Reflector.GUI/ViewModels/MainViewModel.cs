@@ -1,11 +1,7 @@
 ﻿using Microsoft.Win32;
-using Reflector.DataAccess.Xml;
-using Reflector.DataAccess;
-using Reflector.DataAccess.Dll;
 using Reflector.GUI.MVVMLight;
 using Reflector.Models;
 using System;
-using System.IO;
 using System.Windows;
 using Reflector.Logic;
 
@@ -25,9 +21,6 @@ namespace Reflector.GUI.ViewModels
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
         #region Constructors
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
         public MainViewModel(IDataAccessor dataAccessor)
         {
             this.dataAccessor = dataAccessor;
