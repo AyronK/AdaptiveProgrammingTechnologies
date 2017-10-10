@@ -36,7 +36,7 @@ namespace Reflector.CLI
                     container.RegisterType<IAssemblyWriter, AssemblyXmlSerializer>();
                     break;
                 default:
-                    throw new ConfigurationErrorsException("Not supported reader");
+                    throw new ConfigurationErrorsException("Not supported writer");
             }
 
             container.RegisterType<IDataAccessor, DataAccessor>();
