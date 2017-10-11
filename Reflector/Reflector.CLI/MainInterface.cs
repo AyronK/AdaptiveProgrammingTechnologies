@@ -1,5 +1,10 @@
 ﻿using Reflector.Logic;
+using Reflector.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Reflector.CLI
 {
@@ -23,6 +28,33 @@ namespace Reflector.CLI
             }
 
             Console.Read();
+
+            //Console.WriteLine("Type the name of the file: ");
+            //String name = Console.Read().ToString();
+            String name = "Reflector.DataAccess.dll";
+            String path = System.IO.Directory.GetCurrentDirectory() + "\\" + name;
+            AssemblyInfo assemblyInfo = dataAccessor.LoadAssembly(path);
+
+            Console.WriteLine("Write unique code of the node: ");
+            string key = Console.ReadLine();
+           
+
+
+
+            var tree = new TreeLevel(assemblyInfo);
+
+            Console.WriteLine($"o [0] {tree.Name}");
+            do
+            {
+                if (Console.ReadLine() == "0")
+                {
+                    tree.IsExpanded = true;
+                    foreach (var node in tree.Sublevel)
+                    {
+                        Console.WriteLine($"| o [{node.Key}] {node.Value}");
+                    }
+                }
+            } while (Console.ReadLine() != "1");
         }
     }
 }
