@@ -32,12 +32,11 @@ namespace Reflector.CLI
             String name = "Reflector.DataAccess.dll";
             String path = System.IO.Directory.GetCurrentDirectory() + "\\" + name;
             AssemblyInfo assemblyInfo = dataAccessor.LoadAssembly(path);
-            string nodeKey = null;
+            string nodeKey = "1";
 
             do
             {
                 Description();
-                nodeKey = Console.ReadLine();
 
                 while (nodeKey != "Q")
                 {
@@ -65,9 +64,11 @@ namespace Reflector.CLI
                             }
                         }
                     }
-                    Console.ReadKey();
+                   // Console.ReadKey();
                     break;
                 }
+
+                nodeKey = Console.ReadLine();
                 Console.Clear();
             }
             while (nodeKey != "Q");
