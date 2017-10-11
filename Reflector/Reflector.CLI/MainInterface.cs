@@ -27,34 +27,50 @@ namespace Reflector.CLI
                 Console.WriteLine("Error while loading data accessor");
             }
 
-            Console.Read();
-
             //Console.WriteLine("Type the name of the file: ");
             //String name = Console.Read().ToString();
             String name = "Reflector.DataAccess.dll";
             String path = System.IO.Directory.GetCurrentDirectory() + "\\" + name;
             AssemblyInfo assemblyInfo = dataAccessor.LoadAssembly(path);
+            string nodeKey = null;
 
-            Console.WriteLine("Write unique code of the node: ");
-            string key = Console.ReadLine();
-           
-
-
-
-            var tree = new TreeLevel(assemblyInfo);
-
-            Console.WriteLine($"o [0] {tree.Name}");
             do
             {
-                if (Console.ReadLine() == "0")
+                Description();
+
+
+                nodeKey = Console.ReadLine();
+
+                while (nodeKey != "Q")
                 {
+                    var tree = new TreeLevel(assemblyInfo);
+
                     tree.IsExpanded = true;
                     foreach (var node in tree.Sublevel)
                     {
-                        Console.WriteLine($"| o [{node.Key}] {node.Value}");
+                        Console.WriteLine($"[{node.Key}] {node.Value.Name}");
+                        node.Value.IsExpanded = true;
+                        foreach (var nd in node.Value.Sublevel)
+                        {
+                            Console.WriteLine($"[{node.Key}][{nd.Key}] {nd.Value.Name}");
+                        }
                     }
+
+                    Console.ReadKey();
+                    break;
                 }
-            } while (Console.ReadLine() != "1");
+                Console.Clear();
+            }
+            while (nodeKey != "Q");
+
+            Console.WriteLine("Po wyjsciu z petli");
+            Console.Read();
+        }
+
+        private void Description()
+        {
+            Console.WriteLine("\nWrite unique code of the node or press \"Q\" to break the program ");
+            Console.WriteLine("#######################################################################");
         }
     }
 }
