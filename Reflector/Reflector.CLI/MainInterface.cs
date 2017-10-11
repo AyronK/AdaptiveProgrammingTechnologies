@@ -37,8 +37,6 @@ namespace Reflector.CLI
             do
             {
                 Description();
-
-
                 nodeKey = Console.ReadLine();
 
                 while (nodeKey != "Q")
@@ -49,13 +47,24 @@ namespace Reflector.CLI
                     foreach (var node in tree.Sublevel)
                     {
                         Console.WriteLine($"[{node.Key}] {node.Value.Name}");
-                        node.Value.IsExpanded = true;
-                        foreach (var nd in node.Value.Sublevel)
+                        if (node.Key == nodeKey[0].ToString())
                         {
-                            Console.WriteLine($"[{node.Key}][{nd.Key}] {nd.Value.Name}");
+                            node.Value.IsExpanded = true;
+                            foreach (var nd in node.Value.Sublevel)
+                            {
+                                Console.WriteLine($"[{node.Key}][{nd.Key}] {nd.Value.Name}");
+                                string id = node.Key + nd.Key;
+                                if (id == nodeKey) 
+                                {
+                                    nd.Value.IsExpanded = true;
+                                    foreach (var nod in nd.Value.Sublevel)
+                                    {
+                                        Console.WriteLine($"[{node.Key}][{nd.Key}][{nod.Key}] {nod.Value.Name}");
+                                    }
+                                }
+                            }
                         }
                     }
-
                     Console.ReadKey();
                     break;
                 }
