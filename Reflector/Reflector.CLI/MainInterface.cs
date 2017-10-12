@@ -33,10 +33,7 @@ namespace Reflector.CLI
             String path = System.IO.Directory.GetCurrentDirectory() + "\\" + name;
             AssemblyInfo assemblyInfo = dataAccessor.LoadAssembly(path);
             string nodeKey = "1";
-
-            //var tree = new TreeLevel(assemblyInfo);
-            //tree.IsExpanded = true;
-
+            
             TreeLevelModel tree = new TreeLevelModel(assemblyInfo);
 
             do
@@ -45,42 +42,7 @@ namespace Reflector.CLI
 
                 while (nodeKey != "Q")
                 {
-                    /* foreach (var node in tree.Sublevel)
-                     {
-                         Console.WriteLine($"[{node.Key}] {node.Value.Name}");
-                         if (node.Key == nodeKey[0].ToString())
-                         {
-                             node.Value.IsExpanded = true;
-                             foreach (var nd in node.Value.Sublevel)
-                             {
-                                 Console.WriteLine($"[{node.Key}][{nd.Key}] {nd.Value.Name}");
-                                 string id = node.Key + nd.Key;
-                                 if (id == nodeKey)
-                                 {
-                                     nd.Value.IsExpanded = true;
-                                     foreach (var nod in nd.Value.Sublevel)
-                                     {
-                                         Console.WriteLine($"[{node.Key}][{nd.Key}][{nod.Key}] {nod.Value.Name}");
-                                     }
-                                 }
-                             }
-                         }
-
-                     }*/
-
-                    /*tree.ExpandLevel(tree.currentLevel, nodeKey);
-                    if (!nodeKey.Contains("1"))
-                    {
-                        foreach (var s in tree.currentLevel.Sublevel)
-
-                            tree.currentLevel = s.Value;
-                            tree.ExpandLevel(currentLevel, nodeKey);
-                    }*/
-
                     tree.ShowTree(tree.currentLevel, nodeKey);
-                        
-
-
 
                     // Console.ReadKey();
                     break;
