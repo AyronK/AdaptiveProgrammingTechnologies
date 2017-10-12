@@ -35,6 +35,7 @@ namespace Reflector.CLI
             string nodeKey = "1";
             
             TreeLevelModel tree = new TreeLevelModel(assemblyInfo);
+            tree._currentLevel.IsExpanded = true;
 
             do
             {
@@ -42,9 +43,7 @@ namespace Reflector.CLI
 
                 while (nodeKey != "Q")
                 {
-                    tree.ShowTree(tree.currentLevel, nodeKey);
-
-                    // Console.ReadKey();
+                    tree.ShowTree(tree._currentLevel, nodeKey, nodeKey.Length);
                     break;
                 }
 

@@ -12,54 +12,97 @@ namespace Reflector.CLI
         public TreeLevelModel(AssemblyInfo assembly)
         {
             _firstLevel = new TreeLevel(assembly);
-            currentLevel = _firstLevel;
+            _currentLevel = _firstLevel;
+            _sublevel = _currentLevel.Sublevel;
         }
 
         private TreeLevel _firstLevel { get; set; }
-        public TreeLevel currentLevel { get; set; }
+        public TreeLevel _currentLevel { get; set; }
+        public Dictionary<string, TreeLevel> _sublevel { get; set; }
 
 
-        private void ExpandLevel(TreeLevel currentLevel, string currentLevelKey)
+        private void ExpandLevel(TreeLevel currentLevel, string node)
         {
             currentLevel.IsExpanded = true;
-            foreach (var node in currentLevel.Sublevel)
+
+
+            if (currentLevel != _firstLevel)
             {
-                Console.WriteLine($"{currentLevelKey}|{node.Key}| {node.Value.Name}");
+                for (int i = 0; i <= node.Length; i = i + 2)
+                {
+                    node = node.Insert(i, "|");
+                }
+            }
+            else
+            {
+                node = null;
+            }
+
+            foreach (var n in currentLevel.Sublevel)
+            {
+                Console.WriteLine($"{node}|{n.Key}| {n.Value.Name}");
             }
         }
 
-        private void ShrinkLevel(TreeLevel currentLevel, string currentLevelKey)
+        private void ShrinkLevel(TreeLevel currentLevel, string node)
         {
             currentLevel.IsExpanded = false;
-            if (currentLevelKey.Length > 1)
+            if (node.Length > 1)
             {
-                string previousKey = currentLevelKey.TrimEnd(currentLevelKey[currentLevelKey.Length - 1]);
+                string previousKey = node.TrimEnd(node[node.Length - 1]);
                 ExpandLevel(currentLevel, previousKey);
-            }            
+            }          
         }
 
-        public void ShowTree(TreeLevel currentLevel, string currentLevelKey)
+        public void ShowTree(TreeLevel currentLevel, string node, int iterator)
         {
-            if (!currentLevel.IsExpanded)
+            if(iterator>1)
             {
-                if (currentLevel != _firstLevel)
+                if (currentLevel.IsExpanded)
                 {
-                    for (int i = 0; i <= currentLevelKey.Length; i = i + 2)
+                    //0 poziom jest, każdy kolejny expand + wyswietl w tej metodzie
+                    ExpandLevel(currentLevel, node);
+
+                    foreach (var sublevelkey in _sublevel.Keys)
                     {
-                        currentLevelKey.Insert(i, "/|");
+                        currentLevel = _sublevel[sublevelkey];
+                        if(sublevelkey == node)
+                      //  currentLevel.IsExpanded = true;
+                        ShowTree(currentLevel, node, iterator);
+
+                    }
+
+                }
+                iterator--;
+            }
+
+               
+
+
+                if (iterator == 1)
+                {
+
+                    //ostatnie przejscie, porównać node z kluczem sublevelu i tylko ten expandnąć
+                    foreach(var finalLevelKey in currentLevel.Sublevel.Keys)
+                    {
+                        var finalLevel = currentLevel.Sublevel[finalLevelKey];
+                        if (finalLevelKey == node[node.Length-1].ToString())
+                        {
+                            if (finalLevel.IsExpanded == true)
+                            {
+                                ShrinkLevel(finalLevel, node);
+                                Console.WriteLine("chowam wiersz o numerze " + node);
+                            }
+                            else
+                            {
+                                ExpandLevel(finalLevel, node);
+                                Console.WriteLine("rozwijam wiersz o numerze " + node);
+                            }
+                        } 
                     }
                 }
-                else
-                {
-                    currentLevelKey = null;
-                }
-
-                ExpandLevel(currentLevel, currentLevelKey);
 
             }
-            else ShrinkLevel(currentLevel, currentLevelKey);
-
-        }
 
     }
 
