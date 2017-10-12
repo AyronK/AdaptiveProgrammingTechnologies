@@ -18,7 +18,7 @@ namespace Reflector.CLI
 
         public void Start()
         {
-            if(dataAccessor != null)
+            if (dataAccessor != null)
             {
                 Console.WriteLine("Successfully loaded data accessor");
             }
@@ -34,37 +34,55 @@ namespace Reflector.CLI
             AssemblyInfo assemblyInfo = dataAccessor.LoadAssembly(path);
             string nodeKey = "1";
 
+            //var tree = new TreeLevel(assemblyInfo);
+            //tree.IsExpanded = true;
+
+            TreeLevelModel tree = new TreeLevelModel(assemblyInfo);
+
             do
             {
                 Description();
 
                 while (nodeKey != "Q")
                 {
-                    var tree = new TreeLevel(assemblyInfo);
+                    /* foreach (var node in tree.Sublevel)
+                     {
+                         Console.WriteLine($"[{node.Key}] {node.Value.Name}");
+                         if (node.Key == nodeKey[0].ToString())
+                         {
+                             node.Value.IsExpanded = true;
+                             foreach (var nd in node.Value.Sublevel)
+                             {
+                                 Console.WriteLine($"[{node.Key}][{nd.Key}] {nd.Value.Name}");
+                                 string id = node.Key + nd.Key;
+                                 if (id == nodeKey)
+                                 {
+                                     nd.Value.IsExpanded = true;
+                                     foreach (var nod in nd.Value.Sublevel)
+                                     {
+                                         Console.WriteLine($"[{node.Key}][{nd.Key}][{nod.Key}] {nod.Value.Name}");
+                                     }
+                                 }
+                             }
+                         }
 
-                    tree.IsExpanded = true;
-                    foreach (var node in tree.Sublevel)
+                     }*/
+
+                    /*tree.ExpandLevel(tree.currentLevel, nodeKey);
+                    if (!nodeKey.Contains("1"))
                     {
-                        Console.WriteLine($"[{node.Key}] {node.Value.Name}");
-                        if (node.Key == nodeKey[0].ToString())
-                        {
-                            node.Value.IsExpanded = true;
-                            foreach (var nd in node.Value.Sublevel)
-                            {
-                                Console.WriteLine($"[{node.Key}][{nd.Key}] {nd.Value.Name}");
-                                string id = node.Key + nd.Key;
-                                if (id == nodeKey) 
-                                {
-                                    nd.Value.IsExpanded = true;
-                                    foreach (var nod in nd.Value.Sublevel)
-                                    {
-                                        Console.WriteLine($"[{node.Key}][{nd.Key}][{nod.Key}] {nod.Value.Name}");
-                                    }
-                                }
-                            }
-                        }
-                    }
-                   // Console.ReadKey();
+                        foreach (var s in tree.currentLevel.Sublevel)
+
+                            tree.currentLevel = s.Value;
+                            tree.ExpandLevel(currentLevel, nodeKey);
+                    }*/
+
+                    tree.ShowTree(tree.currentLevel, nodeKey);
+                        
+
+
+
+                    // Console.ReadKey();
                     break;
                 }
 
@@ -79,8 +97,9 @@ namespace Reflector.CLI
 
         private void Description()
         {
-            Console.WriteLine("\nWrite unique code of the node or press \"Q\" to break the program ");
-            Console.WriteLine("#######################################################################");
+            Console.WriteLine("\nWrite unique code of the node or press \"Q\" to break the program");
+            Console.WriteLine("#################################################################\n");
         }
     }
+
 }

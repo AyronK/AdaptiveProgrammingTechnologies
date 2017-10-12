@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Reflector.CLI
 {
-    class TreeLevel
+    public class TreeLevel
     {
         public string Name { get; private set; }
         private IExpandable Expandable { get; set; }
