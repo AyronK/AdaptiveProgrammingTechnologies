@@ -34,21 +34,24 @@ namespace Reflector.CLI
             String path = "C://Users//Beata//Desktop//sem V//TPA//Reflector//RecursiveLibrary//bin//Debug//ABC.dll";
             AssemblyInfo assemblyInfo = dataAccessor.LoadAssembly(path);
 
-            string usersChoice = null;
+            string usersChoice = String.Empty;
             List<string> choices = new List<string>();
 
-            TreeLevelModel tree = new TreeLevelModel(assemblyInfo);
-            tree._currentLevel.IsExpanded = true;
-         
+            TreeLevel tree = new TreeLevel(assemblyInfo);
+            tree.IsExpanded = true;         
 
             do
             {
-                Description();
-                
-                //tree.ShowTree(tree._currentLevel, choices, iterator);
-                //{
-                ExpandLevel(tree, choices);
-                DisplayLevel(tree._currentLevel);
+                Description();                
+                try
+                {
+                    ExpandLevel(tree, choices);
+                    DisplayLevel(tree);
+                }
+                catch (IndexOutOfRangeException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
                 Console.Write("Klucz, klucz[...]: ");
                 choices.Clear();
                 usersChoice = Console.ReadLine();
@@ -56,7 +59,6 @@ namespace Reflector.CLI
                 Console.Clear();
             }
             while (usersChoice != "Q");
-            Console.WriteLine("Po wyjsciu z petli");
             Console.Read();
         }
 
@@ -67,13 +69,17 @@ namespace Reflector.CLI
         }
 
 
-        public static void ExpandLevel(TreeLevelModel tree, List<string> choices)
+        public static void ExpandLevel(TreeLevel tree, List<string> choices)
         {
-            TreeLevel currentLevel = tree._currentLevel;
-
+            TreeLevel currentLevel = tree;            
             for (int choiceIndex = 0; choiceIndex < choices.Count; choiceIndex++)
             {
+                if (!currentLevel.IsExpanded)
+                {
+                    throw new IndexOutOfRangeException("Cannot expand that far. Submit nodes in correct order.");
+                }
                 currentLevel = currentLevel.Sublevel[choices[choiceIndex]];
+                                
             }
             currentLevel.IsExpanded = true;
         }
