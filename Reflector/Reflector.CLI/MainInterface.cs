@@ -47,16 +47,16 @@ namespace Reflector.CLI
                 try
                 {
                     ExpandLevel(tree, choices);
-                    DisplayLevel(tree);
                 }
                 catch (IndexOutOfRangeException e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine($"Error: {e.Message}");
+                    Console.WriteLine();
                 }
-                Console.Write("Klucz, klucz[...]: ");
+                DisplayLevel(tree);
                 usersChoice = Console.ReadLine();
 
-                var choiseKeys = usersChoice.Split(',').ToList();                
+                IEnumerable<string> choiseKeys = usersChoice.Split(',').ToList();                
                 choices = choiseKeys.Select(c => 
                 {
                     int parseResult;
@@ -73,7 +73,8 @@ namespace Reflector.CLI
 
         private void Description()
         {
-            Console.WriteLine("\nWrite informations about the node or press \"Q\" to break the program\n");
+            Console.WriteLine("\nWrite sequence to expand the node or press \"Q\" to break the program\n");
+            Console.WriteLine("Sequence format: key,key,key [...]\n");
             Console.WriteLine("#####################################################################\n");
         }
 
