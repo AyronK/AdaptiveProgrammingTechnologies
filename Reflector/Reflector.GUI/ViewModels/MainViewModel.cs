@@ -4,12 +4,14 @@ using Reflector.Models;
 using System;
 using System.Windows;
 using Reflector.Logic;
+using Reflector.Presentation;
+using System.Collections.Generic;
 
 namespace Reflector.GUI.ViewModels
 {
     public interface IMainViewModel
     {
-        AssemblyTreeModel TreeView { get; }
+        List<TreeViewNode> TreeView { get; }
 
         string NameText { get; set; }
 
@@ -42,7 +44,7 @@ namespace Reflector.GUI.ViewModels
         #region Privates
         private IDataAccessor dataAccessor;
         private string _name;
-        private AssemblyTreeModel _treeview;
+        private List<TreeViewNode> _treeview = new List<TreeViewNode>();
         private AssemblyInfo assemblyInfo;
         private OpenFileDialog fileDialog;
 
@@ -50,10 +52,13 @@ namespace Reflector.GUI.ViewModels
         {
             try
             {
-                fileDialog.ShowDialog();                                
+                fileDialog.ShowDialog();
                 assemblyInfo = dataAccessor.LoadAssembly(fileDialog.FileName);
                 NameText = assemblyInfo.Name;
-                TreeView = new AssemblyTreeModel(assemblyInfo);
+                TreeView = new List<TreeViewNode>()
+                {
+                    new TreeViewNode(assemblyInfo)
+                };              
             }
             catch (Exception exception)
             {
@@ -72,7 +77,7 @@ namespace Reflector.GUI.ViewModels
         #endregion
 
         #region API
-        public AssemblyTreeModel TreeView
+        public List<TreeViewNode> TreeView
         {
             get { return _treeview; }
             private set
