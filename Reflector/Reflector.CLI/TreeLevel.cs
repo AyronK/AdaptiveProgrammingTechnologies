@@ -10,6 +10,7 @@ namespace Reflector.CLI
 {
     public class TreeLevel
     {
+      
         public string Name { get; private set; }
         private IExpandable Expandable { get; set; }
         public Dictionary<string, TreeLevel> Sublevel { get; private set; }
