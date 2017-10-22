@@ -35,7 +35,7 @@ namespace Reflector.CLI
             AssemblyInfo assemblyInfo = dataAccessor.LoadAssembly(path);
 
             string usersChoice = String.Empty;
-            List<string> choices = new List<string>();
+            IEnumerable<int> choices = Enumerable.Empty<int>();
 
             TreeLevel tree = new TreeLevel(assemblyInfo);
             tree.IsExpanded = true;         
@@ -53,9 +53,17 @@ namespace Reflector.CLI
                     Console.WriteLine(e.Message);
                 }
                 Console.Write("Klucz, klucz[...]: ");
-                choices.Clear();
                 usersChoice = Console.ReadLine();
-                choices = usersChoice.Split(',').ToList();
+
+                var choiseKeys = usersChoice.Split(',').ToList();                
+                choices = choiseKeys.Select(c => 
+                {
+                    int parseResult;
+                    Int32.TryParse(c, out parseResult);
+                    return parseResult;
+                }
+                );
+
                 Console.Clear();
             }
             while (usersChoice != "Q");
@@ -69,16 +77,19 @@ namespace Reflector.CLI
         }
 
 
-        public static void ExpandLevel(TreeLevel tree, List<string> choices)
+        public static void ExpandLevel(TreeLevel tree, IEnumerable<int> choices)
         {
             TreeLevel currentLevel = tree;            
-            for (int choiceIndex = 0; choiceIndex < choices.Count; choiceIndex++)
-            {
+           foreach(var choise in choices)
+            {                
                 if (!currentLevel.IsExpanded)
                 {
                     throw new IndexOutOfRangeException("Cannot expand that far. Submit nodes in correct order.");
+                } else if (choise > choices.Count() || choise < 0)
+                {
+                    throw new IndexOutOfRangeException("Node does not exist.");
                 }
-                currentLevel = currentLevel.Sublevel[choices[choiceIndex]];
+                currentLevel = currentLevel.Sublevel[choise];
                                 
             }
             currentLevel.IsExpanded = true;
@@ -95,8 +106,8 @@ namespace Reflector.CLI
                     {
                         Console.Write($" ");
                     }
-                    Console.Write($"[{child.Key}] ");
-                    DisplayLevel(child.Value, iterator + 1);
+                    Console.Write($"[{treeLevel.Sublevel.IndexOf(child)}] ");
+                    DisplayLevel(child, iterator + 1);
                 }
             }
         }

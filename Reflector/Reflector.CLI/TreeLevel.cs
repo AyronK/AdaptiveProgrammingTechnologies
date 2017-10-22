@@ -13,7 +13,7 @@ namespace Reflector.CLI
       
         public string Name { get; private set; }
         private IExpandable Expandable { get; set; }
-        public Dictionary<string, TreeLevel> Sublevel { get; private set; }
+        public List<TreeLevel> Sublevel { get; private set; }
 
         public bool IsExpanded
         {
@@ -45,13 +45,13 @@ namespace Reflector.CLI
         {
             Expandable = expandable;
             Name = Expandable.ToString();
-            Sublevel = new Dictionary<string, TreeLevel>();
+            Sublevel = new List<TreeLevel>();
             this._wasBuilt = false;
         }
 
         public void AddNode(TreeLevel _treeNode)
         {
-            Sublevel.Add($"{Sublevel.Count}",_treeNode);
+            Sublevel.Add(_treeNode);
         }
     }
 }

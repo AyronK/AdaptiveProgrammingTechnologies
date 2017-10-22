@@ -1,4 +1,5 @@
 ﻿using Reflector.Models;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Reflector.GUI.Models
@@ -7,7 +8,7 @@ namespace Reflector.GUI.Models
     {
         public string Name {get; private set;}
         private IExpandable Expandable { get; set; }
-        public ObservableCollection<TreeViewNode> Sublevel { get; private set; }
+        public List<TreeViewNode> Sublevel { get; private set; }
 
         public bool IsExpanded
         {
@@ -39,7 +40,7 @@ namespace Reflector.GUI.Models
         {
             Expandable = expandable;
             Name = Expandable.ToString();
-            Sublevel = new ObservableCollection<TreeViewNode>();
+            Sublevel = new List<TreeViewNode>();
             Sublevel.Add(null);
             this._wasBuilt = false;
         }
