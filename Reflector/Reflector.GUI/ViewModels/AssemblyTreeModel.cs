@@ -1,11 +1,6 @@
-﻿using Reflector.GUI.Models;
-using Reflector.Models;
-using System;
-using System.Collections.Generic;
+﻿using Reflector.Models;
+using Reflector.Presentation;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reflector.GUI.ViewModels
 {

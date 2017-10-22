@@ -1,12 +1,15 @@
 ﻿using Reflector.Models;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Reflector.GUI.Models
+namespace Reflector.Presentation
 {
     public class TreeViewNode
     {
-        public string Name {get; private set;}
+        public string Name { get; private set; }
         private IExpandable Expandable { get; set; }
         public List<TreeViewNode> Sublevel { get; private set; }
 
@@ -29,11 +32,11 @@ namespace Reflector.GUI.Models
 
         private void buildMyself()
         {
-            if(Expandable.Expand() != null)
-            foreach (IExpandable expandable in Expandable.Expand())
-            {
-                AddNode(new TreeViewNode(expandable));
-            }
+            if (Expandable.Expand() != null)
+                foreach (IExpandable expandable in Expandable.Expand())
+                {
+                    AddNode(new TreeViewNode(expandable));
+                }
         }
 
         public TreeViewNode(IExpandable expandable)
@@ -44,10 +47,10 @@ namespace Reflector.GUI.Models
             Sublevel.Add(null);
             this._wasBuilt = false;
         }
-        
+
         public void AddNode(TreeViewNode _treeNode)
         {
             Sublevel.Add(_treeNode);
-        }        
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Reflector.Logic;
 using Reflector.Models;
+using Reflector.Presentation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Reflector.CLI
             string usersChoice = String.Empty;
             IEnumerable<int> choices = Enumerable.Empty<int>();
 
-            TreeLevel tree = new TreeLevel(assemblyInfo);
+            TreeViewNode tree = new TreeViewNode(assemblyInfo);
             tree.IsExpanded = true;         
 
             do
@@ -77,9 +78,9 @@ namespace Reflector.CLI
         }
 
 
-        public static void ExpandLevel(TreeLevel tree, IEnumerable<int> choices)
+        public static void ExpandLevel(TreeViewNode tree, IEnumerable<int> choices)
         {
-            TreeLevel currentLevel = tree;            
+            TreeViewNode currentLevel = tree;            
            foreach(var choise in choices)
             {                
                 if (!currentLevel.IsExpanded)
@@ -95,7 +96,7 @@ namespace Reflector.CLI
             currentLevel.IsExpanded = true;
         }
 
-        public static void DisplayLevel(TreeLevel treeLevel, int iterator = 0)
+        public static void DisplayLevel(TreeViewNode treeLevel, int iterator = 0)
         {
             Console.WriteLine(treeLevel.Name);
             if (treeLevel.IsExpanded)
