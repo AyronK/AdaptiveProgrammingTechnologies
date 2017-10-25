@@ -24,9 +24,9 @@ namespace ReflectorUnitTest.Presentation
             IExpandable assembly = new AssemblyInfo(GetType().Assembly);
             TreeViewNode tree = new TreeViewNode(assembly);
 
-            Assert.IsTrue(tree.Sublevel.Count == 0);
+            Assert.IsTrue(tree.Sublevels.Count == 0);
             ExpandTreeNode(tree);
-            Assert.IsFalse(tree.Sublevel.Count == 0);
+            Assert.IsFalse(tree.Sublevels.Count == 0);
         }
 
         [TestMethod]
@@ -37,10 +37,10 @@ namespace ReflectorUnitTest.Presentation
 
             ExpandTreeNode(tree);
 
-            var sublevelAfterInitExpand = tree.Sublevel;
+            var sublevelAfterInitExpand = tree.Sublevels;
             ShrinkTreeNode(tree);
 
-            Assert.AreSame(sublevelAfterInitExpand, tree.Sublevel);
+            Assert.AreSame(sublevelAfterInitExpand, tree.Sublevels);
         }
 
         [TestMethod]
@@ -51,12 +51,12 @@ namespace ReflectorUnitTest.Presentation
 
             ExpandTreeNode(tree);
 
-            var sublevelAfterInitExpand = tree.Sublevel;
+            var sublevelAfterInitExpand = tree.Sublevels;
 
             ShrinkTreeNode(tree);
             ExpandTreeNode(tree);
 
-            Assert.AreSame(sublevelAfterInitExpand, tree.Sublevel);
+            Assert.AreSame(sublevelAfterInitExpand, tree.Sublevels);
         }
     }
 }

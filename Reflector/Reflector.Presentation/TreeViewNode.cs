@@ -11,7 +11,7 @@ namespace Reflector.Presentation
     {
         public string Name { get; private set; }
         private IExpandable Expandable { get; set; }
-        public List<TreeViewNode> Sublevel { get; private set; }
+        public List<TreeViewNode> Sublevels { get; private set; }
 
         public bool IsExpanded
         {
@@ -21,7 +21,7 @@ namespace Reflector.Presentation
                 _isExpanded = value;
                 if (_wasBuilt)
                     return;
-                Sublevel.Clear();
+                Sublevels.Clear();
                 buildMyself();
                 _wasBuilt = true;
             }
@@ -35,7 +35,7 @@ namespace Reflector.Presentation
             if (Expandable.Expand() != null)
                 foreach (IExpandable expandable in Expandable.Expand())
                 {
-                    AddNode(new TreeViewNode(expandable));
+                    AddSublevel(new TreeViewNode(expandable));
                 }
         }
 
@@ -43,13 +43,13 @@ namespace Reflector.Presentation
         {
             Expandable = expandable;
             Name = Expandable.ToString();
-            Sublevel = new List<TreeViewNode>();
+            Sublevels = new List<TreeViewNode>();
             this._wasBuilt = false;
         }
 
-        public void AddNode(TreeViewNode _treeNode)
+        private void AddSublevel(TreeViewNode _treeNode)
         {
-            Sublevel.Add(_treeNode);
+            Sublevels.Add(_treeNode);
         }
     }
 }

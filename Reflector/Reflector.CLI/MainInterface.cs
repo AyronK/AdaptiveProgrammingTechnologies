@@ -86,11 +86,11 @@ namespace Reflector.CLI
                 {
                     throw new IndexOutOfRangeException("Cannot expand that far. Submit nodes in correct order.");
                 }
-                else if (choise >= currentLevel.Sublevel.Count() || choise < 0)
+                else if (choise >= currentLevel.Sublevels.Count() || choise < 0)
                 {
                     throw new IndexOutOfRangeException("Node does not exist.");
                 }
-                currentLevel = currentLevel.Sublevel[choise];
+                currentLevel = currentLevel.Sublevels[choise];
             }
 
             currentLevel.IsExpanded = !currentLevel.IsExpanded;
@@ -101,13 +101,13 @@ namespace Reflector.CLI
             Console.WriteLine(treeLevel.Name);
             if (treeLevel.IsExpanded)
             {
-                foreach (var child in treeLevel.Sublevel)
+                foreach (var child in treeLevel.Sublevels)
                 {
                     for (int i = 0; i < iterator; i++)
                     {
                         Console.Write($" ");
                     }
-                    Console.Write($"[{treeLevel.Sublevel.IndexOf(child)}] ");
+                    Console.Write($"[{treeLevel.Sublevels.IndexOf(child)}] ");
                     DisplayLevel(child, iterator + 1);
                 }
             }
