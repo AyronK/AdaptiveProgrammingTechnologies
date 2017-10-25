@@ -44,7 +44,8 @@ namespace Reflector.Presentation
             Expandable = expandable;
             Name = Expandable.ToString();
             Sublevels = new List<TreeViewNode>();
-            this._wasBuilt = false;
+            Sublevels.Add(null); // Adding null makes sublevel never empty, so view libraries can display it as expandable
+            _wasBuilt = false;
         }
 
         private void AddSublevel(TreeViewNode _treeNode)
