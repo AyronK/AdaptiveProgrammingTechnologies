@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="DataAccess\FileTest.cs" />
     <Compile Include="DataAccess\XmlSerializationTest.cs" />
+    <Compile Include="Presentation\PresentationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +89,10 @@
     <ProjectReference Include="..\Reflector.Models\Reflector.Models.csproj">
       <Project>{0D849E20-0862-45DD-B4C3-207319951646}</Project>
       <Name>Reflector.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Reflector.Presentation\Reflector.Presentation.csproj">
+      <Project>{A2D44FE0-B809-4B07-ADDF-AC260FCF6AA8}</Project>
+      <Name>Reflector.Presentation</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -44,7 +44,6 @@ namespace Reflector.Presentation
             Expandable = expandable;
             Name = Expandable.ToString();
             Sublevel = new List<TreeViewNode>();
-            Sublevel.Add(null);
             this._wasBuilt = false;
         }
 

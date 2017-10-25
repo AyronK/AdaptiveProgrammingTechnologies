@@ -3,6 +3,7 @@ using Reflector.Models;
 using Reflector.Presentation;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,34 +20,26 @@ namespace Reflector.CLI
 
         public void Start()
         {
-            if (dataAccessor != null)
-            {
-                Console.WriteLine("Successfully loaded data accessor");
-            }
-            else
-            {
-                Console.WriteLine("Error while loading data accessor");
-            }
-
             //Console.WriteLine("Type the name of the file: ");
             //String name = Console.Read().ToString();
             // String name = "Reflector.DataAccess.dll";
             //String path = System.IO.Directory.GetCurrentDirectory() + "\\" + name;
-            String path = "C://Users//Beata//Desktop//sem V//TPA//Reflector//RecursiveLibrary//bin//Debug//ABC.dll";
+            String path = Directory.GetCurrentDirectory();
+            path += "/Reflector.Models.dll";
             AssemblyInfo assemblyInfo = dataAccessor.LoadAssembly(path);
 
             string usersChoice = String.Empty;
             IEnumerable<int> choices = Enumerable.Empty<int>();
 
             TreeViewNode tree = new TreeViewNode(assemblyInfo);
-            tree.IsExpanded = true;         
+            tree.IsExpanded = true;
 
             do
             {
-                Description();                
+                Description();
                 try
                 {
-                    ExpandLevel(tree, choices);
+                    ToogleLevel(tree, choices);
                 }
                 catch (IndexOutOfRangeException e)
                 {
@@ -56,8 +49,8 @@ namespace Reflector.CLI
                 DisplayLevel(tree);
                 usersChoice = Console.ReadLine();
 
-                IEnumerable<string> choiseKeys = usersChoice.Split(',').ToList();                
-                choices = choiseKeys.Select(c => 
+                IEnumerable<string> choiseKeys = usersChoice.Split(',').ToList();
+                choices = choiseKeys.Select(c =>
                 {
                     int parseResult;
                     Int32.TryParse(c, out parseResult);
@@ -79,22 +72,28 @@ namespace Reflector.CLI
         }
 
 
-        public static void ExpandLevel(TreeViewNode tree, IEnumerable<int> choices)
+        public static void ToogleLevel(TreeViewNode tree, IEnumerable<int> choices)
         {
-            TreeViewNode currentLevel = tree;            
-           foreach(var choise in choices)
-            {                
+            if (choices.Count() <= 0)
+            {
+                return;
+            }
+
+            TreeViewNode currentLevel = tree;
+            foreach (var choise in choices)
+            {
                 if (!currentLevel.IsExpanded)
                 {
                     throw new IndexOutOfRangeException("Cannot expand that far. Submit nodes in correct order.");
-                } else if (choise > choices.Count() || choise < 0)
+                }
+                else if (choise >= currentLevel.Sublevel.Count() || choise < 0)
                 {
                     throw new IndexOutOfRangeException("Node does not exist.");
                 }
                 currentLevel = currentLevel.Sublevel[choise];
-                                
             }
-            currentLevel.IsExpanded = true;
+
+            currentLevel.IsExpanded = !currentLevel.IsExpanded;
         }
 
         public static void DisplayLevel(TreeViewNode treeLevel, int iterator = 0)
