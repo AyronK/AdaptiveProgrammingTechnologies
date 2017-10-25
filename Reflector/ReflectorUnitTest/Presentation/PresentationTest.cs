@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Reflector.Models;
 using Reflector.Presentation;
+using System.Linq;
 
 namespace ReflectorUnitTest.Presentation
 {
@@ -24,9 +25,11 @@ namespace ReflectorUnitTest.Presentation
             IExpandable assembly = new AssemblyInfo(GetType().Assembly);
             TreeViewNode tree = new TreeViewNode(assembly);
 
-            Assert.IsTrue(tree.Sublevels.Count == 0);
+            //Using LINQ Where clause, because sublevels might contain 
+            //null object to simulate not being empty for visualisation purposes 
+            Assert.IsTrue(tree.Sublevels.Where(s => s != null).Count() == 0);
             ExpandTreeNode(tree);
-            Assert.IsFalse(tree.Sublevels.Count == 0);
+            Assert.IsTrue(tree.Sublevels.Where(s => s != null).Count() > 0);
         }
 
         [TestMethod]
