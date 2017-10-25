@@ -118,6 +118,8 @@ namespace Reflector.Models
             children.AddRange(Fields);
             children.AddRange(Properties);
             children.AddRange(Methods);
+            children.AddRange(Attributes);
+            children.AddRange(NestedTypes);
             return children;
         }
         #endregion

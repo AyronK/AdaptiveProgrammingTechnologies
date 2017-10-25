@@ -117,15 +117,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Reflactor.DataAccess.Xml\Reflactor.DataAccess.Xml.csproj">
-      <Project>{29B8CB75-F035-47F6-983E-70F791B43870}</Project>
+      <Project>{29b8cb75-f035-47f6-983e-70f791b43870}</Project>
       <Name>Reflactor.DataAccess.Xml</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Reflector.DataAccess.Database\Reflector.DataAccess.Database.csproj">
+      <Project>{15c17eb7-aa3f-438f-b27a-29832edb2bcf}</Project>
+      <Name>Reflector.DataAccess.Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Reflector.DataAccess.File\Reflector.DataAccess.Dll.csproj">
-      <Project>{9389587D-64A9-433C-BE7F-FA16AB979F25}</Project>
+      <Project>{9389587d-64a9-433c-be7f-fa16ab979f25}</Project>
       <Name>Reflector.DataAccess.Dll</Name>
     </ProjectReference>
     <ProjectReference Include="..\Reflector.DataAccess\Reflector.DataAccess.csproj">
-      <Project>{052A21BC-7661-476A-8DBE-40D0AC818E30}</Project>
+      <Project>{052a21bc-7661-476a-8dbe-40d0ac818e30}</Project>
       <Name>Reflector.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Reflector.Logic\Reflector.Logic.csproj">
@@ -133,7 +137,7 @@
       <Name>Reflector.Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Reflector.Models\Reflector.Models.csproj">
-      <Project>{0D849E20-0862-45DD-B4C3-207319951646}</Project>
+      <Project>{0d849e20-0862-45dd-b4c3-207319951646}</Project>
       <Name>Reflector.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Reflector.Presentation\Reflector.Presentation.csproj">
