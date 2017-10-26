@@ -35,12 +35,14 @@ namespace Reflector.CLI
             catch (ConfigurationErrorsException e)
             {
                 Log.logger.Error(e, $"Unsuported reader type error: {e.Message}");
-                throw;
+                Console.Read();
+                return;
             }
             catch (Exception e)
             {
                 Log.logger.Error(e, $"Error during registering reader: {e.Message}");
-                throw;
+                Console.Read();
+                return;
             }
 
 
@@ -59,12 +61,14 @@ namespace Reflector.CLI
             catch (ConfigurationErrorsException e)
             {
                 Log.logger.Error(e, $"Unsuported writer type error: {e.Message}");
-                throw;
+                Console.Read();
+                return;
             }
             catch (Exception e)
             {
                 Log.logger.Error(e, $"Error during registering writer: {e.Message}");
-                throw;
+                Console.Read();
+                return;
             }
 
             container.RegisterType<IDataAccessor, DataAccessor>();

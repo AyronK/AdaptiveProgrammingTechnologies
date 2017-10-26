@@ -41,15 +41,17 @@ namespace Reflector.GUI
                         throw new ConfigurationErrorsException("Not supported reader");
                 }
             }
-            catch (ConfigurationErrorsException e)
+            catch (ConfigurationErrorsException configExc)
             {
-                Log.logger.Error(e, $"Unsuported reader type error: {e.Message}");
-                throw;
+                Log.logger.Error(configExc, $"Unsuported reader type error: {configExc.Message}");
+                MessageBox.Show(configExc.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Current.Shutdown();
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Log.logger.Error(e, $"Error during registering reader: {e.Message}");
-                throw;
+                Log.logger.Error(exc, $"Error during registering reader: {exc.Message}");
+                MessageBox.Show(exc.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Current.Shutdown();
             }
 
 
@@ -65,15 +67,17 @@ namespace Reflector.GUI
                         throw new ConfigurationErrorsException("Not supported writer");
                 }
             }
-            catch (ConfigurationErrorsException e)
+            catch (ConfigurationErrorsException configExc)
             {
-                Log.logger.Error(e, $"Unsuported writer type error: {e.Message}");
-                throw;
+                Log.logger.Error(configExc, $"Unsuported writer type error: {configExc.Message}");
+                MessageBox.Show(configExc.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Current.Shutdown();
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Log.logger.Error(e, $"Error during registering writer: {e.Message}");
-                throw;
+                Log.logger.Error(exc, $"Error during registering writer: {exc.Message}");
+                MessageBox.Show(exc.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Current.Shutdown();
             }
 
             container.RegisterType<IDataAccessor, DataAccessor>();
