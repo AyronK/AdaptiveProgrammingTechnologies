@@ -3,6 +3,7 @@ using Reflector.DataAccess;
 using Reflector.DataAccess.Dll;
 using Reflector.DataAccess.Xml;
 using Reflector.Logic;
+using System;
 using System.Configuration;
 
 namespace Reflector.CLI
@@ -17,30 +18,59 @@ namespace Reflector.CLI
             IUnityContainer container = new UnityContainer();
 
             // Readers
-            switch (readerType)
+            try
             {
-                case "DLL":
-                    container.RegisterType<IAssemblyReader, AssemblyDllReader>();
-                    break;
-                case "XML":
-                    container.RegisterType<IAssemblyReader, AssemblyXmlDeserializer>();
-                    break;
-                default:
-                    throw new ConfigurationErrorsException("Not supported reader");
+                switch (readerType)
+                {
+                    case "DLL":
+                        container.RegisterType<IAssemblyReader, AssemblyDllReader>();
+                        break;
+                    case "XML":
+                        container.RegisterType<IAssemblyReader, AssemblyXmlDeserializer>();
+                        break;
+                    default:
+                        throw new ConfigurationErrorsException("Not supported reader");
+                }
+            }
+            catch (ConfigurationErrorsException e)
+            {
+                Log.logger.Error(e, $"Unsuported reader type error: {e.Message}");
+                throw;
+            }
+            catch (Exception e)
+            {
+                Log.logger.Error(e, $"Error during registering reader: {e.Message}");
+                throw;
             }
 
+
             // Writers
-            switch (writerType)
+            try
             {
-                case "XML":
-                    container.RegisterType<IAssemblyWriter, AssemblyXmlSerializer>();
-                    break;
-                default:
-                    throw new ConfigurationErrorsException("Not supported writer");
+                switch (writerType)
+                {
+                    case "XML":
+                        container.RegisterType<IAssemblyWriter, AssemblyXmlSerializer>();
+                        break;
+                    default:
+                        throw new ConfigurationErrorsException("Not supported writer");
+                }
+            }
+            catch (ConfigurationErrorsException e)
+            {
+                Log.logger.Error(e, $"Unsuported writer type error: {e.Message}");
+                throw;
+            }
+            catch (Exception e)
+            {
+                Log.logger.Error(e, $"Error during registering writer: {e.Message}");
+                throw;
             }
 
             container.RegisterType<IDataAccessor, DataAccessor>();
+            Log.logger.Info("Application initialized successfully");
             container.Resolve<MainInterface>().Start();
+
         }
     }
 }

@@ -20,13 +20,24 @@ namespace Reflector.CLI
 
         public void Start()
         {
+            Log.logger.Info("Application started successfully");
             //Console.WriteLine("Type the name of the file: ");
             //String name = Console.Read().ToString();
             // String name = "Reflector.DataAccess.dll";
             //String path = System.IO.Directory.GetCurrentDirectory() + "\\" + name;
             String path = Directory.GetCurrentDirectory();
             path += "/Reflector.Models.dll";
-            AssemblyInfo assemblyInfo = dataAccessor.LoadAssembly(path);
+
+            AssemblyInfo assemblyInfo = null;
+
+            try
+            {
+                assemblyInfo = dataAccessor.LoadAssembly(path);
+            }
+            catch (Exception e)
+            {
+                Log.logger.Error(e, $"Failed to load assembly: {e.Message}");
+            }
 
             string usersChoice = String.Empty;
             IEnumerable<int> choices = Enumerable.Empty<int>();
@@ -45,6 +56,7 @@ namespace Reflector.CLI
                 {
                     Console.WriteLine($"Error: {e.Message}");
                     Console.WriteLine();
+
                 }
                 DisplayLevel(tree);
                 usersChoice = Console.ReadLine();
@@ -61,6 +73,7 @@ namespace Reflector.CLI
                 Console.Clear();
             }
             while (usersChoice != "Q");
+            Log.logger.Info("Application closed by user request");
             Console.Read();
         }
 

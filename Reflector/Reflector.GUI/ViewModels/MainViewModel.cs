@@ -64,6 +64,7 @@ namespace Reflector.GUI.ViewModels
             {
                 MessageBox.Show(exception.Message, "File read error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Console.WriteLine(exception.Message);
+                Log.logger.Error(exception, $"Failed to read file {exception.Message}");
             }
         }
 
@@ -71,8 +72,17 @@ namespace Reflector.GUI.ViewModels
         {
             if (assemblyInfo != null)
             {
-                dataAccessor.SaveAssembly(assemblyInfo);
+                try
+                {
+                    dataAccessor.SaveAssembly(assemblyInfo);
+                    Log.logger.Info("Assembly saved successfully");
+                }
+                catch (Exception exception)
+                {
+                    Log.logger.Error(exception, $"Failed to save assembly :{exception.Message}");
+                }
             }
+            Log.logger.Warn("User tried to save non existing assembly");
         }
         #endregion
 
