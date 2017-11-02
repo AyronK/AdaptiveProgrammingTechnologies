@@ -47,7 +47,7 @@ namespace Reflector.Models
              VarModel p = new VarModel() { Name = parameter.Name, BaseType = assembly.Classes[typeName] };*/
 
             assembly.TryDefineTypeModel(parameter.ParameterType);
-            VarModel p = new VarModel() { Name = parameter.Name, BaseType = assembly.Classes[typeName] };
+            VarModel p = new VarModel() { Name = parameter.Name, Type = assembly.Classes[typeName] };
 
             Parameters.Add(p);
         }

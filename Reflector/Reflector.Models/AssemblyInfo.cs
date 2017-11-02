@@ -33,7 +33,7 @@ namespace Reflector.Models
         {
             if (!Classes.ContainsKey(type.Name))
             {
-                TypeInfo classModel = new TypeInfo() { TypeName = type.Name };
+                TypeInfo classModel = new TypeInfo() { Name = type.Name };
                 Classes.Add(type.Name, classModel);
                 classModel.LoadItself(type, this);
             }

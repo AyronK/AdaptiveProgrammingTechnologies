@@ -12,7 +12,7 @@ namespace Reflector.Models
         public string Name { get; set; }
 
         [DataMember]
-        public TypeInfo BaseType { get; set; }     
+        public TypeInfo Type { get; set; }     
         
     }
 }

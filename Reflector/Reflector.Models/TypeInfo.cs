@@ -10,7 +10,7 @@ namespace Reflector.Models
     public class TypeInfo : ReflectionElement
     {
         [DataMember]
-        public string TypeName { get; set; }
+        public string Name { get; set; }
         [DataMember]
         public List<MethodModel> Methods { get { return _methods; } private set { _methods = value; } }
         [DataMember]
@@ -28,7 +28,7 @@ namespace Reflector.Models
         }
         public TypeInfo(Type type, AssemblyInfo assembly)
         {
-            TypeName = type.Name;
+            Name = type.Name;
             LoadItself(type, assembly);
         }
 
@@ -46,7 +46,7 @@ namespace Reflector.Models
             foreach(FieldInfo field in type.GetFields())
             {
                 assembly.TryDefineTypeModel(field.FieldType);
-                VarModel t = new VarModel() { Name = field.Name, BaseType = assembly.Classes[field.FieldType.Name] };
+                VarModel t = new VarModel() { Name = field.Name, Type = assembly.Classes[field.FieldType.Name] };
                 Fields.Add(t);
             }
         }
@@ -66,7 +66,7 @@ namespace Reflector.Models
             foreach (PropertyInfo property in type.GetProperties())
             {
                 assembly.TryDefineTypeModel(property.PropertyType);
-                VarModel p = new VarModel() { Name = property.Name, BaseType = assembly.Classes[property.PropertyType.Name] };
+                VarModel p = new VarModel() { Name = property.Name, Type = assembly.Classes[property.PropertyType.Name] };
                 // VarModel p = new VarModel() { Name = property.Name, BaseType = new TypeModel() { TypeName = property.PropertyType.Name } };
                 Properties.Add(p);
             }
@@ -77,7 +77,7 @@ namespace Reflector.Models
             foreach (System.Reflection.TypeInfo nestedType in type.GetNestedTypes())
             {
                 assembly.TryDefineTypeModel(nestedType.GetType());
-                VarModel n = new VarModel() { Name = nestedType.Name, BaseType = assembly.Classes[nestedType.Name] };
+                VarModel n = new VarModel() { Name = nestedType.Name, Type = assembly.Classes[nestedType.Name] };
                 NestedTypes.Add(n);
             }
         }
@@ -99,7 +99,7 @@ namespace Reflector.Models
             foreach (Attribute attribute in type.GetCustomAttributes())
             {
                 assembly.TryDefineTypeModel(attribute.GetType());
-                VarModel n = new VarModel() { Name = attribute.GetType().Name, BaseType = assembly.Classes[attribute.GetType().Name] };
+                VarModel n = new VarModel() { Name = attribute.GetType().Name, Type = assembly.Classes[attribute.GetType().Name] };
                 Attributes.Add(n);
             }
         }
