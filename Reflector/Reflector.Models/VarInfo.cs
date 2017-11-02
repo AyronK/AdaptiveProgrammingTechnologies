@@ -22,8 +22,7 @@ namespace Reflector.Models
         {
             foreach (Attribute attribute in attributes)
             {
-                _namespace.TryDefineTypeModel(attribute.GetType());
-                Attributes.Add(_namespace.TypesAlreadyDefined.Find(f => f.Name == attribute.GetType().Name));
+                Attributes.Add(_namespace.TryDefineTypeModel(attribute.GetType()));
             }
         }
 

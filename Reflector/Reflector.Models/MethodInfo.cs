@@ -27,10 +27,8 @@ namespace Reflector.Models
             Name = method.Name;
             LoadModifiers(method);
             LoadAttributes(method, _namespace);
-
-            //ReturnType = new TypeModel() { TypeName = method.ReturnType.Name }; 
-            _namespace.TryDefineTypeModel(method.ReturnType);
-            ReturnType = _namespace.TypesAlreadyDefined.Find(f => f.Name == method.ReturnType.Name);
+            
+            ReturnType = _namespace.TryDefineTypeModel(method.ReturnType);
 
             foreach (ParameterInfo parameter in method.GetParameters())
             {
@@ -41,16 +39,11 @@ namespace Reflector.Models
         private void AddParameter(NamespaceInfo _namespace, ParameterInfo parameter)
         {
             string typeName = parameter.ParameterType.Name;
-
-            /*if (!assembly.Classes.ContainsKey(typeName))
-             {
-                 TypeModel classModel = new TypeModel() { TypeName = typeName };
-                 assembly.Classes.Add(typeName, classModel);
-             }
-             VarModel p = new VarModel() { Name = parameter.Name, BaseType = assembly.Classes[typeName] };*/
-
-            _namespace.TryDefineTypeModel(parameter.ParameterType);
-            VarModel p = new VarModel() { Name = parameter.Name, Type = _namespace.TypesAlreadyDefined.Find(f => f.Name == typeName) };
+            VarModel p = new VarModel()
+            {
+                Name = parameter.Name,
+                Type = _namespace.TryDefineTypeModel(parameter.ParameterType)
+            };
             p.LoadAttributes(parameter.GetCustomAttributes(), _namespace);
 
             Parameters.Add(p);
@@ -60,8 +53,7 @@ namespace Reflector.Models
         {
             foreach (Attribute attribute in method.GetCustomAttributes())
             {
-                _namespace.TryDefineTypeModel(attribute.GetType());
-                Attributes.Add(_namespace.TypesAlreadyDefined.Find(f => f.Name == attribute.GetType().Name));
+                Attributes.Add(_namespace.TryDefineTypeModel(attribute.GetType()));
             }
         }
 

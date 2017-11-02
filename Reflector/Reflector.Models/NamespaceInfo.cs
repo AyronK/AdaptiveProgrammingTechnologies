@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace Reflector.Models
 {
@@ -36,72 +38,45 @@ namespace Reflector.Models
         private void AddClass(AssemblyInfo assemblyModel, Type type)
         {
             if (type.Namespace == Name)
-            {
-                TryDefineTypeModel(type);
-                _classes.Add(TypesAlreadyDefined.Find(t => t.Name == type.Name));
+            {                
+                _classes.Add(TryDefineTypeModel(type));
             }
         }
 
         [DataMember]
         internal List<TypeInfo> TypesAlreadyDefined = new List<TypeInfo>();
 
-        internal void TryDefineTypeModel(Type type)
+        internal TypeInfo TryDefineTypeModel(Type type)
         {
-            //if (type.IsGenericType)
-            //{
-            //    try
-            //    {
-
-            //        var x = type.gene;
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        ;
-            //        throw;
-            //    }
-            //    bool areSame = true;
-            //    var sameTypes = TypesAlreadyDefined.FindAll(t => t.Name == type.Name);
-            //    if (sameTypes.Count == 0)
-            //    {
-            //        areSame = false;
-            //    }
-            //    foreach (var sameType in sameTypes)
-            //    {
-            //        var gens = type.GetGenericArguments();
-            //        if (gens == null)
-            //        {
-            //            areSame = true;
-            //        }
-            //        else
-            //        if (sameType.GenericArguments.Count == gens.Length && sameType.GenericArguments.Count != 0)
-            //        {
-            //            for (int i = 0; i < sameType.GenericArguments.Count; i++)
-            //            {
-            //                if (sameType.GenericArguments[i].Name != gens[i].Name)
-            //                    areSame = false;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            areSame = false;
-            //        }
-            //    }
-            //    if (!areSame)
-            //    {
-            //        TypeInfo classModel = new TypeInfo() { Name = type.Name };
-            //        TypesAlreadyDefined.Add(classModel);
-            //        classModel.LoadItself(type, this);
-            //    }
-            //}
-            //else
-            //{
-            if (TypesAlreadyDefined.Find(t => t.Name == type.Name) == null)
+            string name;
+            if (type.IsGenericType)
             {
-                TypeInfo classModel = new TypeInfo() { Name = type.Name };
+                StringBuilder output = new StringBuilder();
+                
+                output.Append(type.Name);
+                if (type.GetGenericArguments().Length > 0)
+                {
+                    output.Remove(output.Length - 2, 2);
+                    output.Append("<");
+                    foreach (var genericArgument in type.GetGenericArguments())
+                        output.Append($"{genericArgument.Name}, ");
+                    output.Remove(output.Length - 2, 2);
+                    output.Append(">");
+                }
+                name = output.ToString();
+            }
+            else
+            {
+                name = type.Name;
+            }
+            if (TypesAlreadyDefined.Find(t => t.Name == name) == null)
+            {
+                TypeInfo classModel = new TypeInfo() { Name = name };
                 TypesAlreadyDefined.Add(classModel);
                 classModel.LoadItself(type, this);
-            }
-            //}
+                return classModel;
+            }            
+            return TypesAlreadyDefined.First(t => t.Name == name);
         }
 
         #region Privates
