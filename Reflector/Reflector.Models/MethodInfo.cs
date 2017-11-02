@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace Reflector.Models
 {
     [DataContract(IsReference = true)]
-    public class MethodModel : ReflectionElement
+    public class MethodModel : IReflectionElement
     {
         [DataMember]
         public string Name { get; set; }

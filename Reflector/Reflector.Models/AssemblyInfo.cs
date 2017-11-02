@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 namespace Reflector.Models
 {
     [DataContract(IsReference = true)]
-    public class AssemblyInfo : ReflectionElement
+    public class AssemblyInfo : IReflectionElement
     {
         #region Constructors       
         public AssemblyInfo(System.Reflection.Assembly assembly)

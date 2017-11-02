@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Reflector.Models
 {
     [DataContract(IsReference = true)]
-    public class NamespaceInfo : ReflectionElement
+    public class NamespaceInfo : IReflectionElement
     {
         #region Constructors
         public NamespaceInfo(string name, IEnumerable<Type> types, AssemblyInfo assembly)
@@ -47,12 +47,61 @@ namespace Reflector.Models
 
         internal void TryDefineTypeModel(Type type)
         {
+            //if (type.IsGenericType)
+            //{
+            //    try
+            //    {
+
+            //        var x = type.gene;
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        ;
+            //        throw;
+            //    }
+            //    bool areSame = true;
+            //    var sameTypes = TypesAlreadyDefined.FindAll(t => t.Name == type.Name);
+            //    if (sameTypes.Count == 0)
+            //    {
+            //        areSame = false;
+            //    }
+            //    foreach (var sameType in sameTypes)
+            //    {
+            //        var gens = type.GetGenericArguments();
+            //        if (gens == null)
+            //        {
+            //            areSame = true;
+            //        }
+            //        else
+            //        if (sameType.GenericArguments.Count == gens.Length && sameType.GenericArguments.Count != 0)
+            //        {
+            //            for (int i = 0; i < sameType.GenericArguments.Count; i++)
+            //            {
+            //                if (sameType.GenericArguments[i].Name != gens[i].Name)
+            //                    areSame = false;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            areSame = false;
+            //        }
+            //    }
+            //    if (!areSame)
+            //    {
+            //        TypeInfo classModel = new TypeInfo() { Name = type.Name };
+            //        TypesAlreadyDefined.Add(classModel);
+            //        classModel.LoadItself(type, this);
+            //    }
+            //}
+            //else
+            //{
             if (TypesAlreadyDefined.Find(t => t.Name == type.Name) == null)
             {
                 TypeInfo classModel = new TypeInfo() { Name = type.Name };
                 TypesAlreadyDefined.Add(classModel);
                 classModel.LoadItself(type, this);
             }
+            //}
         }
 
         #region Privates

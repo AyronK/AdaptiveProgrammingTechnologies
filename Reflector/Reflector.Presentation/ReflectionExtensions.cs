@@ -21,12 +21,52 @@ namespace Reflector.Presentation.ViewModels
 
         public static string GetDescription(this TypeInfo _type)
         {
-            return _type.Name;
+            StringBuilder output = new StringBuilder();
+            foreach (var attribute in _type.Attributes)
+            {
+                output.Append($"[{attribute.Name}] ");
+            }
+
+            output.Append(_type.Name);
+            //if (_type.GenericArguments.Count > 0)
+            //{
+            //    output.Remove(output.Length - 2, 2);
+            //    output.Append("<");
+            //    foreach (TypeInfo genericArgument in _type.GenericArguments)
+            //        output.Append($"{genericArgument.Name}, ");
+            //    output.Remove(output.Length - 2, 2);
+            //    output.Append(">");
+            //}
+
+            if (_type.ImplementedInterfaces.Count > 0 || _type.BaseType != null)
+            {
+                output.Append(": ");
+                if (_type.BaseType != null)
+                {
+                    output.Append($"{_type.BaseType.Name}, ");
+                }
+                foreach (TypeInfo impInterface in _type.ImplementedInterfaces)
+                    output.Append($"{impInterface.Name}, ");
+                output.Remove(output.Length - 2, 2);
+            }
+            return output.ToString();
         }
 
         public static string GetDescription(this VarModel _var)
         {
-            return $"{_var.Type.Name} {_var.Name}";
+            StringBuilder output = new StringBuilder();
+            output.Append(_var.Type.Name);
+            //if (_var.Type.GenericArguments.Count > 0)
+            //{
+            //    output.Remove(output.Length - 2, 2);
+            //    output.Append("<");
+            //    foreach (TypeInfo genericArg in _var.Type.GenericArguments)
+            //        output.Append($"{genericArg.Name}, ");
+            //    output.Remove(output.Length - 2, 2);
+            //    output.Append(">");
+            //}
+            output.Append($" {_var.Name}");
+            return output.ToString();
         }
 
         public static string GetDescription(this MethodModel _method)
@@ -36,7 +76,17 @@ namespace Reflector.Presentation.ViewModels
             foreach (string modifier in _method.Modifiers)
                 output.Append(modifier + " ");
 
-            output.Append($"{_method.ReturnType.Name} {_method.Name}");
+            output.Append(_method.ReturnType.Name);
+            //if (_method.ReturnType.GenericArguments.Count > 0)
+            //{
+            //    output.Remove(output.Length - 2, 2);
+            //    output.Append("<");
+            //    foreach (TypeInfo genericArg in _method.ReturnType.GenericArguments)
+            //        output.Append($"{genericArg.Name}, ");
+            //    output.Remove(output.Length - 2, 2);
+            //    output.Append(">");
+            //}
+            output.Append($" {_method.Name}");
 
             output.Append(" (");
             if (_method.Parameters.Count > 0)
@@ -50,7 +100,7 @@ namespace Reflector.Presentation.ViewModels
             return output.ToString();
         }
 
-        public static string GetDescription(this ReflectionElement item)
+        public static string GetDescription(this IReflectionElement item)
         {
             if (item.GetType() == typeof(AssemblyInfo))
             {
@@ -75,7 +125,7 @@ namespace Reflector.Presentation.ViewModels
             else throw new NotSupportedException("Extension method does not support external implementations of ReflectionElement");
         }
 
-        public static IEnumerable<ReflectionElement> GetChildren(this ReflectionElement item)
+        public static IEnumerable<IReflectionElement> GetChildren(this IReflectionElement item)
         {
             if (item.GetType() == typeof(AssemblyInfo))
             {
@@ -90,29 +140,35 @@ namespace Reflector.Presentation.ViewModels
             else if (item.GetType() == typeof(TypeInfo))
             {
                 var x = (TypeInfo)item;
-                List<ReflectionElement> children = new List<ReflectionElement>();
+                List<IReflectionElement> children = new List<IReflectionElement>();
                 children.AddRange(x.Fields);
                 children.AddRange(x.Properties);
                 children.AddRange(x.Methods);
                 children.AddRange(x.Attributes);
                 children.AddRange(x.NestedTypes);
+                children.AddRange(x.ImplementedInterfaces);
+                //children.AddRange(x.GenericArguments);
+                if (x.BaseType != null)
+                {
+                    children.Add(x.BaseType);
+                }
                 return children;
             }
             else if (item.GetType() == typeof(VarModel))
             {
                 var x = (VarModel)item;
-                return x.Type.GetChildren();
+                return new List<IReflectionElement>() { x.Type };
             }
             else if (item.GetType() == typeof(MethodModel))
             {
                 var x = (MethodModel)item;
-                List<ReflectionElement> children = new List<ReflectionElement>();
+                List<IReflectionElement> children = new List<IReflectionElement>();
                 if (x.ReturnType.Name != "Void")
                     children.Add(x.ReturnType);
                 children.AddRange(x.Parameters);
                 return children;
             }
-            return null; 
+            return null;
         }
     }
 }

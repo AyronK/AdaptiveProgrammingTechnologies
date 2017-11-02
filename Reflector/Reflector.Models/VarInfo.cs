@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace Reflector.Models
 {
     [DataContract(IsReference = true)]
-    public class VarModel : ReflectionElement
+    public class VarModel : IReflectionElement
     {
         [DataMember]
         public string Name { get; set; }

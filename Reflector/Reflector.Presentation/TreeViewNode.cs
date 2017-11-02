@@ -7,7 +7,7 @@ namespace Reflector.Presentation
     public class TreeViewNode
     {
         public string Name { get; private set; }
-        private ReflectionElement Expandable { get; set; }
+        private IReflectionElement Expandable { get; set; }
         public List<TreeViewNode> Sublevels { get; private set; }
 
         public bool IsExpanded
@@ -30,13 +30,13 @@ namespace Reflector.Presentation
         private void buildMyself()
         {
             if (Expandable.GetChildren() != null)
-                foreach (ReflectionElement expandable in Expandable.GetChildren())
+                foreach (IReflectionElement expandable in Expandable.GetChildren())
                 {
                     AddSublevel(new TreeViewNode(expandable));
                 }
         }
 
-        public TreeViewNode(ReflectionElement expandable)
+        public TreeViewNode(IReflectionElement expandable)
         {
             Expandable = expandable;
             Name = Expandable.GetDescription();

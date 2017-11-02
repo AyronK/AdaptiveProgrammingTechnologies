@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Reflector.Models
 {
     [DataContract(IsReference = true)]
-    public class TypeInfo : ReflectionElement
+    public class TypeInfo : IReflectionElement
     {
         [DataMember]
         public string Name { get; set; }
@@ -18,10 +18,15 @@ namespace Reflector.Models
         [DataMember]
         public List<VarModel> Properties { get { return _properties; } private set { _properties = value; } }
         [DataMember]
-        public List<VarModel> NestedTypes { get { return _nestedTypes; } private set { _nestedTypes = value; } }
+        public List<TypeInfo> NestedTypes { get { return _nestedTypes; } private set { _nestedTypes = value; } }
         [DataMember]
-        public List<VarModel> ImplementedInterfaces { get { return _implementedInterfaces; } private set { _implementedInterfaces = value; } }
-        public List<VarModel> Attributes { get { return _attributes; } private set { _attributes = value; } }
+        public List<TypeInfo> ImplementedInterfaces { get { return _implementedInterfaces; } private set { _implementedInterfaces = value; } }
+        [DataMember]
+        public List<TypeInfo> Attributes { get { return _attributes; } private set { _attributes = value; } }
+        [DataMember]
+        public TypeInfo BaseType;
+        [DataMember]
+        public List<TypeInfo> GenericArguments { get { return _genericArguments; } private set { _genericArguments = value; } }
 
         public TypeInfo()
         {
@@ -29,7 +34,7 @@ namespace Reflector.Models
         public TypeInfo(Type type, NamespaceInfo _namespace)
         {
             Name = type.Name;
-            LoadItself(type, _namespace);
+            LoadItself(type, _namespace);           
         }
 
         internal void LoadItself(Type type, NamespaceInfo _namespace)
@@ -39,6 +44,31 @@ namespace Reflector.Models
             LoadProperties(type, _namespace);
             LoadAttributes(type, _namespace);
             LoadNestedTypes(type, _namespace);
+            LoadImplementedInterfaces(type, _namespace);
+            LoadBaseType(type, _namespace);
+            if (type.IsGenericType)
+            {
+                LoadGenericArguments(type, _namespace);
+            }
+        }
+
+        private void LoadGenericArguments(Type type, NamespaceInfo _namespace)
+        {
+            foreach (Type genericArgument in type.GetGenericArguments())
+            {
+                _namespace.TryDefineTypeModel(genericArgument);
+                GenericArguments.Add(_namespace.TypesAlreadyDefined.Find(f => f.Name == genericArgument.Name));
+            }
+        }
+
+        private void LoadBaseType(Type type, NamespaceInfo _namespace)
+        {
+            var baseType = type.BaseType;
+            if (baseType != null)
+            {
+                _namespace.TryDefineTypeModel(baseType);
+                BaseType = _namespace.TypesAlreadyDefined.Find(f => f.Name == baseType.Name);
+            }
         }
 
         private void LoadFields(Type type, NamespaceInfo _namespace)
@@ -46,7 +76,7 @@ namespace Reflector.Models
             foreach (FieldInfo field in type.GetFields())
             {
                 _namespace.TryDefineTypeModel(field.FieldType);
-                VarModel t = new VarModel() { Name = field.Name, Type = _namespace.TypesAlreadyDefined.Find(f => f.Name == field.FieldType.Name)};
+                VarModel t = new VarModel() { Name = field.Name, Type = _namespace.TypesAlreadyDefined.Find(f => f.Name == field.FieldType.Name) };
                 Fields.Add(t);
             }
         }
@@ -67,7 +97,6 @@ namespace Reflector.Models
             {
                 _namespace.TryDefineTypeModel(property.PropertyType);
                 VarModel p = new VarModel() { Name = property.Name, Type = _namespace.TypesAlreadyDefined.Find(f => f.Name == property.PropertyType.Name) };
-                // VarModel p = new VarModel() { Name = property.Name, BaseType = new TypeModel() { TypeName = property.PropertyType.Name } };
                 Properties.Add(p);
             }
         }
@@ -77,30 +106,25 @@ namespace Reflector.Models
             foreach (System.Reflection.TypeInfo nestedType in type.GetNestedTypes())
             {
                 _namespace.TryDefineTypeModel(nestedType.GetType());
-                VarModel n = new VarModel() { Name = nestedType.Name, Type = _namespace.TypesAlreadyDefined.Find(f => f.Name == nestedType.Name) };
-                NestedTypes.Add(n);
+                NestedTypes.Add(_namespace.TypesAlreadyDefined.Find(f => f.Name == nestedType.Name));
             }
         }
 
-        /* private void LoadImplementedInterfaces(Type type, AssemblyInfo assembly)
-         {
-             foreach (var implementedInterface in type.i
-                 property in type.GetProperties())
-             {
-                 assembly.TryDefineTypeModel(property.PropertyType);
-                 VarModel p = new VarModel() { Name = property.Name, BaseType = assembly.Classes[property.PropertyType.Name] };
-                 // VarModel p = new VarModel() { Name = property.Name, BaseType = new TypeModel() { TypeName = property.PropertyType.Name } };
-                 Properties.Add(p);
-             }
-         } */
+        private void LoadImplementedInterfaces(Type type, NamespaceInfo _namespace)
+        {
+            foreach (System.Reflection.TypeInfo imlementedInterface in type.GetInterfaces())
+            {
+                _namespace.TryDefineTypeModel(imlementedInterface);
+                ImplementedInterfaces.Add(_namespace.TypesAlreadyDefined.Find(f => f.Name == imlementedInterface.Name));
+            }
+        }
 
         private void LoadAttributes(Type type, NamespaceInfo _namespace)
         {
             foreach (Attribute attribute in type.GetCustomAttributes())
             {
                 _namespace.TryDefineTypeModel(attribute.GetType());
-                VarModel n = new VarModel() { Name = attribute.GetType().Name, Type = _namespace.TypesAlreadyDefined.Find(f => f.Name == attribute.GetType().Name) };
-                Attributes.Add(n);
+                Attributes.Add(_namespace.TypesAlreadyDefined.Find(f => f.Name == attribute.GetType().Name));
             }
         }
 
@@ -108,9 +132,10 @@ namespace Reflector.Models
         private List<MethodModel> _methods = new List<MethodModel>();
         private List<VarModel> _fields = new List<VarModel>();
         private List<VarModel> _properties = new List<VarModel>();
-        private List<VarModel> _nestedTypes = new List<VarModel>();
-        private List<VarModel> _implementedInterfaces = new List<VarModel>();
-        private List<VarModel> _attributes = new List<VarModel>();
+        private List<TypeInfo> _nestedTypes = new List<TypeInfo>();
+        private List<TypeInfo> _implementedInterfaces = new List<TypeInfo>();
+        private List<TypeInfo> _attributes = new List<TypeInfo>();
+        private List<TypeInfo> _genericArguments = new List<TypeInfo>();
         #endregion
 
     }
