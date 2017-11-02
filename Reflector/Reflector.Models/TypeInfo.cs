@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Reflector.Models
 {
     [DataContract(IsReference = true)]
-    public class TypeInfo : IExpandable
+    public class TypeInfo : ReflectionElement
     {
         [DataMember]
         public string TypeName { get; set; }
@@ -103,26 +103,6 @@ namespace Reflector.Models
                 Attributes.Add(n);
             }
         }
-
-        #region Object override
-        public override string ToString()
-        {
-            return TypeName;
-        }
-        #endregion
-
-        #region IExpandable implementation
-        public IEnumerable<IExpandable> Expand()
-        {
-            List<IExpandable> children = new List<IExpandable>();
-            children.AddRange(Fields);
-            children.AddRange(Properties);
-            children.AddRange(Methods);
-            children.AddRange(Attributes);
-            children.AddRange(NestedTypes);
-            return children;
-        }
-        #endregion
 
         #region Privates
         private List<MethodModel> _methods = new List<MethodModel>();

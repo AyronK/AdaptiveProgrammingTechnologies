@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace Reflector.Models
 {
     [DataContract(IsReference = true)]
-    public class MethodModel : IExpandable
+    public class MethodModel : ReflectionElement
     {
         [DataMember]
         public string Name { get; set; }
@@ -51,29 +51,7 @@ namespace Reflector.Models
 
             Parameters.Add(p);
         }
-
-        #region Object override
-        public override string ToString()
-        {
-            StringBuilder output = new StringBuilder();
-
-            foreach (string modifier in Modifiers)
-                output.Append(modifier + " ");
-
-            output.Append(ReturnType.TypeName + " " + Name + "(");
-
-            if (Parameters.Count > 0)
-            {
-                foreach (VarModel parameter in Parameters)
-                    output.Append(parameter.BaseType.TypeName + " " + parameter.Name + ", ");
-                output.Remove(output.Length - 2, 2);
-            }
-
-            output.Append(")");
-            return output.ToString();
-        }
-        #endregion
-
+        
         #region Privates
         private List<VarModel> _parameters = new List<VarModel>();
         private List<string> _modifiers = new List<string>();
@@ -87,17 +65,6 @@ namespace Reflector.Models
             if (method.IsStatic) Modifiers.Add("static");
             if (method.IsVirtual) Modifiers.Add("virtual");
         }
-        #endregion
-
-        #region IExpandable implementation
-        public IEnumerable<IExpandable> Expand()
-        {
-            List<IExpandable> children = new List<IExpandable>();
-            if (ReturnType.TypeName != "Void")
-                children.Add(ReturnType);
-            children.AddRange(Parameters);
-            return children;
-        } 
         #endregion
     }
 }

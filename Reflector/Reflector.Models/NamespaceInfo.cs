@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Reflector.Models
 {
     [DataContract(IsReference = true)]
-    public class NamespaceInfo : IExpandable
+    public class NamespaceInfo : ReflectionElement
     {
         #region Constructors
         public NamespaceInfo(string name, IEnumerable<Type> types, AssemblyInfo assembly)
@@ -41,20 +41,6 @@ namespace Reflector.Models
                 //Classes.Add(assemblyModel.Classes[type.Name]);
             }
         }
-
-        #region Object override
-        public override string ToString()
-        {
-            return Name;
-        } 
-        #endregion
-
-        #region IExpandable implementation
-        public IEnumerable<IExpandable> Expand()
-        {
-            return Classes;
-        }
-        #endregion
 
         #region Privates
         private List<TypeInfo> _classes = new List<TypeInfo>(); 

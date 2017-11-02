@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="IExpandable.cs" />
+    <Compile Include="IReflectionElement.cs" />
     <Compile Include="MethodInfo.cs" />
     <Compile Include="NamespaceInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

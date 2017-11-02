@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Reflector.Models
 {
-    public interface IExpandable
+    public interface ReflectionElement
     {
-        IEnumerable<IExpandable> Expand();        
+         
     }
 }

@@ -1,16 +1,13 @@
 ﻿using Reflector.Models;
-using System;
+using Reflector.Presentation.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reflector.Presentation
 {
     public class TreeViewNode
     {
         public string Name { get; private set; }
-        private IExpandable Expandable { get; set; }
+        private ReflectionElement Expandable { get; set; }
         public List<TreeViewNode> Sublevels { get; private set; }
 
         public bool IsExpanded
@@ -32,17 +29,17 @@ namespace Reflector.Presentation
 
         private void buildMyself()
         {
-            if (Expandable.Expand() != null)
-                foreach (IExpandable expandable in Expandable.Expand())
+            if (Expandable.GetChildren() != null)
+                foreach (ReflectionElement expandable in Expandable.GetChildren())
                 {
                     AddSublevel(new TreeViewNode(expandable));
                 }
         }
 
-        public TreeViewNode(IExpandable expandable)
+        public TreeViewNode(ReflectionElement expandable)
         {
             Expandable = expandable;
-            Name = Expandable.ToString();
+            Name = Expandable.GetDescription();
             Sublevels = new List<TreeViewNode>();
             Sublevels.Add(null); // Adding null makes sublevel never empty, so view libraries can display it as expandable
             _wasBuilt = false;

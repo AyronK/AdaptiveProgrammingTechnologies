@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 namespace Reflector.Models
 {
     [DataContract(IsReference = true)]
-    public class AssemblyInfo : IExpandable
+    public class AssemblyInfo : ReflectionElement
     {
         #region Constructors       
         public AssemblyInfo(System.Reflection.Assembly assembly)
@@ -40,23 +40,8 @@ namespace Reflector.Models
         }
         #endregion
 
-        #region IExpandable implementation
-        public IEnumerable<IExpandable> Expand()
-        {
-            return Namespaces;
-        }        
-        #endregion
-
         #region Privates
         private Dictionary<string, TypeInfo> _classes = new Dictionary<string, TypeInfo>();
         #endregion
-
-        #region Object override
-        public override string ToString()
-        {
-            return Name;
-        }
-        #endregion
-
     }
 }
