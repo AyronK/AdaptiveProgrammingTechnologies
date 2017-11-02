@@ -28,15 +28,6 @@ namespace Reflector.Presentation.ViewModels
             }
 
             output.Append(_type.Name);
-            //if (_type.GenericArguments.Count > 0)
-            //{
-            //    output.Remove(output.Length - 2, 2);
-            //    output.Append("<");
-            //    foreach (TypeInfo genericArgument in _type.GenericArguments)
-            //        output.Append($"{genericArgument.Name}, ");
-            //    output.Remove(output.Length - 2, 2);
-            //    output.Append(">");
-            //}
 
             if (_type.ImplementedInterfaces.Count > 0 || _type.BaseType != null)
             {
@@ -62,16 +53,6 @@ namespace Reflector.Presentation.ViewModels
             }
 
             output.Append(_var.Type.Name);
-            //if (_var.Type.GenericArguments.Count > 0)
-            //{
-            //    output.Remove(output.Length - 2, 2);
-            //    output.Append("<");
-            //    foreach (TypeInfo genericArg in _var.Type.GenericArguments)
-            //        output.Append($"{genericArg.Name}, ");
-            //    output.Remove(output.Length - 2, 2);
-            //    output.Append(">");
-            //}
-
 
             output.Append($" {_var.Name}");
             return output.ToString();
@@ -89,15 +70,6 @@ namespace Reflector.Presentation.ViewModels
                 output.Append(modifier + " ");
 
             output.Append(_method.ReturnType.Name);
-            //if (_method.ReturnType.GenericArguments.Count > 0)
-            //{
-            //    output.Remove(output.Length - 2, 2);
-            //    output.Append("<");
-            //    foreach (TypeInfo genericArg in _method.ReturnType.GenericArguments)
-            //        output.Append($"{genericArg.Name}, ");
-            //    output.Remove(output.Length - 2, 2);
-            //    output.Append(">");
-            //}
             output.Append($" {_method.Name}");
 
             output.Append(" (");
@@ -159,7 +131,7 @@ namespace Reflector.Presentation.ViewModels
                 children.AddRange(x.Attributes);
                 children.AddRange(x.NestedTypes);
                 children.AddRange(x.ImplementedInterfaces);
-                //children.AddRange(x.GenericArguments);
+                children.AddRange(x.GenericArguments);
                 if (x.BaseType != null)
                 {
                     children.Add(x.BaseType);

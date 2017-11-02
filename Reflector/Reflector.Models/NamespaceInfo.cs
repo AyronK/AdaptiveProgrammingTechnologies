@@ -54,9 +54,9 @@ namespace Reflector.Models
                 StringBuilder output = new StringBuilder();
                 
                 output.Append(type.Name);
+                output.Remove(output.Length - 2, 2);
                 if (type.GetGenericArguments().Length > 0)
                 {
-                    output.Remove(output.Length - 2, 2);
                     output.Append("<");
                     foreach (var genericArgument in type.GetGenericArguments())
                         output.Append($"{genericArgument.Name}, ");

@@ -46,7 +46,8 @@ namespace Reflector.Models
             LoadAttributes(type, _namespace);
             LoadNestedTypes(type, _namespace);
             LoadImplementedInterfaces(type, _namespace);
-            LoadBaseType(type, _namespace);            
+            LoadBaseType(type, _namespace);
+            LoadGenericArguments(type, _namespace); 
         }
 
         private void LoadGenericArguments(Type type, NamespaceInfo _namespace)
