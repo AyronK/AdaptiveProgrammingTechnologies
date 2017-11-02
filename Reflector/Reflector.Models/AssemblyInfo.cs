@@ -26,22 +26,22 @@ namespace Reflector.Models
         [DataMember]
         public IEnumerable<NamespaceInfo> Namespaces { get; private set; }
 
-        #region Internal
-        [DataMember]
-        internal Dictionary<string, TypeInfo> Classes = new Dictionary<string, TypeInfo>();
-        internal void TryDefineTypeModel(Type type)
-        {
-            if (!Classes.ContainsKey(type.Name))
-            {
-                TypeInfo classModel = new TypeInfo() { Name = type.Name };
-                Classes.Add(type.Name, classModel);
-                classModel.LoadItself(type, this);
-            }
-        }
-        #endregion
+        //#region Internal
+        //[DataMember]
+        //internal Dictionary<string, TypeInfo> Classes = new Dictionary<string, TypeInfo>();
+        //internal void TryDefineTypeModel(Type type)
+        //{
+        //    if (!Classes.ContainsKey(type.Name))
+        //    {
+        //        TypeInfo classModel = new TypeInfo() { Name = type.Name };
+        //        Classes.Add(type.Name, classModel);
+        //        classModel.LoadItself(type, this);
+        //    }
+        //}
+        //#endregion
 
-        #region Privates
-        private Dictionary<string, TypeInfo> _classes = new Dictionary<string, TypeInfo>();
-        #endregion
+        //#region Privates
+        //private Dictionary<string, TypeInfo> _classes = new Dictionary<string, TypeInfo>();
+        //#endregion
     }
 }

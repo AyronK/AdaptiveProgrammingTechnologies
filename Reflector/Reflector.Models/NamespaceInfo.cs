@@ -12,7 +12,7 @@ namespace Reflector.Models
         public NamespaceInfo(string name, IEnumerable<Type> types, AssemblyInfo assembly)
         {
             Name = name;
-            Classes = from type in types orderby type.Name select new TypeInfo(type, assembly);
+            Classes = from type in types orderby type.Name select new TypeInfo(type, this);
         }
         #endregion
 
@@ -37,13 +37,26 @@ namespace Reflector.Models
         {
             if (type.Namespace == Name)
             {
-                assemblyModel.TryDefineTypeModel(type);
-                //Classes.Add(assemblyModel.Classes[type.Name]);
+                TryDefineTypeModel(type);
+                _classes.Add(TypesAlreadyDefined.Find(t => t.Name == type.Name));
+            }
+        }
+
+        [DataMember]
+        internal List<TypeInfo> TypesAlreadyDefined = new List<TypeInfo>();
+
+        internal void TryDefineTypeModel(Type type)
+        {
+            if (TypesAlreadyDefined.Find(t => t.Name == type.Name) == null)
+            {
+                TypeInfo classModel = new TypeInfo() { Name = type.Name };
+                TypesAlreadyDefined.Add(classModel);
+                classModel.LoadItself(type, this);
             }
         }
 
         #region Privates
-        private List<TypeInfo> _classes = new List<TypeInfo>(); 
+        private List<TypeInfo> _classes = new List<TypeInfo>();
         #endregion
     }
 }

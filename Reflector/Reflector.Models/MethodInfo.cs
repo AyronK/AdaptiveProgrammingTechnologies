@@ -20,25 +20,25 @@ namespace Reflector.Models
         [DataMember]
         public TypeInfo ReturnType { get { return _returnType; } set { _returnType = value; } }
 
-        internal void LoadItself(MethodInfo method, AssemblyInfo assembly)
+        internal void LoadItself(MethodInfo method, NamespaceInfo _namespace)
         {
             Name = method.Name;
             LoadModifiers(method);
 
-             //ReturnType = new TypeModel() { TypeName = method.ReturnType.Name }; 
-            assembly.TryDefineTypeModel(method.ReturnType);
-            ReturnType = assembly.Classes[method.ReturnType.Name];
+            //ReturnType = new TypeModel() { TypeName = method.ReturnType.Name }; 
+            _namespace.TryDefineTypeModel(method.ReturnType);
+            ReturnType = _namespace.TypesAlreadyDefined.Find(f => f.Name == method.ReturnType.Name);
 
             foreach (ParameterInfo parameter in method.GetParameters())
             {
-                AddParameter(assembly, parameter);
+                AddParameter(_namespace, parameter);
             }
         }
 
-        private void AddParameter(AssemblyInfo assembly, ParameterInfo parameter)
+        private void AddParameter(NamespaceInfo _namespace, ParameterInfo parameter)
         {
             string typeName = parameter.ParameterType.Name;
- 
+
             /*if (!assembly.Classes.ContainsKey(typeName))
              {
                  TypeModel classModel = new TypeModel() { TypeName = typeName };
@@ -46,12 +46,12 @@ namespace Reflector.Models
              }
              VarModel p = new VarModel() { Name = parameter.Name, BaseType = assembly.Classes[typeName] };*/
 
-            assembly.TryDefineTypeModel(parameter.ParameterType);
-            VarModel p = new VarModel() { Name = parameter.Name, Type = assembly.Classes[typeName] };
+            _namespace.TryDefineTypeModel(parameter.ParameterType);
+            VarModel p = new VarModel() { Name = parameter.Name, Type = _namespace.TypesAlreadyDefined.Find(f => f.Name == typeName) };
 
             Parameters.Add(p);
         }
-        
+
         #region Privates
         private List<VarModel> _parameters = new List<VarModel>();
         private List<string> _modifiers = new List<string>();
