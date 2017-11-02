@@ -19,11 +19,14 @@ namespace Reflector.Models
         public List<VarModel> Parameters { get { return _parameters; } private set { _parameters = value; } }
         [DataMember]
         public TypeInfo ReturnType { get { return _returnType; } set { _returnType = value; } }
+        [DataMember]
+        public List<TypeInfo> Attributes { get { return _attributes; } private set { _attributes = value; } }
 
         internal void LoadItself(MethodInfo method, NamespaceInfo _namespace)
         {
             Name = method.Name;
             LoadModifiers(method);
+            LoadAttributes(method, _namespace);
 
             //ReturnType = new TypeModel() { TypeName = method.ReturnType.Name }; 
             _namespace.TryDefineTypeModel(method.ReturnType);
@@ -48,14 +51,26 @@ namespace Reflector.Models
 
             _namespace.TryDefineTypeModel(parameter.ParameterType);
             VarModel p = new VarModel() { Name = parameter.Name, Type = _namespace.TypesAlreadyDefined.Find(f => f.Name == typeName) };
+            p.LoadAttributes(parameter.GetCustomAttributes(), _namespace);
 
             Parameters.Add(p);
         }
+
+        private void LoadAttributes(MethodInfo method, NamespaceInfo _namespace)
+        {
+            foreach (Attribute attribute in method.GetCustomAttributes())
+            {
+                _namespace.TryDefineTypeModel(attribute.GetType());
+                Attributes.Add(_namespace.TypesAlreadyDefined.Find(f => f.Name == attribute.GetType().Name));
+            }
+        }
+
 
         #region Privates
         private List<VarModel> _parameters = new List<VarModel>();
         private List<string> _modifiers = new List<string>();
         private TypeInfo _returnType;
+        private List<TypeInfo> _attributes = new List<TypeInfo>();
         private void LoadModifiers(MethodInfo method)
         {
             if (method.IsAbstract) Modifiers.Add("abstract");

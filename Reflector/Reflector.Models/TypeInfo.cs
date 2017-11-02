@@ -36,7 +36,7 @@ namespace Reflector.Models
             Name = type.Name;
             LoadItself(type, _namespace);           
         }
-
+        
         internal void LoadItself(Type type, NamespaceInfo _namespace)
         {
             LoadFields(type, _namespace);
@@ -64,7 +64,7 @@ namespace Reflector.Models
         private void LoadBaseType(Type type, NamespaceInfo _namespace)
         {
             var baseType = type.BaseType;
-            if (baseType != null)
+            if (baseType != null && baseType != typeof(Object))
             {
                 _namespace.TryDefineTypeModel(baseType);
                 BaseType = _namespace.TypesAlreadyDefined.Find(f => f.Name == baseType.Name);
@@ -77,6 +77,7 @@ namespace Reflector.Models
             {
                 _namespace.TryDefineTypeModel(field.FieldType);
                 VarModel t = new VarModel() { Name = field.Name, Type = _namespace.TypesAlreadyDefined.Find(f => f.Name == field.FieldType.Name) };
+                t.LoadAttributes(field.GetCustomAttributes(), _namespace);
                 Fields.Add(t);
             }
         }
@@ -97,6 +98,7 @@ namespace Reflector.Models
             {
                 _namespace.TryDefineTypeModel(property.PropertyType);
                 VarModel p = new VarModel() { Name = property.Name, Type = _namespace.TypesAlreadyDefined.Find(f => f.Name == property.PropertyType.Name) };
+                p.LoadAttributes(property.GetCustomAttributes(), _namespace);
                 Properties.Add(p);
             }
         }

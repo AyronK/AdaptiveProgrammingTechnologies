@@ -55,6 +55,12 @@ namespace Reflector.Presentation.ViewModels
         public static string GetDescription(this VarModel _var)
         {
             StringBuilder output = new StringBuilder();
+
+            foreach (var attribute in _var.Attributes)
+            {
+                output.Append($"[{attribute.Name}] ");
+            }
+
             output.Append(_var.Type.Name);
             //if (_var.Type.GenericArguments.Count > 0)
             //{
@@ -65,6 +71,8 @@ namespace Reflector.Presentation.ViewModels
             //    output.Remove(output.Length - 2, 2);
             //    output.Append(">");
             //}
+
+
             output.Append($" {_var.Name}");
             return output.ToString();
         }
@@ -72,6 +80,10 @@ namespace Reflector.Presentation.ViewModels
         public static string GetDescription(this MethodModel _method)
         {
             StringBuilder output = new StringBuilder();
+            foreach (var attribute in _method.Attributes)
+            {
+                output.Append($"[{attribute.Name}] ");
+            }
 
             foreach (string modifier in _method.Modifiers)
                 output.Append(modifier + " ");
@@ -157,7 +169,10 @@ namespace Reflector.Presentation.ViewModels
             else if (item.GetType() == typeof(VarModel))
             {
                 var x = (VarModel)item;
-                return new List<IReflectionElement>() { x.Type };
+                List<IReflectionElement> children = new List<IReflectionElement>();
+                children.Add(x.Type);
+                children.AddRange(x.Attributes);
+                return children;
             }
             else if (item.GetType() == typeof(MethodModel))
             {
@@ -166,6 +181,7 @@ namespace Reflector.Presentation.ViewModels
                 if (x.ReturnType.Name != "Void")
                     children.Add(x.ReturnType);
                 children.AddRange(x.Parameters);
+                children.AddRange(x.Attributes);
                 return children;
             }
             return null;
