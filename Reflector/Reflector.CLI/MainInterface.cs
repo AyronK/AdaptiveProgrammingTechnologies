@@ -28,7 +28,7 @@ namespace Reflector.CLI
             String path = Directory.GetCurrentDirectory();
             path += "/Reflector.Models.dll";
 
-            AssemblyInfo assemblyInfo = null;
+            AssemblyMetadata assemblyInfo = null;
 
             try
             {

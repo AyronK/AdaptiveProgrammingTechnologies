@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Xml.Serialization;
 
 namespace Reflector.Models
 {
     [DataContract(IsReference = true)]
-    public class VarModel : IReflectionElement
+    public class VarMetadata : IReflectionElement
     {
-
         [DataMember]
-        public List<TypeInfo> Attributes { get { return _attributes; } private set { _attributes = value; } }
+        public List<TypeMetadata> Attributes { get { return _attributes; } private set { _attributes = value; } }
 
         [DataMember]
         public string Name { get; set; }
 
         [DataMember]
-        public TypeInfo Type { get; set; }
+        public TypeMetadata Type { get; set; }
 
-        internal void LoadAttributes(IEnumerable<Attribute> attributes, NamespaceInfo _namespace)
+        internal void LoadAttributes(IEnumerable<Attribute> attributes, NamespaceMetadata _namespace)
         {
             foreach (Attribute attribute in attributes)
             {
@@ -26,7 +24,6 @@ namespace Reflector.Models
             }
         }
 
-        private List<TypeInfo> _attributes = new List<TypeInfo>();
-
+        private List<TypeMetadata> _attributes = new List<TypeMetadata>();
     }
 }

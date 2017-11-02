@@ -5,7 +5,7 @@ namespace Reflector.DataAccess.Database
 {
     public class AssemblyDatabaseWriter : IAssemblyWriter
     {
-        public void Write(AssemblyInfo assemblyInfo)
+        public void Write(AssemblyMetadata assemblyInfo)
         {
             throw new NotImplementedException();
         }

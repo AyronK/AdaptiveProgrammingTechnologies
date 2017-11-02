@@ -13,11 +13,11 @@ namespace ReflectorUnitTest.DataAccess
         string xmlPath = "test.xml";
         AssemblyXmlSerializer writer;
         AssemblyXmlDeserializer reader;
-        AssemblyInfo assembly;
+        AssemblyMetadata assembly;
 
         public XmlSerializationTest()
         {
-            assembly = new AssemblyInfo(typeof(XmlSerializationTest).Assembly);
+            assembly = new AssemblyMetadata(typeof(XmlSerializationTest).Assembly);
             writer = new AssemblyXmlSerializer();
             reader = new AssemblyXmlDeserializer();
         }
@@ -35,7 +35,7 @@ namespace ReflectorUnitTest.DataAccess
         public void SerializeAndDeserializeTest()
         {
             writer.Write(assembly, xmlPath);
-            AssemblyInfo processedAssembly = reader.Read(xmlPath);
+            AssemblyMetadata processedAssembly = reader.Read(xmlPath);
 
             Assert.AreEqual(assembly.Name, processedAssembly.Name);
             foreach(var ns in processedAssembly.Namespaces)

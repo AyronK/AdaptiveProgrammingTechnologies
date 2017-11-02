@@ -10,9 +10,9 @@ namespace Reflector.Logic
 {
     public interface IDataAccessor
     {
-        void SaveAssembly(AssemblyInfo assembly);
+        void SaveAssembly(AssemblyMetadata assembly);
 
-        AssemblyInfo LoadAssembly(string name);
+        AssemblyMetadata LoadAssembly(string name);
     }
 
     public class DataAccessor : IDataAccessor
@@ -25,12 +25,12 @@ namespace Reflector.Logic
 
         private IAssemblyWriter Writer { get; set; }
         private IAssemblyReader Reader { get; set; }
-        public void SaveAssembly(AssemblyInfo assembly)
+        public void SaveAssembly(AssemblyMetadata assembly)
         {
             Writer.Write(assembly);
         }
 
-        public AssemblyInfo LoadAssembly(string name)
+        public AssemblyMetadata LoadAssembly(string name)
         {
             return Reader.Read(name);
         }

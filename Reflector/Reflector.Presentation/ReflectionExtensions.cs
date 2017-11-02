@@ -9,17 +9,17 @@ namespace Reflector.Presentation.ViewModels
 {
     public static class ReflectionExtensions
     {
-        public static string GetDescription(this AssemblyInfo _assembly)
+        public static string GetDescription(this AssemblyMetadata _assembly)
         {
             return _assembly.Name;
         }
 
-        public static string GetDescription(this NamespaceInfo _namespace)
+        public static string GetDescription(this NamespaceMetadata _namespace)
         {
             return _namespace.Name;
         }
 
-        public static string GetDescription(this TypeInfo _type)
+        public static string GetDescription(this TypeMetadata _type)
         {
             StringBuilder output = new StringBuilder();
             foreach (var attribute in _type.Attributes)
@@ -36,14 +36,14 @@ namespace Reflector.Presentation.ViewModels
                 {
                     output.Append($"{_type.BaseType.Name}, ");
                 }
-                foreach (TypeInfo impInterface in _type.ImplementedInterfaces)
+                foreach (TypeMetadata impInterface in _type.ImplementedInterfaces)
                     output.Append($"{impInterface.Name}, ");
                 output.Remove(output.Length - 2, 2);
             }
             return output.ToString();
         }
 
-        public static string GetDescription(this VarModel _var)
+        public static string GetDescription(this VarMetadata _var)
         {
             StringBuilder output = new StringBuilder();
 
@@ -58,7 +58,7 @@ namespace Reflector.Presentation.ViewModels
             return output.ToString();
         }
 
-        public static string GetDescription(this MethodModel _method)
+        public static string GetDescription(this MethodMetadata _method)
         {
             StringBuilder output = new StringBuilder();
             foreach (var attribute in _method.Attributes)
@@ -75,7 +75,7 @@ namespace Reflector.Presentation.ViewModels
             output.Append(" (");
             if (_method.Parameters.Count > 0)
             {
-                foreach (VarModel parameter in _method.Parameters)
+                foreach (VarMetadata parameter in _method.Parameters)
                     output.Append(parameter.Type.Name + " " + parameter.Name + ", ");
                 output.Remove(output.Length - 2, 2);
             }
@@ -86,44 +86,44 @@ namespace Reflector.Presentation.ViewModels
 
         public static string GetDescription(this IReflectionElement item)
         {
-            if (item.GetType() == typeof(AssemblyInfo))
+            if (item.GetType() == typeof(AssemblyMetadata))
             {
-                return (item as AssemblyInfo).GetDescription();
+                return (item as AssemblyMetadata).GetDescription();
             }
-            else if (item.GetType() == typeof(NamespaceInfo))
+            else if (item.GetType() == typeof(NamespaceMetadata))
             {
-                return (item as NamespaceInfo).GetDescription();
+                return (item as NamespaceMetadata).GetDescription();
             }
-            else if (item.GetType() == typeof(TypeInfo))
+            else if (item.GetType() == typeof(TypeMetadata))
             {
-                return (item as TypeInfo).GetDescription();
+                return (item as TypeMetadata).GetDescription();
             }
-            else if (item.GetType() == typeof(VarModel))
+            else if (item.GetType() == typeof(VarMetadata))
             {
-                return (item as VarModel).GetDescription();
+                return (item as VarMetadata).GetDescription();
             }
-            else if (item.GetType() == typeof(MethodModel))
+            else if (item.GetType() == typeof(MethodMetadata))
             {
-                return (item as MethodModel).GetDescription();
+                return (item as MethodMetadata).GetDescription();
             }
             else throw new NotSupportedException("Extension method does not support external implementations of ReflectionElement");
         }
 
         public static IEnumerable<IReflectionElement> GetChildren(this IReflectionElement item)
         {
-            if (item.GetType() == typeof(AssemblyInfo))
+            if (item.GetType() == typeof(AssemblyMetadata))
             {
-                var x = (AssemblyInfo)item;
+                var x = (AssemblyMetadata)item;
                 return x.Namespaces;
             }
-            else if (item.GetType() == typeof(NamespaceInfo))
+            else if (item.GetType() == typeof(NamespaceMetadata))
             {
-                var x = (NamespaceInfo)item;
+                var x = (NamespaceMetadata)item;
                 return x.Classes;
             }
-            else if (item.GetType() == typeof(TypeInfo))
+            else if (item.GetType() == typeof(TypeMetadata))
             {
-                var x = (TypeInfo)item;
+                var x = (TypeMetadata)item;
                 List<IReflectionElement> children = new List<IReflectionElement>();
                 children.AddRange(x.Fields);
                 children.AddRange(x.Properties);
@@ -138,17 +138,17 @@ namespace Reflector.Presentation.ViewModels
                 }
                 return children;
             }
-            else if (item.GetType() == typeof(VarModel))
+            else if (item.GetType() == typeof(VarMetadata))
             {
-                var x = (VarModel)item;
+                var x = (VarMetadata)item;
                 List<IReflectionElement> children = new List<IReflectionElement>();
                 children.Add(x.Type);
                 children.AddRange(x.Attributes);
                 return children;
             }
-            else if (item.GetType() == typeof(MethodModel))
+            else if (item.GetType() == typeof(MethodMetadata))
             {
-                var x = (MethodModel)item;
+                var x = (MethodMetadata)item;
                 List<IReflectionElement> children = new List<IReflectionElement>();
                 if (x.ReturnType.Name != "Void")
                     children.Add(x.ReturnType);

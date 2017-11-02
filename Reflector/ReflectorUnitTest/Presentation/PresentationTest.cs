@@ -22,7 +22,7 @@ namespace ReflectorUnitTest.Presentation
         [TestMethod]
         public void ExpandTest()
         {
-            IReflectionElement assembly = new AssemblyInfo(GetType().Assembly);
+            IReflectionElement assembly = new AssemblyMetadata(GetType().Assembly);
             TreeViewNode tree = new TreeViewNode(assembly);
 
             //Using LINQ Where clause, because sublevels might contain 
@@ -35,7 +35,7 @@ namespace ReflectorUnitTest.Presentation
         [TestMethod]
         public void DontRebuildOnShrinkTest()
         {
-            IReflectionElement assembly = new AssemblyInfo(GetType().Assembly);
+            IReflectionElement assembly = new AssemblyMetadata(GetType().Assembly);
             TreeViewNode tree = new TreeViewNode(assembly);
 
             ExpandTreeNode(tree);
@@ -49,7 +49,7 @@ namespace ReflectorUnitTest.Presentation
         [TestMethod]
         public void DontRebuildOnExpandAgainTest()
         {
-            IReflectionElement assembly = new AssemblyInfo(GetType().Assembly);
+            IReflectionElement assembly = new AssemblyMetadata(GetType().Assembly);
             TreeViewNode tree = new TreeViewNode(assembly);
 
             ExpandTreeNode(tree);

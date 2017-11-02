@@ -45,7 +45,7 @@ namespace Reflector.GUI.ViewModels
         private IDataAccessor dataAccessor;
         private string _name;
         private List<TreeViewNode> _treeview = new List<TreeViewNode>();
-        private AssemblyInfo assemblyInfo;
+        private AssemblyMetadata assemblyInfo;
         private OpenFileDialog fileDialog;
 
         private void ReadFile()

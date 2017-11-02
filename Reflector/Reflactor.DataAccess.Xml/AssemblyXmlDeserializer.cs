@@ -7,17 +7,17 @@ namespace Reflector.DataAccess.Xml
 {
     public class AssemblyXmlDeserializer : IAssemblyReader
     {
-        public AssemblyInfo Read(string name)
+        public AssemblyMetadata Read(string name)
         {
             if (!XmlFileExists(name))
             {
                 throw new FileNotFoundException("Indicated XML file does not exist");
             }
-            var serializer = new DataContractSerializer(typeof(AssemblyInfo));
-            AssemblyInfo assemblyInfo = null;
+            var serializer = new DataContractSerializer(typeof(AssemblyMetadata));
+            AssemblyMetadata assemblyInfo = null;
             using (FileStream stream = File.OpenRead(name))
             {
-                assemblyInfo = (AssemblyInfo)serializer.ReadObject(stream);
+                assemblyInfo = (AssemblyMetadata)serializer.ReadObject(stream);
             }
             return assemblyInfo;
         }

@@ -6,12 +6,12 @@ namespace Reflector.DataAccess.Xml
 {
     public class AssemblyXmlSerializer : IAssemblyWriter
     {
-        public void Write(AssemblyInfo assemblyInfo)
+        public void Write(AssemblyMetadata assemblyInfo)
         {
             Write(assemblyInfo, $"{assemblyInfo.Name}_Model.xml");
         }
 
-        public void Write(AssemblyInfo assemblyInfo, string path)
+        public void Write(AssemblyMetadata assemblyInfo, string path)
         {
             var serializer = new DataContractSerializer(assemblyInfo.GetType());
             using (FileStream stream = File.Create(path))
