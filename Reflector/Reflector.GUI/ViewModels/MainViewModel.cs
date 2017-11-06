@@ -82,7 +82,10 @@ namespace Reflector.GUI.ViewModels
                     Log.logger.Error(exception, $"Failed to save assembly :{exception.Message}");
                 }
             }
-            Log.logger.Warn("User tried to save non existing assembly");
+            else
+            {
+               Log.logger.Warn("User tried to save non existing assembly");
+            }
         }
         #endregion
 

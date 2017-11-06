@@ -61,15 +61,28 @@ namespace Reflector.CLI
                 DisplayLevel(tree);
                 usersChoice = Console.ReadLine();
 
-                IEnumerable<string> choiseKeys = usersChoice.Split(',').ToList();
-                choices = choiseKeys.Select(c =>
+                if(usersChoice == "S")
                 {
-                    int parseResult;
-                    Int32.TryParse(c, out parseResult);
-                    return parseResult;
+                    if (assemblyInfo != null)
+                    {
+                        Save(assemblyInfo);
+                        Console.Read();
+                    }
+                    else
+                    {
+                        Log.logger.Warn("User tried to save non existing assembly");
+                    }                    
                 }
-                );
-
+                else
+                {
+                    IEnumerable<string> choiseKeys = usersChoice.Split(',').ToList();
+                    choices = choiseKeys.Select(c =>
+                    {
+                        int parseResult;
+                        Int32.TryParse(c, out parseResult);
+                        return parseResult;
+                    });
+                }
                 Console.Clear();
             }
             while (usersChoice != "Q");
@@ -79,7 +92,7 @@ namespace Reflector.CLI
 
         private void Description()
         {
-            Console.WriteLine("\nWrite sequence to expand the node or press \"Q\" to break the program\n");
+            Console.WriteLine("\nWrite sequence to expand the node \nPress \"Q\" to break the program\nPress \"S\" to save\n");
             Console.WriteLine("Sequence format: key,key,key [...]\n");
             Console.WriteLine("#####################################################################\n");
         }
@@ -125,6 +138,18 @@ namespace Reflector.CLI
                 }
             }
         }
-    }
 
+        private void Save(AssemblyMetadata assemblyInfo)
+        {
+             try
+            {
+                dataAccessor.SaveAssembly(assemblyInfo);
+                Log.logger.Info("Assembly saved successfully");
+            }
+            catch (Exception exception)
+            {
+                Log.logger.Error(exception, $"Failed to save assembly :{exception.Message}");
+            }
+        }
+    }
 }

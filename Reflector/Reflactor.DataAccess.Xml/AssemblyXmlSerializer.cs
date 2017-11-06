@@ -8,7 +8,7 @@ namespace Reflector.DataAccess.Xml
     {
         public void Write(AssemblyMetadata assemblyInfo)
         {
-            Write(assemblyInfo, $"{assemblyInfo.Name}_Model.xml");
+            Write(assemblyInfo, $"{Directory.GetCurrentDirectory()}/{assemblyInfo.Name}_Model.xml");
         }
 
         public void Write(AssemblyMetadata assemblyInfo, string path)
