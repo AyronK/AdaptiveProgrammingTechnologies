@@ -2,6 +2,7 @@
 using Reflector.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +16,11 @@ namespace Reflector.Logic
         AssemblyMetadata LoadAssembly(string name);
     }
 
+    [Export(typeof(IDataAccessor))]
+    [ExportMetadata("Name", nameof(DataAccessor))]
     public class DataAccessor : IDataAccessor
     {
+        [ImportingConstructor]
         public DataAccessor(IAssemblyWriter writer, IAssemblyReader reader)
         {
             Writer = writer;

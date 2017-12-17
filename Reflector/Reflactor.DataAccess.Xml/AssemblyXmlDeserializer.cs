@@ -2,9 +2,12 @@
 using Reflector.Models;
 using System.IO;
 using System.Runtime.Serialization;
+using System.ComponentModel.Composition;
 
 namespace Reflector.DataAccess.Xml
 {
+    [Export(typeof(IAssemblyReader))]
+    [ExportMetadata("Name", nameof(AssemblyXmlDeserializer))]
     public class AssemblyXmlDeserializer : IAssemblyReader
     {
         public AssemblyMetadata Read(string name)

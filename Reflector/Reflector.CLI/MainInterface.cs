@@ -3,6 +3,7 @@ using Reflector.Models;
 using Reflector.Presentation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,13 @@ using System.Threading.Tasks;
 
 namespace Reflector.CLI
 {
+    [Export]
     public class MainInterface
     {
+        //[Import]
         IDataAccessor dataAccessor;
+
+        [ImportingConstructor]
         public MainInterface(IDataAccessor dataAccessor)
         {
             this.dataAccessor = dataAccessor;
