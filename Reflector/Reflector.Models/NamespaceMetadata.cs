@@ -11,10 +11,14 @@ namespace Reflector.Models
     public class NamespaceMetadata : IReflectionElement
     {
         #region Constructors
+        public NamespaceMetadata()
+        {
+            
+        }
         public NamespaceMetadata(string name, IEnumerable<Type> types, AssemblyMetadata assembly)
         {
             Name = name;
-            Classes = from type in types orderby type.Name select new TypeMetadata(type, this);
+            Classes = new List<TypeMetadata>(from type in types orderby type.Name select new TypeMetadata(type, this));
             AssemblyMetadata = AssemblyMetadata;
         }
         #endregion
@@ -26,7 +30,7 @@ namespace Reflector.Models
         public string Name { get; set; }
 
         [DataMember]
-        public IEnumerable<TypeMetadata> Classes
+        public List<TypeMetadata> Classes
         {
             get; private set;
         }

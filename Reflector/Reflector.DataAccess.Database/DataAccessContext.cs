@@ -32,6 +32,16 @@ namespace Reflector.DataAccess.Database
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AssemblyMetadata>()
+                .HasMany(m => m.NamespaceMetadatas)
+                .WithOptional(t => t.AssemblyMetadata)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<NamespaceMetadata>()
+                .HasMany(m => m.Classes)
+                .WithOptional(t => t.NamespaceMetadata)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<VarMetadata>()
                 .HasRequired(m => m.Type)
                 .WithMany(t => t.Vars)
