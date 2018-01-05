@@ -2,14 +2,64 @@
 using Reflector.DataAccess;
 using Reflector.DataAccess.Dll;
 using Reflector.DataAccess.Xml;
+using Reflector.GUI.Log;
 using Reflector.Logic;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.Configuration;
-using System.Reflection;
+using System.Linq;
 using System.Windows;
 
 namespace Reflector.GUI
 {
+    public static class Mef
+    {
+        public static CompositionContainer Container { get; set; }
+
+        public static void ComposeFromConfigFile()
+        {
+            var readersDll = ConfigurationManager.AppSettings["AssemblyReaders"].Split(',').Select(p => p.Trim()).ToList();
+            var writersDll = ConfigurationManager.AppSettings["AssemblyWriters"].Split(',').Select(p => p.Trim()).ToList();
+            var dataAccessorsDll = ConfigurationManager.AppSettings["DataAccessors"].Split(',').Select(p => p.Trim()).ToList();
+
+            var catalog = new AggregateCatalog();
+
+            var path = ConfigurationManager.AppSettings["ComponentsDirectoryPath"];
+            var cat = new DirectoryCatalog(path);
+
+            catalog.Catalogs.Add(new FilteredCatalog(cat, def => ContainsMetadata(def, "Name", readersDll)));
+            catalog.Catalogs.Add(new FilteredCatalog(cat, def => ContainsMetadata(def, "Name", writersDll)));
+            catalog.Catalogs.Add(new FilteredCatalog(cat, def => ContainsMetadata(def, "Name", dataAccessorsDll)));
+
+            catalog.Catalogs.Add(new TypeCatalog(typeof(MainWindow)));
+            Container = new CompositionContainer(catalog);
+        }
+
+        public static void ComposeDefault()
+        {
+            var catalog = new AggregateCatalog();
+
+            catalog.Catalogs.Add(new TypeCatalog(typeof(AssemblyDllReader)));
+            catalog.Catalogs.Add(new TypeCatalog(typeof(AssemblyXmlSerializer)));
+            catalog.Catalogs.Add(new TypeCatalog(typeof(DataAccessor)));
+            catalog.Catalogs.Add(new TypeCatalog(typeof(MainWindow)));
+
+            Container = new CompositionContainer(catalog);
+        }
+
+        private static bool ContainsMetadata(System.ComponentModel.Composition.Primitives.ComposablePartDefinition definition, string name, IEnumerable<string> values)
+        {
+            foreach (var value in values)
+            {
+                if (definition.ExportDefinitions.Any(e => (string)e.Metadata[name] == value))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -17,72 +67,20 @@ namespace Reflector.GUI
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
-
-            //For now only magic string config - TODO MEF
-
-            var readerType = ConfigurationManager.AppSettings["AssemblyReader"];
-            var writerType = ConfigurationManager.AppSettings["AssemblyWriter"];
-
-            IUnityContainer container = new UnityContainer();
-
-            // Readers
             try
             {
-                switch (readerType)
-                {
-                    case "DLL":
-                        container.RegisterType<IAssemblyReader, AssemblyDllReader>();
-                        break;
-                    case "XML":
-                        container.RegisterType<IAssemblyReader, AssemblyXmlDeserializer>();
-                        break;
-                    default:
-                        throw new ConfigurationErrorsException("Not supported reader");
-                }
+                Mef.ComposeFromConfigFile();
+                Mef.Container.GetExportedValue<MainWindow>().Show();
             }
-            catch (ConfigurationErrorsException configExc)
+            catch (Exception ex)
             {
-                Log.logger.Error(configExc, $"Unsuported reader type error: {configExc.Message}");
-                MessageBox.Show(configExc.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Current.Shutdown();
+                Mef.ComposeDefault();
+                MessageBox.Show("Aplication loaded from default configuration...", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Console.WriteLine("Aplication loaded from default configuration...");
+                Logger.log.Error(ex, $"Failed to initialize application from config file due to error: {ex}");
+                Logger.log.Warn(ex, $"Loading default composition due to error: {ex}");
+                Mef.Container.GetExportedValue<MainWindow>().Show();
             }
-            catch (Exception exc)
-            {
-                Log.logger.Error(exc, $"Error during registering reader: {exc.Message}");
-                MessageBox.Show(exc.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Current.Shutdown();
-            }
-
-
-            // Writers
-            try
-            {
-                switch (writerType)
-                {
-                    case "XML":
-                        container.RegisterType<IAssemblyWriter, AssemblyXmlSerializer>();
-                        break;
-                    default:
-                        throw new ConfigurationErrorsException("Not supported writer");
-                }
-            }
-            catch (ConfigurationErrorsException configExc)
-            {
-                Log.logger.Error(configExc, $"Unsuported writer type error: {configExc.Message}");
-                MessageBox.Show(configExc.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Current.Shutdown();
-            }
-            catch (Exception exc)
-            {
-                Log.logger.Error(exc, $"Error during registering writer: {exc.Message}");
-                MessageBox.Show(exc.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Current.Shutdown();
-            }
-
-            container.RegisterType<IDataAccessor, DataAccessor>();
-            Log.logger.Info("Application initialized successfully");
-            container.Resolve<MainWindow>().Show();
         }
     }
 }

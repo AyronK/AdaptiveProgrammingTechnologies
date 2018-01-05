@@ -15,8 +15,12 @@ namespace Reflector.Models
         {
             Name = name;
             Classes = from type in types orderby type.Name select new TypeMetadata(type, this);
+            AssemblyMetadata = AssemblyMetadata;
         }
         #endregion
+
+        public int Id { get; set; }
+        public virtual AssemblyMetadata AssemblyMetadata { get; set; }
 
         [DataMember]
         public string Name { get; set; }

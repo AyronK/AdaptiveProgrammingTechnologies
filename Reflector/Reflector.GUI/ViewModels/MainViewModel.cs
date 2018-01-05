@@ -1,11 +1,12 @@
 ﻿using Microsoft.Win32;
+using Reflector.GUI.Log;
 using Reflector.GUI.MVVMLight;
-using Reflector.Models;
-using System;
-using System.Windows;
 using Reflector.Logic;
+using Reflector.Models;
 using Reflector.Presentation;
+using System;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace Reflector.GUI.ViewModels
 {
@@ -58,13 +59,13 @@ namespace Reflector.GUI.ViewModels
                 TreeView = new List<TreeViewNode>()
                 {
                     new TreeViewNode(assemblyInfo)
-                };              
+                };
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "File read error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Console.WriteLine(exception.Message);
-                Log.logger.Error(exception, $"Failed to read file {exception.Message}");
+                Logger.log.Error(exception, $"Failed to read file {exception.Message}");
             }
         }
 
@@ -75,16 +76,17 @@ namespace Reflector.GUI.ViewModels
                 try
                 {
                     dataAccessor.SaveAssembly(assemblyInfo);
-                    Log.logger.Info("Assembly saved successfully");
+                    MessageBox.Show("Assembly saved successfully", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Logger.log.Info("Assembly saved successfully");
                 }
                 catch (Exception exception)
                 {
-                    Log.logger.Error(exception, $"Failed to save assembly :{exception.Message}");
+                    Logger.log.Error(exception, $"Failed to save assembly :{exception.Message}");
                 }
             }
             else
             {
-               Log.logger.Warn("User tried to save non existing assembly");
+                Logger.log.Warn("User tried to save non existing assembly");
             }
         }
         #endregion

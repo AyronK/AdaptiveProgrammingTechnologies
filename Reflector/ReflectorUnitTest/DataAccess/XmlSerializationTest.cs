@@ -38,9 +38,9 @@ namespace ReflectorUnitTest.DataAccess
             AssemblyMetadata processedAssembly = reader.Read(xmlPath);
 
             Assert.AreEqual(assembly.Name, processedAssembly.Name);
-            foreach(var ns in processedAssembly.Namespaces)
+            foreach(var ns in processedAssembly.NamespaceMetadatas)
             {
-                Assert.IsNotNull(assembly.Namespaces.First(f=>f.Name == ns.Name));
+                Assert.IsNotNull(assembly.NamespaceMetadatas.First(f=>f.Name == ns.Name));
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 
 namespace Reflector.Models
@@ -7,14 +8,24 @@ namespace Reflector.Models
     [DataContract(IsReference = true)]
     public class VarMetadata : IReflectionElement
     {
-        [DataMember]
-        public List<TypeMetadata> Attributes { get { return _attributes; } private set { _attributes = value; } }
+        //fk
+        public virtual TypeMetadata PropertyParent { get; set; }
+        public virtual TypeMetadata FieldParent { get; set; }
+        //public virtual int FieldParentId { get; set; }
+        //public virtual int PropertyParentId { get; set; }
 
+
+
+
+        public int Id { get; set; }
+
+        [DataMember]
+        public virtual List<TypeMetadata> Attributes { get { return _attributes; } private set { _attributes = value; } }
         [DataMember]
         public string Name { get; set; }
 
         [DataMember]
-        public TypeMetadata Type { get; set; }
+        public virtual TypeMetadata Type { get; set; }
 
         internal void LoadAttributes(IEnumerable<Attribute> attributes, NamespaceMetadata _namespace)
         {

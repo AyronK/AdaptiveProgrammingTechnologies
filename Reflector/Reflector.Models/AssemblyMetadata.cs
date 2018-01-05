@@ -12,7 +12,7 @@ namespace Reflector.Models
         public AssemblyMetadata(System.Reflection.Assembly assembly)
         {
             Name = assembly.ManifestModule.Name;
-            Namespaces = from Type _type in assembly.GetTypes()
+            NamespaceMetadatas = from Type _type in assembly.GetTypes()
                          where _type.IsPublic || _type.IsNestedPublic || _type.IsNestedFamily || _type.IsNestedFamANDAssem
                          group _type by _type.Namespace != null ? _type.Namespace : string.Empty into _group
                          orderby _group.Key
@@ -20,10 +20,12 @@ namespace Reflector.Models
         }
         #endregion
 
+        public int Id { get; set; }
+
         [DataMember]
         public string Name { get; set; }
 
         [DataMember]
-        public IEnumerable<NamespaceMetadata> Namespaces { get; private set; }
+        public IEnumerable<NamespaceMetadata> NamespaceMetadatas { get; set; }
     }
 }

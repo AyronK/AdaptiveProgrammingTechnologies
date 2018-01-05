@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -47,7 +53,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,6 +67,56 @@
   <ItemGroup>
     <Compile Include="AssemblyDatabaseReader.cs" />
     <Compile Include="AssemblyDatabaseWriter.cs" />
+    <Compile Include="DataAccessContext.cs" />
+    <Compile Include="Migrations\201801052117039_InitializeModel.cs" />
+    <Compile Include="Migrations\201801052117039_InitializeModel.Designer.cs">
+      <DependentUpon>201801052117039_InitializeModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801052118431_AddNamespaceMetadata.cs" />
+    <Compile Include="Migrations\201801052118431_AddNamespaceMetadata.Designer.cs">
+      <DependentUpon>201801052118431_AddNamespaceMetadata.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801052123114_AddAssemblyToNamespace.cs" />
+    <Compile Include="Migrations\201801052123114_AddAssemblyToNamespace.Designer.cs">
+      <DependentUpon>201801052123114_AddAssemblyToNamespace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801052130082_RemovedFKIDFromNamespace.cs" />
+    <Compile Include="Migrations\201801052130082_RemovedFKIDFromNamespace.Designer.cs">
+      <DependentUpon>201801052130082_RemovedFKIDFromNamespace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801052137397_AddTypeBasic.cs" />
+    <Compile Include="Migrations\201801052137397_AddTypeBasic.Designer.cs">
+      <DependentUpon>201801052137397_AddTypeBasic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801052209001_AddBaseType.cs" />
+    <Compile Include="Migrations\201801052209001_AddBaseType.Designer.cs">
+      <DependentUpon>201801052209001_AddBaseType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801052211441_AddManyToManyTypeVar.cs" />
+    <Compile Include="Migrations\201801052211441_AddManyToManyTypeVar.Designer.cs">
+      <DependentUpon>201801052211441_AddManyToManyTypeVar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801052218117_AddTypeToVar.cs" />
+    <Compile Include="Migrations\201801052218117_AddTypeToVar.Designer.cs">
+      <DependentUpon>201801052218117_AddTypeToVar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801052228094_AddPropertyToType.cs" />
+    <Compile Include="Migrations\201801052228094_AddPropertyToType.Designer.cs">
+      <DependentUpon>201801052228094_AddPropertyToType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801052229566_RemovedRequieredFromFK.cs" />
+    <Compile Include="Migrations\201801052229566_RemovedRequieredFromFK.Designer.cs">
+      <DependentUpon>201801052229566_RemovedRequieredFromFK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801052245496_AddMethods.cs" />
+    <Compile Include="Migrations\201801052245496_AddMethods.Designer.cs">
+      <DependentUpon>201801052245496_AddMethods.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801052248295_AddMethodsToType.cs" />
+    <Compile Include="Migrations\201801052248295_AddMethodsToType.Designer.cs">
+      <DependentUpon>201801052248295_AddMethodsToType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,7 +130,46 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201801052117039_InitializeModel.resx">
+      <DependentUpon>201801052117039_InitializeModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801052118431_AddNamespaceMetadata.resx">
+      <DependentUpon>201801052118431_AddNamespaceMetadata.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801052123114_AddAssemblyToNamespace.resx">
+      <DependentUpon>201801052123114_AddAssemblyToNamespace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801052130082_RemovedFKIDFromNamespace.resx">
+      <DependentUpon>201801052130082_RemovedFKIDFromNamespace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801052137397_AddTypeBasic.resx">
+      <DependentUpon>201801052137397_AddTypeBasic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801052209001_AddBaseType.resx">
+      <DependentUpon>201801052209001_AddBaseType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801052211441_AddManyToManyTypeVar.resx">
+      <DependentUpon>201801052211441_AddManyToManyTypeVar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801052218117_AddTypeToVar.resx">
+      <DependentUpon>201801052218117_AddTypeToVar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801052228094_AddPropertyToType.resx">
+      <DependentUpon>201801052228094_AddPropertyToType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801052229566_RemovedRequieredFromFK.resx">
+      <DependentUpon>201801052229566_RemovedRequieredFromFK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801052245496_AddMethods.resx">
+      <DependentUpon>201801052245496_AddMethods.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801052248295_AddMethodsToType.resx">
+      <DependentUpon>201801052248295_AddMethodsToType.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,7 +1,8 @@
 ﻿using Microsoft.Practices.Unity;
-using Reflector.GUI;
+using Reflector.GUI.Log;
 using Reflector.GUI.ViewModels;
 using Reflector.Logic;
+using System.ComponentModel.Composition;
 using System.Windows;
 
 namespace Reflector
@@ -9,9 +10,10 @@ namespace Reflector
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Export]
     public partial class MainWindow : Window
     {
-        [Dependency]
+        [Import]
         public IDataAccessor DataAccessor
         {
             set { DataContext = new MainViewModel(value); }
@@ -20,7 +22,7 @@ namespace Reflector
         public MainWindow()
         {
             InitializeComponent();
-            Log.logger.Info("Main window successfully loaded");
+            Logger.log.Info("Main window successfully loaded");
         }
     }
 }

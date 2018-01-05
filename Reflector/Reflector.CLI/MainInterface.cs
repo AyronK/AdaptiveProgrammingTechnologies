@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using Reflector.CLI.Log;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,6 @@ namespace Reflector.CLI
     [Export]
     public class MainInterface
     {
-        //[Import]
         IDataAccessor dataAccessor;
 
         [ImportingConstructor]
@@ -25,7 +25,7 @@ namespace Reflector.CLI
 
         public void Start()
         {
-            Log.logger.Info("Application started successfully");
+            Logger.log.Info("Application started successfully");
             //Console.WriteLine("Type the name of the file: ");
             //String name = Console.Read().ToString();
             // String name = "Reflector.DataAccess.dll";
@@ -41,7 +41,7 @@ namespace Reflector.CLI
             }
             catch (Exception e)
             {
-                Log.logger.Error(e, $"Failed to load assembly: {e.Message}");
+                Logger.log.Error(e, $"Failed to load assembly: {e.Message}");
             }
 
             string usersChoice = String.Empty;
@@ -66,7 +66,7 @@ namespace Reflector.CLI
                 DisplayLevel(tree);
                 usersChoice = Console.ReadLine();
 
-                if(usersChoice == "S")
+                if (usersChoice == "S")
                 {
                     if (assemblyInfo != null)
                     {
@@ -75,8 +75,8 @@ namespace Reflector.CLI
                     }
                     else
                     {
-                        Log.logger.Warn("User tried to save non existing assembly");
-                    }                    
+                        Logger.log.Warn("User tried to save non existing assembly");
+                    }
                 }
                 else
                 {
@@ -91,13 +91,13 @@ namespace Reflector.CLI
                 Console.Clear();
             }
             while (usersChoice != "Q");
-            Log.logger.Info("Application closed by user request");
+            Logger.log.Info("Application closed by user request");
             Console.Read();
         }
 
         private void Description()
         {
-            Console.WriteLine("\nWrite sequence to expand the node \nPress \"Q\" to break the program\nPress \"S\" to save\n");
+            Console.WriteLine("\nWrite sequence to expand the node \nPress \"Q\" to break the program\n");// Press \"S\" to save\n");
             Console.WriteLine("Sequence format: key,key,key [...]\n");
             Console.WriteLine("#####################################################################\n");
         }
@@ -146,14 +146,14 @@ namespace Reflector.CLI
 
         private void Save(AssemblyMetadata assemblyInfo)
         {
-             try
+            try
             {
                 dataAccessor.SaveAssembly(assemblyInfo);
-                Log.logger.Info("Assembly saved successfully");
+                Logger.log.Info("Assembly saved successfully");
             }
             catch (Exception exception)
             {
-                Log.logger.Error(exception, $"Failed to save assembly :{exception.Message}");
+                Logger.log.Error(exception, $"Failed to save assembly :{exception.Message}");
             }
         }
     }
