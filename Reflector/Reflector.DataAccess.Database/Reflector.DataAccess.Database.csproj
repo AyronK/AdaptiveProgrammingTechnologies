@@ -117,6 +117,10 @@
     <Compile Include="Migrations\201801052248295_AddMethodsToType.Designer.cs">
       <DependentUpon>201801052248295_AddMethodsToType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801100801458_AddedTypeSelfReferences.cs" />
+    <Compile Include="Migrations\201801100801458_AddedTypeSelfReferences.Designer.cs">
+      <DependentUpon>201801100801458_AddedTypeSelfReferences.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -170,6 +174,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801052248295_AddMethodsToType.resx">
       <DependentUpon>201801052248295_AddMethodsToType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801100801458_AddedTypeSelfReferences.resx">
+      <DependentUpon>201801100801458_AddedTypeSelfReferences.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

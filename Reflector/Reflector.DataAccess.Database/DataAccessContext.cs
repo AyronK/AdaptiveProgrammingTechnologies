@@ -1,4 +1,4 @@
-using Reflector.Models;
+    using Reflector.Models;
 
 namespace Reflector.DataAccess.Database
 {
@@ -17,6 +17,7 @@ namespace Reflector.DataAccess.Database
         public DataAccessContext()
             : base("name=Reflector")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public DbSet<AssemblyMetadata> AssemblyMetadatas { get; set; }
@@ -60,7 +61,21 @@ namespace Reflector.DataAccess.Database
                 .HasMany(m => m.Properties)
                 .WithOptional(t => t.PropertyParent)
                 .WillCascadeOnDelete(false);
-            
+
+            modelBuilder.Entity<TypeMetadata>()
+               .HasMany(m => m.Attributes)
+               .WithMany(t => t.AttributesParent)
+               .Map(m => m.ToTable("TypeMetadataAttributes"));
+
+            modelBuilder.Entity<TypeMetadata>()
+               .HasMany(m => m.GenericArguments)
+               .WithMany(t => t.GenericArgumentsParent)
+               .Map(m => m.ToTable("TypeMetadataGenericArguments"));
+
+            modelBuilder.Entity<TypeMetadata>()
+               .HasMany(m => m.ImplementedInterfaces)
+               .WithMany(t => t.ImplementedInterfacesParetn)
+               .Map(m => m.ToTable("TypeMetadataImplementedInterfaces"));
 
         }
     }

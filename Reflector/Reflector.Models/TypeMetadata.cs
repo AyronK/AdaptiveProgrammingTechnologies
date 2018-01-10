@@ -10,35 +10,41 @@ namespace Reflector.Models
     [DataContract(IsReference = true)]
     public class TypeMetadata : IReflectionElement
     {
+        public TypeMetadata()
+        {
+
+        }
         //FK
         //public virtual int BaseTypeId { get; set; }
         //public virtual int VarTypeId { get; set; }
         public virtual List<VarMetadata> Vars { get; set; }
         public virtual List<VarMetadata> VarAttributes { get; set; }
 
+        public virtual List<TypeMetadata> AttributesParent { get; set; }
+        public virtual List<TypeMetadata> GenericArgumentsParent { get; set; }
+        public virtual List<TypeMetadata> ImplementedInterfacesParetn { get; set; }
+
         public int Id { get; set; }
         public virtual NamespaceMetadata NamespaceMetadata { get; set; }
         [DataMember]
         public string Name { get; set; }
         [DataMember]
-        public List<MethodMetadata> Methods { get { return _methods; } private set { _methods = value; } }
+        public List<MethodMetadata> Methods { get { return _methods; } set { _methods = value; } }
         [DataMember]
-        public virtual List<VarMetadata> Fields { get { return _fields; } private set { _fields = value; } }
+        public virtual List<VarMetadata> Fields { get { return _fields; } set { _fields = value; } }
         [DataMember]
-        public List<VarMetadata> Properties { get { return _properties; } private set { _properties = value; } }
+        public List<VarMetadata> Properties { get { return _properties; } set { _properties = value; } }
         //[DataMember]
         //public List<TypeMetadata> NestedTypes { get { return _nestedTypes; } private set { _nestedTypes = value; } }
         //public virtual int NestedTypeParentId { get; set; }
-        //[DataMember]
-        //public List<TypeMetadata> ImplementedInterfaces { get { return _implementedInterfaces; } private set { _implementedInterfaces = value; } }
-        //[DataMember]
-        //public List<TypeMetadata> Attributes { get { return _attributes; } private set { _attributes = value; } }
+        [DataMember]
+        public List<TypeMetadata> ImplementedInterfaces { get { return _implementedInterfaces; } private set { _implementedInterfaces = value; } }
+        [DataMember]
+        public List<TypeMetadata> Attributes { get { return _attributes; } private set { _attributes = value; } }
         [DataMember]
         public TypeMetadata BaseType { get; set; }
-        //[DataMember]
-        //public List<TypeMetadata> GenericArguments { get { return _genericArguments; } private set { _genericArguments = value; } }
-
-        internal TypeMetadata() { }
+        [DataMember]
+        public List<TypeMetadata> GenericArguments { get { return _genericArguments; } private set { _genericArguments = value; } }
 
         internal TypeMetadata(Type type, NamespaceMetadata _namespace)
         {
@@ -135,7 +141,7 @@ namespace Reflector.Models
         {
             foreach (Attribute attribute in type.GetCustomAttributes())
             {
-                //Attributes.Add(_namespace.TryDefineTypeModel(attribute.GetType()));
+               Attributes.Add(_namespace.TryDefineTypeModel(attribute.GetType()));
             }
         }
         #endregion

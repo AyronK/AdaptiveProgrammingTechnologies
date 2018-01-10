@@ -48,7 +48,7 @@ namespace Reflector.Models
 
         #region Recursion Protection
         [DataMember]
-        internal List<TypeMetadata> TypesAlreadyDefined = new List<TypeMetadata>();
+        public List<TypeMetadata> TypesAlreadyDefined = new List<TypeMetadata>();
 
         internal TypeMetadata TryDefineTypeModel(Type type)
         {
