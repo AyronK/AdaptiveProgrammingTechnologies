@@ -121,6 +121,10 @@
     <Compile Include="Migrations\201801100801458_AddedTypeSelfReferences.Designer.cs">
       <DependentUpon>201801100801458_AddedTypeSelfReferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801100846020_AddMethodAttributesReturnTypeAndParameters.cs" />
+    <Compile Include="Migrations\201801100846020_AddMethodAttributesReturnTypeAndParameters.Designer.cs">
+      <DependentUpon>201801100846020_AddMethodAttributesReturnTypeAndParameters.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -177,6 +181,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801100801458_AddedTypeSelfReferences.resx">
       <DependentUpon>201801100801458_AddedTypeSelfReferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801100846020_AddMethodAttributesReturnTypeAndParameters.resx">
+      <DependentUpon>201801100846020_AddMethodAttributesReturnTypeAndParameters.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

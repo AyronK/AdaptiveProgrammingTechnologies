@@ -77,6 +77,14 @@ namespace Reflector.DataAccess.Database
                .WithMany(t => t.ImplementedInterfacesParetn)
                .Map(m => m.ToTable("TypeMetadataImplementedInterfaces"));
 
+            modelBuilder.Entity<MethodMetadata>()
+               .HasMany(m => m.Parameters)
+               .WithOptional(v=>v.ParameterParent);
+
+            modelBuilder.Entity<MethodMetadata>()
+               .HasMany(m => m.Attributes)
+               .WithMany(v => v.MethodsParents)
+               .Map(m => m.ToTable("TypeMetadataMethods"));
         }
     }
 

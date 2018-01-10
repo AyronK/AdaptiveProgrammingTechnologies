@@ -19,6 +19,7 @@ namespace Reflector.Models
         //public virtual int VarTypeId { get; set; }
         public virtual List<VarMetadata> Vars { get; set; }
         public virtual List<VarMetadata> VarAttributes { get; set; }
+        public virtual List<MethodMetadata> MethodsParents { get; set; }
 
         public virtual List<TypeMetadata> AttributesParent { get; set; }
         public virtual List<TypeMetadata> GenericArgumentsParent { get; set; }

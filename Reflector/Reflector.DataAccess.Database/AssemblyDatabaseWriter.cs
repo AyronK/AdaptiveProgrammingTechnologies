@@ -54,7 +54,7 @@ namespace Reflector.DataAccess.Database
                 Include(a => a.NamespaceMetadatas.
                     Select(n => n.Classes.
                     Select(c => c.Attributes))).
-                FirstOrDefault(a => a.Id == 8);
+                FirstOrDefault(a => a.Id == 11);
         }
     }
 }

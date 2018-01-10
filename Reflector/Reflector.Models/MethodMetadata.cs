@@ -14,12 +14,12 @@ namespace Reflector.Models
         public string Name { get; set; }
         //[DataMember]
         //public List<string> Modifiers { get { return _modifiers; } private set { _modifiers = value; } }
-        //[DataMember]
-        //public List<VarMetadata> Parameters { get { return _parameters; } private set { _parameters = value; } }
-        //[DataMember]
-        //public TypeMetadata ReturnType { get { return _returnType; } set { _returnType = value; } }
-        //[DataMember]
-        //public List<TypeMetadata> Attributes { get { return _attributes; } private set { _attributes = value; } }
+        [DataMember]
+        public List<VarMetadata> Parameters { get { return _parameters; } private set { _parameters = value; } }
+        [DataMember]
+        public TypeMetadata ReturnType { get { return _returnType; } set { _returnType = value; } }
+        [DataMember]
+        public List<TypeMetadata> Attributes { get { return _attributes; } private set { _attributes = value; } }
 
         internal void LoadItself(MethodInfo method, NamespaceMetadata _namespace)
         {
