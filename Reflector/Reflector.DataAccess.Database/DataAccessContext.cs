@@ -17,7 +17,8 @@ namespace Reflector.DataAccess.Database
         public DataAccessContext()
             : base("name=Reflector")
         {
-            this.Configuration.LazyLoadingEnabled = false;
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
         }
 
         public DbSet<AssemblyMetadata> AssemblyMetadatas { get; set; }
@@ -25,12 +26,7 @@ namespace Reflector.DataAccess.Database
         public DbSet<TypeMetadata> TypeMetadatas { get; set; }
         public DbSet<VarMetadata> VarMetadatas { get; set; }
         public DbSet<MethodMetadata> MethodMetadatas { get; set; }
-
-        // Add a DbSet for each entity type that you want to include in your model. For more information 
-        // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
-
-        // public virtual DbSet<MyEntity> MyEntities { get; set; }
-
+        
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AssemblyMetadata>()
@@ -94,6 +90,10 @@ namespace Reflector.DataAccess.Database
             modelBuilder.Entity<TypeMetadata>()
                 .HasMany(m => m.Methods)
                 .WithOptional(t => t.TypeMethodParent);
+
+            modelBuilder.Entity<NamespaceMetadata>()
+                .HasMany(m => m.TypesAlreadyDefined);
+
         }
     }
 

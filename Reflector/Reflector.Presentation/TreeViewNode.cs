@@ -1,6 +1,7 @@
 ﻿using Reflector.Models;
 using Reflector.Presentation.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reflector.Presentation
 {
@@ -29,8 +30,9 @@ namespace Reflector.Presentation
 
         private void buildMyself()
         {
-            if (Expandable.GetChildren() != null)
-                foreach (IReflectionElement expandable in Expandable.GetChildren())
+            IEnumerable<IReflectionElement> children = Expandable.GetChildren();
+            if (children != null)
+                foreach (IReflectionElement expandable in children)
                 {
                     AddSublevel(new TreeViewNode(expandable));
                 }

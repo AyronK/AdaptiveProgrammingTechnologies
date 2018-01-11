@@ -13,7 +13,7 @@ namespace Reflector.Models
         #region Constructors
         public NamespaceMetadata()
         {
-            
+
         }
         public NamespaceMetadata(string name, IEnumerable<Type> types, AssemblyMetadata assembly)
         {
@@ -23,17 +23,16 @@ namespace Reflector.Models
         }
         #endregion
 
+        #region db
         public int Id { get; set; }
         public virtual AssemblyMetadata AssemblyMetadata { get; set; }
+        #endregion
 
         [DataMember]
         public string Name { get; set; }
 
         [DataMember]
-        public List<TypeMetadata> Classes
-        {
-            get; private set;
-        }
+        public List<TypeMetadata> Classes { get; set; }
 
         internal void LoadClasses(Assembly assembly, AssemblyMetadata assemblyModel)
         {
@@ -48,7 +47,7 @@ namespace Reflector.Models
 
         #region Recursion Protection
         [DataMember]
-        public List<TypeMetadata> TypesAlreadyDefined = new List<TypeMetadata>();
+        public List<TypeMetadata> TypesAlreadyDefined { get; set; } = new List<TypeMetadata>();
 
         internal TypeMetadata TryDefineTypeModel(Type type)
         {

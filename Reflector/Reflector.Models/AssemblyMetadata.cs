@@ -9,11 +9,12 @@ namespace Reflector.Models
     public class AssemblyMetadata : IReflectionElement
     {
         #region Constructors    
-
         public AssemblyMetadata()
         {
-            
+
         }
+
+
         public AssemblyMetadata(System.Reflection.Assembly assembly)
         {
             Name = assembly.ManifestModule.Name;
@@ -25,7 +26,10 @@ namespace Reflector.Models
         }
         #endregion
 
-        public int Id { get; set; }
+        #region db
+
+        public int Id { get; set; } 
+        #endregion
 
         [DataMember]
         public string Name { get; set; }

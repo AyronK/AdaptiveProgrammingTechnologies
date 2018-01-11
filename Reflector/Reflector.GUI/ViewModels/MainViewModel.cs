@@ -54,7 +54,7 @@ namespace Reflector.GUI.ViewModels
             try
             {
                 fileDialog.ShowDialog();
-                assemblyInfo = dataAccessor.LoadAssembly(fileDialog.FileName);
+                assemblyInfo = dataAccessor.LoadAssembly("Reflector.Models.dll");
                 NameText = assemblyInfo.Name;
                 TreeView = new List<TreeViewNode>()
                 {

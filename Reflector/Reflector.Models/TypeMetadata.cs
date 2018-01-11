@@ -10,11 +10,11 @@ namespace Reflector.Models
     [DataContract(IsReference = true)]
     public class TypeMetadata : IReflectionElement
     {
+        #region db
         public TypeMetadata()
         {
 
         }
-        //FK
         public virtual List<VarMetadata> Vars { get; set; }
         public virtual List<VarMetadata> VarAttributes { get; set; }
         public virtual List<MethodMetadata> MethodsParents { get; set; }
@@ -24,7 +24,9 @@ namespace Reflector.Models
         public virtual List<TypeMetadata> ImplementedInterfacesParent { get; set; }
         public virtual List<TypeMetadata> NestedTypesParent { get; set; }
 
-        public int Id { get; set; }
+        public int Id { get; set; } 
+        #endregion
+
         public virtual NamespaceMetadata NamespaceMetadata { get; set; }
         [DataMember]
         public string Name { get; set; }
@@ -35,15 +37,15 @@ namespace Reflector.Models
         [DataMember]
         public List<VarMetadata> Properties { get { return _properties; } set { _properties = value; } }
         [DataMember]
-        public List<TypeMetadata> NestedTypes { get { return _nestedTypes; } private set { _nestedTypes = value; } }
+        public List<TypeMetadata> NestedTypes { get { return _nestedTypes; } set { _nestedTypes = value; } }
         [DataMember]
-        public List<TypeMetadata> ImplementedInterfaces { get { return _implementedInterfaces; } private set { _implementedInterfaces = value; } }
+        public List<TypeMetadata> ImplementedInterfaces { get { return _implementedInterfaces; } set { _implementedInterfaces = value; } }
         [DataMember]
-        public List<TypeMetadata> Attributes { get { return _attributes; } private set { _attributes = value; } }
+        public List<TypeMetadata> Attributes { get { return _attributes; } set { _attributes = value; } }
         [DataMember]
         public TypeMetadata BaseType { get; set; }
         [DataMember]
-        public List<TypeMetadata> GenericArguments { get { return _genericArguments; } private set { _genericArguments = value; } }
+        public List<TypeMetadata> GenericArguments { get { return _genericArguments; } set { _genericArguments = value; } }
 
         internal TypeMetadata(Type type, NamespaceMetadata _namespace)
         {

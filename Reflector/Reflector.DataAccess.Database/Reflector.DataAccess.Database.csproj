@@ -137,6 +137,10 @@
     <Compile Include="Migrations\201801111937409_AddedNestedTypesToTypes.Designer.cs">
       <DependentUpon>201801111937409_AddedNestedTypesToTypes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801112207572_TypesDefined.cs" />
+    <Compile Include="Migrations\201801112207572_TypesDefined.Designer.cs">
+      <DependentUpon>201801112207572_TypesDefined.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -205,6 +209,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801111937409_AddedNestedTypesToTypes.resx">
       <DependentUpon>201801111937409_AddedNestedTypesToTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801112207572_TypesDefined.resx">
+      <DependentUpon>201801112207572_TypesDefined.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
