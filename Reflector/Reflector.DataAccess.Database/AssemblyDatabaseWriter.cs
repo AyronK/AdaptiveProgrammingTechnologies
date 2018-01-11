@@ -11,17 +11,13 @@ namespace Reflector.DataAccess.Database
     [ExportMetadata("Name", nameof(AssemblyDatabaseWriter))]
     public class AssemblyDatabaseWriter : IAssemblyWriter
     {
-        private DataAccessContext _context;
-
-        public AssemblyDatabaseWriter()
-        {
-            _context = new DataAccessContext();
-        }
-
         public void Write(AssemblyMetadata assemblyInfo)
         {
-            _context.AssemblyMetadatas.Add(assemblyInfo);
-            _context.SaveChanges();
+            using (DataAccessContext _context = new DataAccessContext())
+            {
+                _context.AssemblyMetadatas.Add(assemblyInfo);
+                _context.SaveChanges();
+            }
         }
     }
 }
