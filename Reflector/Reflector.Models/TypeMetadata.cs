@@ -15,8 +15,6 @@ namespace Reflector.Models
 
         }
         //FK
-        //public virtual int BaseTypeId { get; set; }
-        //public virtual int VarTypeId { get; set; }
         public virtual List<VarMetadata> Vars { get; set; }
         public virtual List<VarMetadata> VarAttributes { get; set; }
         public virtual List<MethodMetadata> MethodsParents { get; set; }

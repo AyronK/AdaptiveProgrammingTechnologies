@@ -3,12 +3,10 @@ namespace Reflector.DataAccess.Database.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AddMethodAttributesReturnTypeAndParameters : DbMigration
+    public partial class AddParametersAndArgumentsToMethod : DbMigration
     {
         public override void Up()
         {
-            RenameColumn(table: "dbo.MethodMetadatas", name: "TypeMetadata_Id", newName: "ReturnType_Id");
-            RenameIndex(table: "dbo.MethodMetadatas", name: "IX_TypeMetadata_Id", newName: "IX_ReturnType_Id");
             CreateTable(
                 "dbo.TypeMetadataMethods",
                 c => new
@@ -37,8 +35,6 @@ namespace Reflector.DataAccess.Database.Migrations
             DropIndex("dbo.VarMetadatas", new[] { "ParameterParent_Id" });
             DropColumn("dbo.VarMetadatas", "ParameterParent_Id");
             DropTable("dbo.TypeMetadataMethods");
-            RenameIndex(table: "dbo.MethodMetadatas", name: "IX_ReturnType_Id", newName: "IX_TypeMetadata_Id");
-            RenameColumn(table: "dbo.MethodMetadatas", name: "ReturnType_Id", newName: "TypeMetadata_Id");
         }
     }
 }

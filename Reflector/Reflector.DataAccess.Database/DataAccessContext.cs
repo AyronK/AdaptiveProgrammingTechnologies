@@ -79,7 +79,7 @@ namespace Reflector.DataAccess.Database
 
             modelBuilder.Entity<MethodMetadata>()
                .HasMany(m => m.Parameters)
-               .WithOptional(v=>v.ParameterParent);
+               .WithOptional(v => v.ParameterParent);
 
             modelBuilder.Entity<MethodMetadata>()
                .HasMany(m => m.Attributes)

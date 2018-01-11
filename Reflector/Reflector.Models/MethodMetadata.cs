@@ -12,12 +12,12 @@ namespace Reflector.Models
 
         [DataMember]
         public string Name { get; set; }
-        //[DataMember]
-        //public List<string> Modifiers { get { return _modifiers; } private set { _modifiers = value; } }
+        [DataMember]
+        public List<string> Modifiers { get { return _modifiers; } private set { _modifiers = value; } }
         [DataMember]
         public List<VarMetadata> Parameters { get { return _parameters; } private set { _parameters = value; } }
-        [DataMember]
-        public TypeMetadata ReturnType { get { return _returnType; } set { _returnType = value; } }
+        //[DataMember]
+        //public TypeMetadata ReturnType { get { return _returnType; } set { _returnType = value; } }
         [DataMember]
         public List<TypeMetadata> Attributes { get { return _attributes; } private set { _attributes = value; } }
 
@@ -57,18 +57,18 @@ namespace Reflector.Models
             VarMetadata p = new VarMetadata()
             {
                 Name = parameter.Name,
-                //Type = _namespace.TryDefineTypeModel(parameter.ParameterType)
+                Type = _namespace.TryDefineTypeModel(parameter.ParameterType)
             };
             p.LoadAttributes(parameter.GetCustomAttributes(), _namespace);
 
-            //Parameters.Add(p);
+            Parameters.Add(p);
         }
 
         private void LoadAttributes(MethodInfo method, NamespaceMetadata _namespace)
         {
             foreach (Attribute attribute in method.GetCustomAttributes())
             {
-                //Attributes.Add(_namespace.TryDefineTypeModel(attribute.GetType()));
+                Attributes.Add(_namespace.TryDefineTypeModel(attribute.GetType()));
             }
         }
         #endregion

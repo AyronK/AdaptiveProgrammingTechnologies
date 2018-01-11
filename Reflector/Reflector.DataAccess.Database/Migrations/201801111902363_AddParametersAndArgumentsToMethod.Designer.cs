@@ -7,13 +7,13 @@ namespace Reflector.DataAccess.Database.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddMethodAttributesReturnTypeAndParameters : IMigrationMetadata
+    public sealed partial class AddParametersAndArgumentsToMethod : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddMethodAttributesReturnTypeAndParameters));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddParametersAndArgumentsToMethod));
         
         string IMigrationMetadata.Id
         {
-            get { return "201801100846020_AddMethodAttributesReturnTypeAndParameters"; }
+            get { return "201801111902363_AddParametersAndArgumentsToMethod"; }
         }
         
         string IMigrationMetadata.Source

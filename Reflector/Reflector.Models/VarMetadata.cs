@@ -12,8 +12,6 @@ namespace Reflector.Models
         public virtual TypeMetadata PropertyParent { get; set; }
         public virtual TypeMetadata FieldParent { get; set; }
         public virtual MethodMetadata ParameterParent { get; set; }
-        //public virtual int FieldParentId { get; set; }
-        //public virtual int PropertyParentId { get; set; }
 
 
 
