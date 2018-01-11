@@ -74,8 +74,13 @@ namespace Reflector.DataAccess.Database
 
             modelBuilder.Entity<TypeMetadata>()
                .HasMany(m => m.ImplementedInterfaces)
-               .WithMany(t => t.ImplementedInterfacesParetn)
+               .WithMany(t => t.ImplementedInterfacesParent)
                .Map(m => m.ToTable("TypeMetadataImplementedInterfaces"));
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasMany(m => m.NestedTypes)
+                .WithMany(t => t.NestedTypesParent)
+                .Map(m => m.ToTable("TypeMetadataNestedTypes"));
 
             modelBuilder.Entity<MethodMetadata>()
                .HasMany(m => m.Parameters)
@@ -89,9 +94,6 @@ namespace Reflector.DataAccess.Database
             modelBuilder.Entity<TypeMetadata>()
                 .HasMany(m => m.Methods)
                 .WithOptional(t => t.TypeMethodParent);
-
-            //modelBuilder.Entity<MethodMetadata>()
-            //    .HasOptional(m => m.ReturnType);
         }
     }
 

@@ -21,7 +21,8 @@ namespace Reflector.Models
 
         public virtual List<TypeMetadata> AttributesParent { get; set; }
         public virtual List<TypeMetadata> GenericArgumentsParent { get; set; }
-        public virtual List<TypeMetadata> ImplementedInterfacesParetn { get; set; }
+        public virtual List<TypeMetadata> ImplementedInterfacesParent { get; set; }
+        public virtual List<TypeMetadata> NestedTypesParent { get; set; }
 
         public int Id { get; set; }
         public virtual NamespaceMetadata NamespaceMetadata { get; set; }
@@ -30,12 +31,11 @@ namespace Reflector.Models
         [DataMember]
         public List<MethodMetadata> Methods { get { return _methods; } set { _methods = value; } }
         [DataMember]
-        public virtual List<VarMetadata> Fields { get { return _fields; } set { _fields = value; } }
+        public List<VarMetadata> Fields { get { return _fields; } set { _fields = value; } }
         [DataMember]
         public List<VarMetadata> Properties { get { return _properties; } set { _properties = value; } }
-        //[DataMember]
-        //public List<TypeMetadata> NestedTypes { get { return _nestedTypes; } private set { _nestedTypes = value; } }
-        //public virtual int NestedTypeParentId { get; set; }
+        [DataMember]
+        public List<TypeMetadata> NestedTypes { get { return _nestedTypes; } private set { _nestedTypes = value; } }
         [DataMember]
         public List<TypeMetadata> ImplementedInterfaces { get { return _implementedInterfaces; } private set { _implementedInterfaces = value; } }
         [DataMember]
@@ -54,14 +54,14 @@ namespace Reflector.Models
 
         internal void LoadItself(Type type, NamespaceMetadata _namespace)
         {
-            //LoadFields(type, _namespace);
+            LoadFields(type, _namespace);
             LoadMethods(type, _namespace);
-            //LoadProperties(type, _namespace);
-            //LoadAttributes(type, _namespace);
+            LoadProperties(type, _namespace);
+            LoadAttributes(type, _namespace);
             LoadNestedTypes(type, _namespace);
             LoadImplementedInterfaces(type, _namespace);
             LoadBaseType(type, _namespace);
-            //LoadGenericArguments(type, _namespace);
+            LoadGenericArguments(type, _namespace);
         }
 
         #region Privates
@@ -77,7 +77,7 @@ namespace Reflector.Models
         {
             foreach (Type genericArgument in type.GetGenericArguments())
             {
-                //GenericArguments.Add(_namespace.TryDefineTypeModel(genericArgument));
+                GenericArguments.Add(_namespace.TryDefineTypeModel(genericArgument));
             }
         }
 
@@ -124,7 +124,7 @@ namespace Reflector.Models
         {
             foreach (TypeInfo nestedType in type.GetNestedTypes())
             {
-                //NestedTypes.Add(_namespace.TryDefineTypeModel(nestedType.GetType()));
+                NestedTypes.Add(_namespace.TryDefineTypeModel(nestedType.GetType()));
             }
         }
 
@@ -132,7 +132,7 @@ namespace Reflector.Models
         {
             foreach (TypeInfo imlementedInterface in type.GetInterfaces())
             {
-                //ImplementedInterfaces.Add(_namespace.TryDefineTypeModel(imlementedInterface));
+                ImplementedInterfaces.Add(_namespace.TryDefineTypeModel(imlementedInterface));
             }
         }
 
