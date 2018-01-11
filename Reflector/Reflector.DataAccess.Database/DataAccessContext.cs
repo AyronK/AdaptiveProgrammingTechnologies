@@ -85,6 +85,13 @@ namespace Reflector.DataAccess.Database
                .HasMany(m => m.Attributes)
                .WithMany(v => v.MethodsParents)
                .Map(m => m.ToTable("TypeMetadataMethods"));
+
+            modelBuilder.Entity<TypeMetadata>()
+                .HasMany(m => m.Methods)
+                .WithOptional(t => t.TypeMethodParent);
+
+            //modelBuilder.Entity<MethodMetadata>()
+            //    .HasOptional(m => m.ReturnType);
         }
     }
 

@@ -125,6 +125,14 @@
     <Compile Include="Migrations\201801111902363_AddParametersAndArgumentsToMethod.Designer.cs">
       <DependentUpon>201801111902363_AddParametersAndArgumentsToMethod.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801111927256_FixedTypeMethodsRelations.cs" />
+    <Compile Include="Migrations\201801111927256_FixedTypeMethodsRelations.Designer.cs">
+      <DependentUpon>201801111927256_FixedTypeMethodsRelations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801111928079_AddedReturnTypeToMethod.cs" />
+    <Compile Include="Migrations\201801111928079_AddedReturnTypeToMethod.Designer.cs">
+      <DependentUpon>201801111928079_AddedReturnTypeToMethod.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -184,6 +192,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801111902363_AddParametersAndArgumentsToMethod.resx">
       <DependentUpon>201801111902363_AddParametersAndArgumentsToMethod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801111927256_FixedTypeMethodsRelations.resx">
+      <DependentUpon>201801111927256_FixedTypeMethodsRelations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801111928079_AddedReturnTypeToMethod.resx">
+      <DependentUpon>201801111928079_AddedReturnTypeToMethod.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

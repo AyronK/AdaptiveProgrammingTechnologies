@@ -8,6 +8,8 @@ namespace Reflector.Models
     [DataContract(IsReference = true)]
     public class MethodMetadata : IReflectionElement
     {
+        public virtual TypeMetadata TypeMethodParent { get; set; }
+
         public int Id { get; set; }
 
         [DataMember]
@@ -16,8 +18,8 @@ namespace Reflector.Models
         public List<string> Modifiers { get { return _modifiers; } private set { _modifiers = value; } }
         [DataMember]
         public List<VarMetadata> Parameters { get { return _parameters; } private set { _parameters = value; } }
-        //[DataMember]
-        //public TypeMetadata ReturnType { get { return _returnType; } set { _returnType = value; } }
+        [DataMember]
+        public TypeMetadata ReturnType { get { return _returnType; } set { _returnType = value; } }
         [DataMember]
         public List<TypeMetadata> Attributes { get { return _attributes; } private set { _attributes = value; } }
 
@@ -27,7 +29,7 @@ namespace Reflector.Models
             LoadModifiers(method);
             LoadAttributes(method, _namespace);
             
-            //ReturnType = _namespace.TryDefineTypeModel(method.ReturnType);
+            ReturnType = _namespace.TryDefineTypeModel(method.ReturnType);
 
             foreach (ParameterInfo parameter in method.GetParameters())
             {

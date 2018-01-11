@@ -54,14 +54,14 @@ namespace Reflector.Models
 
         internal void LoadItself(Type type, NamespaceMetadata _namespace)
         {
-            LoadFields(type, _namespace);
+            //LoadFields(type, _namespace);
             LoadMethods(type, _namespace);
-            LoadProperties(type, _namespace);
-            LoadAttributes(type, _namespace);
+            //LoadProperties(type, _namespace);
+            //LoadAttributes(type, _namespace);
             LoadNestedTypes(type, _namespace);
             LoadImplementedInterfaces(type, _namespace);
             LoadBaseType(type, _namespace);
-            LoadGenericArguments(type, _namespace);
+            //LoadGenericArguments(type, _namespace);
         }
 
         #region Privates
