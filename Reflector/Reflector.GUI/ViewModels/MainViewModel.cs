@@ -28,7 +28,7 @@ namespace Reflector.GUI.ViewModels
         {
             this.dataAccessor = dataAccessor;
             ReadFileCommand = new RelayCommand(ReadFile);
-            SaveCommand = new RelayCommand(SaveToXml);
+            SaveCommand = new RelayCommand(Save);
             _name = string.Empty;
             InitFileDialog();
         }
@@ -69,7 +69,7 @@ namespace Reflector.GUI.ViewModels
             }
         }
 
-        private void SaveToXml()
+        private void Save()
         {
             if (assemblyInfo != null)
             {
